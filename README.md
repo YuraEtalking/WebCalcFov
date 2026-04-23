@@ -40,6 +40,9 @@ uvicorn main:app --reload
 - **Python 3.10+**
 - **Fast API**
 - **uvicorn**
+- **PostgreSQL**
+- **SQLAlchemy**
+- **Alembic**
 
 <br>
 

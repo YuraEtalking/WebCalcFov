@@ -1,4 +1,28 @@
-fastapi==0.78.0
+# --- core ---
+fastapi==0.115.12
+pydantic==2.11.7
 uvicorn==0.41.0
+pydantic-settings==2.10.1
+
+# --- База данных / ORM ---
+sqlalchemy==2.0.43
+
+# --- PostgreSQL async driver ---
+asyncpg==0.30.0
+
+# --- Миграции ---
+alembic==1.16.5
+
+# --- Шаблоны/формы ---
 jinja2==3.1.6
 python_multipart==0.0.22
+
+# --- Логирование ---
+loguru==0.7.3
+
+# --- Тесты ---
+pytest==9.0.2
+
+# --- Линтер ---
+flake8==5.0.4
+flake8-docstrings==1.7.0

@@ -1,0 +1,33 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 900px;
+    margin: 30px auto;
+    line-height: 1.5;
+}
+.field {
+    margin-bottom: 16px;
+}
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+input, textarea, select, button {
+    padding: 8px;
+    width: 100%;
+    max-width: 500px;
+}
+.inline {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+.inline label {
+    display: inline;
+    font-weight: normal;
+    margin-left: 6px;
+}
+.inline-item {
+    display: flex;
+    align-items: center;
+}
