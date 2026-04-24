@@ -1,9 +1,14 @@
 from sqlalchemy import Column, Integer
 
-from backend.core import ActiveMixin, Base, CommonFieldsMixin, TimeFieldsMixin
+from backend.core.db import Base
+from backend.models.mixins import (
+    ActiveMixin,
+    CommonFieldsMixin,
+    TimeFieldsMixin,
+)
 
 
 class Sensor(ActiveMixin, Base, CommonFieldsMixin, TimeFieldsMixin):
-    width = Column(Integer, gt=1)
-    height = Column(Integer, gt=1)
-    crop = Column(Integer, gt=1)
+    width = Column(Integer)
+    height = Column(Integer)
+    crop = Column(Integer)

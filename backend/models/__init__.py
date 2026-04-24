@@ -1,4 +1,4 @@
-from camera import Camera  # noqa
-from lens import Lens  # noqa
-from sensor import Sensor  # noqa
-from associative_model import CameraLens  # noqa
+from .associative_model import CameraLens
+from .camera import Camera
+from .lens import Lens
+from .sensor import Sensor

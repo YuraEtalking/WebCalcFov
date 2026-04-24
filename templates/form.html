@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}
+Форма
+{% endblock %}
+{% block content %}
+<h1>Форма</h1>
+  <form action="/submit" method="post" enctype="multipart/form-data">
+
+        <div class="field">
+            <label for="camera">Камера</label>
+            <select id="camera" name="camera" required>
+                <option value="">-- Выберите камеру --</option>
+            </select>
+        </div>
+        <div class="field">
+            <label for="lens">Объектив</label>
+            <select id="lens" name="lens" required>
+                <option value="">-- Выберите объектив --</option>
+                <option value="RU">Россия</option>
+                <option value="KZ">Казахстан</option>
+                <option value="BY">Беларусь</option>
+                <option value="UZ">Узбекистан</option>
+            </select>
+        </div>
+        <div class="field">
+            <label for="sensor">Сенсор</label>
+            <select id="sensor" name="sensor" required>
+                <option value="">-- Выберите сенсор --</option>
+                <option value="RU">Россия</option>
+                <option value="KZ">Казахстан</option>
+                <option value="BY">Беларусь</option>
+                <option value="UZ">Узбекистан</option>
+            </select>
+        </div>
+
+      <!-- text -->
+        <div class="field">
+            <label for="distance">Расстояние</label>
+            <input type="text" id="distance" name="distance" placeholder="Введите расстояние до объекта съемки." required>
+        </div>
+
+        <!-- submit / reset / button -->
+        <div class="field inline">
+            <button type="submit">submit — Отправить</button>
+            <button type="reset">reset — Сбросить</button>
+        </div>
+
+  </form>
+
+{% endblock %}

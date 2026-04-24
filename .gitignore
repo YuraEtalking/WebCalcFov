@@ -137,5 +137,5 @@ openapi.json
 
 #мусор
 trsh/
-backend/temp/
+temp/
 1.py

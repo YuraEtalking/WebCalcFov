@@ -1,3 +1,6 @@
 """Импорты для Alembic."""
-from backend.core.db import Base # noqa
-# from backend.models import  # noqa
+from .db import Base # noqa
+from backend.models import CameraLens  # noqa
+from backend.models import Camera  # noqa
+from backend.models import Lens  # noqa
+from backend.models import Sensor  # noqa

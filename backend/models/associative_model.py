@@ -1,9 +1,10 @@
 from typing import TYPE_CHECKING
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import ForeignKey, Boolean
+from sqlalchemy import Boolean, Enum, ForeignKey
 
-from backend.core import Base
+from backend.core.db import Base
+from backend.models.enums import CompatibilityType
 
 if TYPE_CHECKING:
     from .camera import Camera
@@ -21,10 +22,11 @@ class CameraLens(Base):
         ForeignKey('lens.id'),
         primary_key=True,
     )
-    convertor: Mapped[bool] = mapped_column(
-        Boolean,
+    convertor: Mapped[CompatibilityType] = mapped_column(
+        Enum(CompatibilityType,
+        name='compatibility_type_enum'),
         nullable=False,
-        default=False,
+        default=CompatibilityType.DIRECT,
     )
     camera: Mapped['Camera'] = relationship(back_populates='camera_lenses')
     lens: Mapped['Lens'] = relationship(back_populates='camera_lenses')
