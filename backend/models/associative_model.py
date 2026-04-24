@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import Boolean, Enum, ForeignKey
+from sqlalchemy import Enum, ForeignKey
 
 from backend.core.db import Base
 from backend.models.enums import CompatibilityType
@@ -30,3 +30,6 @@ class CameraLens(Base):
     )
     camera: Mapped['Camera'] = relationship(back_populates='camera_lenses')
     lens: Mapped['Lens'] = relationship(back_populates='camera_lenses')
+
+    def __str__(self):
+        return f'Камера ID: {self.camera_id}, Объектив ID: {self.lens_id}'

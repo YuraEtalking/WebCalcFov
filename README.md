@@ -32,9 +32,22 @@ pip install -r requirements.txt
 ```
 #### Запуск приложения:
 ```
-uvicorn main:app --reload
+uvicorn backend.main:app --reload
 ```
 <br>
+
+#### Админ панель:
+```
+http://127.0.0.1:8000/admin
+```
+<br>
+
+#### Документация:
+```
+http://127.0.0.1:8000/docs
+```
+<br>
+
 
 ## Стек технологий
 - **Python 3.10+**
@@ -43,6 +56,7 @@ uvicorn main:app --reload
 - **PostgreSQL**
 - **SQLAlchemy**
 - **Alembic**
+- **SQLAdmin**
 
 <br>
 

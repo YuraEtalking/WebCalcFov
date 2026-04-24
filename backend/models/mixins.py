@@ -1,10 +1,13 @@
 from datetime import datetime
 
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import Boolean, DateTime, Enum, String, func
+from sqlalchemy import Boolean, DateTime, Enum, Integer, String, func
 
 from backend.core.constants import MANUFACTURER_MAX_LEN, NAME_MAX_LEN
 from backend.models.enums import BayonetType
+
+class IdMixin:
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
 
 
 class TimeFieldsMixin:
