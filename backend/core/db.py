@@ -19,8 +19,6 @@ class Base(DeclarativeBase):
     def __tablename__(cls) -> str:
         return cls.__name__.lower()
 
-    # id: Mapped[int] = mapped_column(Integer, primary_key=True)
-
 
 engine = create_async_engine(settings.database_url)
 AsyncSessionLocal = async_sessionmaker(

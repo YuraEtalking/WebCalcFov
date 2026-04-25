@@ -6,6 +6,7 @@ from backend.models import Sensor
 class SensorAdmin(ModelView, model=Sensor):
     name = 'Сенсор'
     name_plural = 'Сенсоры'
+    icon = 'fa-solid fa-microchip'
 
     column_list = [
         Sensor.id,

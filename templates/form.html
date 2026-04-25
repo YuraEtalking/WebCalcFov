@@ -1,50 +1,70 @@
 {% extends "base.html" %}
 {% block title %}
-Форма
+Считать FoV
 {% endblock %}
 {% block content %}
-<h1>Форма</h1>
-  <form action="/submit" method="post" enctype="multipart/form-data">
+<h1>Считать FoV</h1>
+  <form action="/" method="post" enctype="multipart/form-data">
 
         <div class="field">
-            <label for="camera">Камера</label>
-            <select id="camera" name="camera" required>
+            <label for="camera_id">Камера</label>
+            <select id="camera_id" name="camera_id" required>
                 <option value="">-- Выберите камеру --</option>
+                {% for camera in cameras %}
+                  <option value="{{ camera.id }}" {% if data and data.camera.id == camera.id %}selected{% endif %}>
+                      {{ camera.name }}
+                  </option>
+                {% endfor %}
             </select>
         </div>
         <div class="field">
-            <label for="lens">Объектив</label>
-            <select id="lens" name="lens" required>
+            <label for="lens_id">Объектив</label>
+            <select id="lens_id" name="lens_id" required>
                 <option value="">-- Выберите объектив --</option>
-                <option value="RU">Россия</option>
-                <option value="KZ">Казахстан</option>
-                <option value="BY">Беларусь</option>
-                <option value="UZ">Узбекистан</option>
+                {% for lens in lenses %}
+                  <option value="{{ lens.id }}" {% if data and data.lens.id == lens.id %}selected{% endif %}>
+                      {{ lens.name }}
+                  </option>
+                {% endfor %}
             </select>
         </div>
         <div class="field">
-            <label for="sensor">Сенсор</label>
-            <select id="sensor" name="sensor" required>
+            <label for="sensor_id">Сенсор</label>
+            <select id="sensor_id" name="sensor_id" required>
                 <option value="">-- Выберите сенсор --</option>
-                <option value="RU">Россия</option>
-                <option value="KZ">Казахстан</option>
-                <option value="BY">Беларусь</option>
-                <option value="UZ">Узбекистан</option>
+                {% for sensor in sensors %}
+                  <option value="{{ sensor.id }}" {% if data and data.sensor.id == sensor.id %}selected{% endif %}>
+                      {{ sensor.sensor_type.value }}
+                  </option>
+                {% endfor %}
             </select>
         </div>
 
       <!-- text -->
         <div class="field">
-            <label for="distance">Расстояние</label>
-            <input type="text" id="distance" name="distance" placeholder="Введите расстояние до объекта съемки." required>
+            <label for="distance">Расстояние в метрах</label>
+            <input type="text" id="distance" name="distance" placeholder="Введите расстояние до объекта съемки." value="{{ data.distance if data else '' }}" required>
         </div>
 
         <!-- submit / reset / button -->
         <div class="field inline">
-            <button type="submit">submit — Отправить</button>
-            <button type="reset">reset — Сбросить</button>
+            <button type="submit">Считать</button>
         </div>
 
   </form>
-
+  <div class="container">
+    <h1>Результат</h1>
+      {% if data %}
+      <ul>
+        <li>Камера: <span class="value">{{ data.camera }}</span></li>
+        <li>Объектив: <span class="value">{{ data.lens }}</span></li>
+        <li>Сенсор: <span class="value">{{ data.sensor }}</span></li>
+        <li>Дистанция: <span class="value">{{ data.distance }} м.</span></li>
+        <li>width: <span class="value">{{ result.width }}</span></li>
+        <li>height: <span class="value">{{ result.height }}</span></li>
+      </ul>
+      {% else %}
+        <span class="value">Введите данные и нажмите считать</span>
+      {% endif %}
+  </div>
 {% endblock %}

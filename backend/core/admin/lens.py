@@ -3,10 +3,10 @@ from sqladmin import ModelView
 from backend.models import Lens
 
 
-
 class LensAdmin(ModelView, model=Lens):
     name = 'Объектив'
     name_plural = 'Объективы'
+    icon = 'fa-solid fa-less-than'
 
     column_list = [
         Lens.id,
@@ -34,6 +34,21 @@ class LensAdmin(ModelView, model=Lens):
         Lens.updated_at,
         'compatible_cameras'
     ]
+    column_labels = {
+        Lens.id: 'ID',
+        Lens.name: 'Название',
+        Lens.type_lens: 'Тип объектива',
+        Lens.bayonet: 'Байонет',
+        Lens.focal_min: 'Минимальное фокусное расстояние',
+        Lens.focal_max: 'Максимальное фокусное расстояние',
+        Lens.aperture_min: 'Минимальная диафрагма',
+        Lens.aperture_max: 'Максимальная диафрагма',
+        Lens.compatible_cameras: 'Совместимые камеры',
+        Lens.manufacturer: 'Производитель',
+        Lens.created_at: 'Дата создания записи',
+        Lens.updated_at: 'Дата обновления записи',
+        Lens.is_active: 'Статус',
+    }
     column_searchable_list = [
         Lens.manufacturer,
         Lens.name,
