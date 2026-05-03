@@ -1,0 +1,47 @@
+from typing import TYPE_CHECKING
+
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from backend.core.db import Base
+from backend.models.mixins import (
+    IdMixin,
+    ActiveMixin,
+    BayonetMixin,
+    CommonFieldsMixin,
+    TimeFieldsMixin,
+)
+
+
+if TYPE_CHECKING:
+    from .lens import Lens
+    from .associative_model import CameraLens
+    from .sensor import Sensor
+
+
+class Camera(
+    IdMixin,
+    ActiveMixin,
+    Base,
+    BayonetMixin,
+    CommonFieldsMixin,
+    TimeFieldsMixin,
+):
+    camera_lenses: Mapped[list['CameraLens']] = relationship(
+        back_populates='camera',
+        cascade='all, delete-orphan',
+    )
+    compatible_lenses: Mapped[list['Lens']] = relationship(
+        secondary='camera_lens',
+        viewonly=True,
+    )
+    sensor_id: Mapped[int] = mapped_column(ForeignKey('sensor.id'))
+    sensor: Mapped['Sensor'] = relationship(back_populates='cameras')
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def compatible_lenses_list(self) -> str:
+        if not self.compatible_lenses:
+            return '—'
+        return ', '.join(lens.name for lens in self.compatible_lenses)
