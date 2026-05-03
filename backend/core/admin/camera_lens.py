@@ -6,7 +6,7 @@ from backend.models import CameraLens, Camera, Lens
 class CameraLensAdmin(ModelView, model=CameraLens):
     name = 'Совместимость камеры и объектива'
     name_plural = 'Совместимости камер и объективов'
-    icon = 'fa-solid fa-puzzle-piece'
+    icon = 'fa-solid fa-camera-rotate'
 
     column_list = [
         CameraLens.camera,

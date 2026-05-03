@@ -1,7 +1,10 @@
 from typing import Optional
 
 from sqlalchemy import select
+from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from loguru import logger
 
 from fastapi import APIRouter, Form, Request, Depends
 from fastapi.responses import HTMLResponse
@@ -16,10 +19,12 @@ web_router = APIRouter()
 templates = Jinja2Templates(directory='templates')
 
 
-async def get_obj_from_db(model, obj_id, session: AsyncSession):
+async def get_obj_from_db(model, obj_id, link, session: AsyncSession):
     """Получаем объект."""
     stmt = await session.execute(select(
         model
+    ).options(
+        joinedload(link)
     ).where(model.id == obj_id))
     result = stmt.scalars().first()
     return result
@@ -44,7 +49,6 @@ async def render_form(
     """Рендер формы с данными."""
     cameras = await get_list_obj_from_db(Camera, session)
     lenses = await get_list_obj_from_db(Lens, session)
-    sensors = await get_list_obj_from_db(Sensor, session)
 
     return templates.TemplateResponse(
         'form.html',
@@ -54,7 +58,6 @@ async def render_form(
             'request': request,
             'cameras': cameras,
             'lenses': lenses,
-            'sensors': sensors,
             'message': message,
     })
 
@@ -73,21 +76,18 @@ async def submit_form(
         request: Request,
         camera_id: int = Form(...),
         lens_id: int = Form(...),
-        sensor_id: int = Form(...),
         distance: int = Form(...),
         session: AsyncSession = Depends(get_async_session)
 ):
+    lens = await get_obj_from_db(Lens, lens_id,Lens.teleconverters, session)
+    camera = await get_obj_from_db(Camera, camera_id, Camera.sensor, session)
 
-    sensor = await get_obj_from_db(Sensor, sensor_id, session)
-    lens = await get_obj_from_db(Lens, lens_id, session)
-    camera = await get_obj_from_db(Camera, camera_id, session)
-
-    result = calc(sensor, lens, distance)
+    result = calc(camera.sensor, lens, distance)
 
     data = {
         'camera': camera,
         'lens': lens,
-        'sensor': sensor,
+        'sensor': camera.sensor,
         'distance': distance,
     }
 

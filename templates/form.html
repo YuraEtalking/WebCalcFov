@@ -5,7 +5,7 @@
 {% block content %}
 <h1>Считать FoV</h1>
   <form action="/" method="post" enctype="multipart/form-data">
-
+    <div class="form-row">
         <div class="field">
             <label for="camera_id">Камера</label>
             <select id="camera_id" name="camera_id" required>
@@ -28,41 +28,53 @@
                 {% endfor %}
             </select>
         </div>
+    </div>
+    <div class="form-row-distance">
         <div class="field">
-            <label for="sensor_id">Сенсор</label>
-            <select id="sensor_id" name="sensor_id" required>
-                <option value="">-- Выберите сенсор --</option>
-                {% for sensor in sensors %}
-                  <option value="{{ sensor.id }}" {% if data and data.sensor.id == sensor.id %}selected{% endif %}>
-                      {{ sensor.sensor_type.value }}
-                  </option>
-                {% endfor %}
-            </select>
-        </div>
-
-      <!-- text -->
-        <div class="field">
-            <label for="distance">Расстояние в метрах</label>
+            <label for="distance">Дистанция до объекта съемки в метрах</label>
             <input type="text" id="distance" name="distance" placeholder="Введите расстояние до объекта съемки." value="{{ data.distance if data else '' }}" required>
         </div>
 
-        <!-- submit / reset / button -->
+        <!-- submit -->
         <div class="field inline">
             <button type="submit">Считать</button>
         </div>
-
+    </div>
   </form>
-  <div class="container">
-    <h1>Результат</h1>
+
+<div class="container">
+
+    <h2>Результат</h2>
       {% if data %}
-      <ul>
-        <li>Камера: <span class="value">{{ data.camera }}</span></li>
-        <li>Объектив: <span class="value">{{ data.lens }}</span></li>
-        <li>Сенсор: <span class="value">{{ data.sensor }}</span></li>
-        <li>Дистанция: <span class="value">{{ data.distance }} м.</span></li>
-        <li>width: <span class="value">{{ result.width }}</span></li>
-        <li>height: <span class="value">{{ result.height }}</span></li>
-      </ul>
+
+        <h3>Оборудование:</h3>
+        <ul>
+          <li>Камера: <span class="value">{{ data.camera }}</span></li>
+          <li>Объектив: <span class="value">{{ data.lens }}</span></li>
+          <li>Сенсор: <span class="value">{{ data.sensor }}</span></li>
+        </ul>
+      </div>
+
+        <h3>Расчеты</h3>
+          <h4>Без телеконвертора:</h4>
+          <ul>
+            <li>Фокусное расстояние: <span class="value">{{ result.focal }} mm</span></li>
+            <li>Ширина кадра: <span class="value">{{ result.width }}</span></li>
+            <li>Высота кадра: <span class="value">{{ result.height }}</span></li>
+          </ul>
+
+
+        {% if result.with_teleconverter %}
+          {% for result_tc in result.with_teleconverter %}
+              <h4>C телеконвертором <span class="value">{{ result_tc.name }} x</span></h4>
+                <ul>
+                  <li>Фокусное расстояние: <span class="value">{{ result_tc.focal }} mm</span></li>
+                  <li>Ширина кадра: <span class="value">{{ result_tc.width }}</span></li>
+                  <li>Высота кадра: <span class="value">{{ result_tc.height }}</span></li>
+                </ul>
+          {% endfor %}
+        {% endif %}
+
       {% else %}
         <span class="value">Введите данные и нажмите считать</span>
       {% endif %}

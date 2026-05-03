@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <!-- fade arc near V rays -->
+    <linearGradient id="arcFade" x1="41" y1="21" x2="63" y2="41" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7dd3fc" stop-opacity="0"/>
+      <stop offset="25%" stop-color="#7dd3fc" stop-opacity="1"/>
+      <stop offset="75%" stop-color="#7dd3fc" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#7dd3fc" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- background -->
+  <rect width="64" height="64" rx="14" fill="#0f172a"/>
+
+  <!-- Fo -->
+  <text
+    x="6"
+    y="42"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="29"
+    font-weight="800"
+    fill="#e0f2fe"
+    letter-spacing="-2">
+    FoV
+  </text>
+
+  <!-- V as field-of-view rays -->
+  <!--<g
+    stroke="#38bdf8"
+    stroke-width="6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="none">
+    <line x1="47" y1="42" x2="40" y2="17"/>
+    <line x1="47" y1="42" x2="60" y2="17"/>
+  </g>-->
+
+  <!-- thin angle arc inside V, not touching rays -->
+  <path
+    d="M31 26
+       Q51 11 59 19"
+    fill="none"
+    stroke="url(#arcFade)"
+    stroke-width="1"
+    stroke-linecap="round"/>
+
+  <!-- degree symbol -->
+  <text
+    x="55"
+    y="17"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="10"
+    font-weight="700"
+    fill="#7dd3fc">
+    °
+  </text>
+</svg>

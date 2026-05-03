@@ -16,6 +16,7 @@ from backend.models.enums import ConstructionType
 if TYPE_CHECKING:
     from .camera import Camera
     from .associative_model import CameraLens
+    from .teleconverter import Teleconverter
 
 
 class Lens(
@@ -40,6 +41,11 @@ class Lens(
         nullable=False,
         default=ConstructionType.PRIME,
     )
+    teleconverters: Mapped[list['Teleconverter']] = relationship(
+        secondary='lens_teleconverter',
+        back_populates='lenses',
+    )
+
     focal_min: Mapped[int] = mapped_column(Integer, nullable=True)
     focal_max: Mapped[int] = mapped_column(Integer)
 
@@ -49,8 +55,8 @@ class Lens(
     def __str__(self):
         return self.name
 
-    @property
-    def compatible_cameras_list(self) -> str:
-        if not self.compatible_cameras:
-            return '—'
-        return ', '.join(camera.name for camera in self.compatible_cameras)
+    # @property
+    # def compatible_cameras_list(self) -> str:
+    #     if not self.compatible_cameras:
+    #         return '—'
+    #     return ', '.join(camera.name for camera in self.compatible_cameras)

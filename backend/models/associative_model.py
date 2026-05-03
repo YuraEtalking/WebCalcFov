@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import Enum, ForeignKey
+from sqlalchemy import Enum, ForeignKey, Table, Column
 
 from backend.core.db import Base
 from backend.models.enums import CompatibilityType
@@ -9,6 +9,7 @@ from backend.models.enums import CompatibilityType
 if TYPE_CHECKING:
     from .camera import Camera
     from .lens import Lens
+    from .teleconverter import Teleconverter
 
 
 class CameraLens(Base):
@@ -33,3 +34,11 @@ class CameraLens(Base):
 
     def __str__(self):
         return f'Камера ID: {self.camera_id}, Объектив ID: {self.lens_id}'
+
+
+lens_teleconverter = Table(
+    'lens_teleconverter',
+    Base.metadata,
+    Column('lens_id', ForeignKey('lens.id'), primary_key=True),
+    Column('teleconverter_id', ForeignKey('teleconverter.id'), primary_key=True),
+)

@@ -32,7 +32,7 @@ class LensAdmin(ModelView, model=Lens):
         Lens.is_active,
         Lens.created_at,
         Lens.updated_at,
-        'compatible_cameras'
+        'compatible_cameras',
     ]
     column_labels = {
         Lens.id: 'ID',

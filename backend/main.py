@@ -1,12 +1,13 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
+from backend.core.logging_conf import setup_logger
 from backend.core.config import settings
 from backend.core.admin import setup_admin
 from backend.web.routers import web_router
 
 
-
+logger = setup_logger()
 app = FastAPI(title=settings.app_title, description=settings.app_description)
 app.mount(
     '/static',

@@ -1,33 +1,148 @@
+html {
+    min-height: 100%;
+}
+
 body {
     font-family: Arial, sans-serif;
     max-width: 900px;
-    margin: 30px auto;
+    margin: 0 auto;
     line-height: 1.5;
+
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
+
+/* Header */
+header {
+    background-color: #e8eef3;
+    padding: 18px 20px;
+    margin-bottom: 30px;
+
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    box-sizing: border-box;
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    /*
+      25vw — это середина левой половины экрана.
+      Делаем блок шириной 50vw, чтобы его центр был там.
+    */
+    width: 50vw;
+}
+
+.header-icon {
+    width: 48px;
+    height: 48px;
+}
+
+header h1 {
+    margin: 0;
+    color: #000;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/* Footer */
+footer {
+    background-color: #e8eef3;
+    padding: 16px 20px;
+    margin-top: auto;
+    text-align: center;
+    color: #000;
+
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    box-sizing: border-box;
+}
+
+/* Поля формы */
 .field {
     margin-bottom: 16px;
 }
+
 label {
     display: block;
     margin-bottom: 6px;
     font-weight: bold;
 }
+
 input, textarea, select, button {
     padding: 8px;
     width: 100%;
     max-width: 500px;
+    box-sizing: border-box;
 }
+
+/* Камера и объектив в одну линию */
+.form-row {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+    margin-bottom: 16px;
+}
+
+.form-row .field {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.form-row select,
+.form-row input,
+.form-row button {
+    max-width: none;
+}
+
+/* Дистанция и кнопка в одну линию */
+.form-row-distance {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+    margin-bottom: 16px;
+}
+
+.form-row-distance .field {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.form-row-distance button {
+    flex: 0 0 180px;
+    max-width: 180px;
+}
+
 .inline {
     display: flex;
     gap: 16px;
     flex-wrap: wrap;
 }
+
 .inline label {
     display: inline;
     font-weight: normal;
     margin-left: 6px;
 }
+
 .inline-item {
     display: flex;
     align-items: center;
+}
+
+/* Блоки информации с телеконвертором */
+.result-row {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+    margin-bottom: 16px;
+}
+
+.result-row .field {
+    flex: 1;
+    margin-bottom: 0;
 }
