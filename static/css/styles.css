@@ -146,3 +146,31 @@ input, textarea, select, button {
     flex: 1;
     margin-bottom: 0;
 }
+
+
+/* Сообщения */
+.message {
+  padding: 10px 14px;
+  margin: 10px 0 20px;
+  border-radius: 6px;
+}
+
+.message.info {
+  background: #e7f3ff;
+  color: #0c5460;
+}
+
+.message.success {
+  background: #e6ffed;
+  color: #155724;
+}
+
+.message.error {
+  background: #ffe6e6;
+  color: #721c24;
+}
+
+.message.warning {
+  background: #fff3cd;
+  color: #856404;
+}

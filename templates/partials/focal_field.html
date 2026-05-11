@@ -1,0 +1,52 @@
+<div class="field">
+    <label for="focal">Выберите телеконвертор</label>
+    <div class="inline">
+
+      <div class="inline-item">
+        <input
+           type="radio"
+           id="tc-none"
+           name="tc"
+           value=""
+           style="width:auto;"
+           {% if selected_tc is none %}checked{% endif %}
+        >
+        <label for="tc-none">Без телеконвертора</label>
+      </div>
+
+      {% if tcs %}
+        {% for item in tcs %}
+          <div class="inline-item">
+            <input
+               type="radio"
+               id="tc-{{ loop.index }}"
+               name="tc"
+               value="{{ item.multiplier }}"
+               style="width:auto;"
+               {% if selected_tc is not none and selected_tc == item.multiplier %}checked{% endif %}
+            >
+            <label for="tc-{{ loop.index }}">{{ item.multiplier }}х</label>
+          </div>
+        {% endfor %}
+      {% endif %}
+
+    </div>
+</div>
+
+{% if lens and lens.focal_min != lens.focal_max %}
+
+    <label for="focal">Выберите фокусное расстояние, мм</label>
+
+    <input
+        type="range"
+        id="focal"
+        name="focal"
+        min="{{ lens.focal_min }}"
+        max="{{ lens.focal_max }}"
+        step="10"
+        value="{{ focal or lens.focal_max }}"
+        oninput="document.getElementById('focal-output').value = this.value"
+    >
+
+    <output id="focal-output">{{ focal or lens.focal_max }}</output> мм
+{% endif %}
