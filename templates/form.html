@@ -47,8 +47,18 @@
     <div class="form-row-distance">
         <div class="field">
             <label for="distance">Дистанция до объекта съемки в метрах</label>
-            <input type="text" id="distance" name="distance" placeholder="Введите расстояние до объекта съемки." value="{{ data.distance if data else '' }}" required>
+            <input
+               type="number"
+               step="1"
+               min="0"
+               id="distance"
+               name="distance"
+               placeholder="Введите расстояние до объекта съемки."
+               value="{{ data.distance if data else '' }}"
+               required
+            >
         </div>
+
         <!-- submit -->
         <div class="field inline">
             <button type="submit">Считать</button>

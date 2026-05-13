@@ -19,7 +19,7 @@ def get_size_of_frame_on_plane(d, fov):
     return 2 * d * math.tan(fov / 2)
 
 
-def calc(sensor, focal, distance, selected_tc):
+def calculate_fov(sensor, focal, distance, selected_tc):
     """Высчитывает высоту и ширину кадра на заданном расстоянии."""
     logger.debug('selected_tc="{}"',selected_tc)
 

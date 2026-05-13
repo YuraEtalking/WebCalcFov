@@ -2,8 +2,6 @@ from sqlalchemy import select
 from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from loguru import logger
-
 from backend.models import Lens, Teleconverter
 
 
@@ -16,12 +14,15 @@ async def get_active_lenses(session: AsyncSession):
     return active_lenses
 
 
-async def get_lens_with_teleconverters(lens_id, session: AsyncSession):
+async def get_active_lens_with_teleconverters(lens_id, session: AsyncSession):
     """Получаем объектив и подходящие телеконверторы."""
     stmt = await session.execute(select(
         Lens
     ).options(
         joinedload(Lens.teleconverters)
-    ).where(Lens.id == lens_id))
+    ).where(
+        Lens.id == lens_id,
+        Lens.is_active.is_(True)
+    ))
     lens = stmt.scalars().first()
     return lens

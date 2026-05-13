@@ -1,15 +1,21 @@
+from pydantic import ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from loguru import logger
 
 from fastapi import APIRouter, Form, Request, Depends
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
 from backend.core.db import get_async_session
-from backend.crud.camera import get_active_cameras, get_camera_with_sensor
-from backend.crud.lens import get_active_lenses, get_lens_with_teleconverters
-from backend.services.calc_fov import calc
+from backend.crud.camera import get_active_cameras
+from backend.crud.lens import get_active_lenses
+from backend.schemas.fov import FovCalcInput
+from backend.services.fov_service import (
+    prepare_fov_response_data,
+    get_lens_data,
+    EntityNotFoundError,
+    ValidationError,
+)
 
 
 web_router = APIRouter()
@@ -24,8 +30,8 @@ async def render_form(
         message_type: str | None = None,
         result: dict | None = None,
         focal: int | float | None = None,
-        tcs: list | None = None,
-        selected_tc: float | None = None,
+        teleconverters: list | None = None,
+        teleconverter_id: str | None = None,
 ):
     """Рендер формы с данными."""
     cameras = await get_active_cameras(session)
@@ -40,8 +46,8 @@ async def render_form(
             'cameras': cameras,
             'lenses': lenses,
             'focal': focal,
-            'tcs': tcs,
-            'selected_tc': selected_tc,
+            'teleconverters': teleconverters,
+            'teleconverter_id': teleconverter_id,
             'message': message,
             'message_type': message_type,
     })
@@ -61,72 +67,48 @@ async def submit_form(
         request: Request,
         camera_id: int = Form(...),
         lens_id: int = Form(...),
-        distance: int = Form(...),
+        distance: str = Form(...),
         focal: float | None = Form(None),
-        tc: str | None = Form(None),
+        teleconverter_id: str | None = Form(None),
         session: AsyncSession = Depends(get_async_session)
 ):
+    """Представление форм расчета Field of View."""
+    try:
+        input_data = FovCalcInput(
+            camera_id=camera_id,
+            lens_id=lens_id,
+            distance=distance,
+            focal=focal,
+            teleconverter_id=teleconverter_id
 
-    if distance <= 0:
+        )
+    except ValidationError as e:
         return await render_form(
             request=request,
             session=session,
             message_type='error',
-            message='Расстояние должно быть больше нуля',
+            message=str(e.errors()[0]['msg']),
         )
 
-    lens = await get_lens_with_teleconverters(lens_id, session)
-    if not lens:
+    try:
+        payload = await prepare_fov_response_data(input_data, session)
+    except ValidationError as e:
         return await render_form(
             request=request,
             session=session,
             message_type='error',
-            message='Объектив не выбран',
+            message=str(e),
         )
 
-    camera = await get_camera_with_sensor(camera_id, session)
-    if not camera:
+    except EntityNotFoundError as e:
         return await render_form(
             request=request,
             session=session,
             message_type='error',
-            message='Камера не выбрана',
+            message=str(e),
         )
 
-    if focal is None:
-        focal = lens.focal_max
-
-    if tc in (None, ''):
-        selected_tc = None
-    else:
-        selected_tc = float(tc)
-    tcs = [{'multiplier': item.multiplier} for item in lens.teleconverters]
-
-    result = calc(
-        sensor=camera.sensor,
-        focal=focal,
-        distance=distance,
-        selected_tc=selected_tc
-    )
-
-    data = {
-        'camera': camera,
-        'lens': lens,
-        'sensor': camera.sensor,
-        'distance': distance,
-    }
-
-    return await render_form(
-        request=request,
-        session=session,
-        data=data,
-        result=result,
-        focal=focal,
-        selected_tc=selected_tc,
-        tcs=tcs,
-        message='Расчёт выполнен',
-        message_type='success',
-    )
+    return await render_form(request=request, session=session, **payload)
 
 
 @web_router.get('/lens/focal-field', response_class=HTMLResponse)
@@ -135,23 +117,14 @@ async def get_focal_field(
         lens_id: int,
         session: AsyncSession = Depends(get_async_session),
 ):
-    lens = await get_lens_with_teleconverters(lens_id, session)
-
-    if not lens:
+    """Предоставляет поле с телеконверторами."""
+    try:
+        data = await get_lens_data(lens_id, session)
+    except Exception:
         return HTMLResponse('')
-
-    tc_multiplier = []
-    if lens.teleconverters:
-        for tc in lens.teleconverters:
-            tc_multiplier.append({'multiplier': tc.multiplier})
 
     return templates.TemplateResponse(
         'partials/focal_field.html',
-        {
-            'request': request,
-            'lens': lens,
-            'focal': lens.focal_max,
-            'tcs': tc_multiplier,
-        }
+        {'request': request, **data},
     )
 

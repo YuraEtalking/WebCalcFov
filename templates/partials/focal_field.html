@@ -6,24 +6,24 @@
         <input
            type="radio"
            id="tc-none"
-           name="tc"
+           name="teleconverter_id"
            value=""
            style="width:auto;"
-           {% if selected_tc is none %}checked{% endif %}
+           {% if teleconverter_id is none %}checked{% endif %}
         >
         <label for="tc-none">Без телеконвертора</label>
       </div>
 
-      {% if tcs %}
-        {% for item in tcs %}
+      {% if teleconverters %}
+        {% for item in teleconverters %}
           <div class="inline-item">
             <input
                type="radio"
                id="tc-{{ loop.index }}"
-               name="tc"
-               value="{{ item.multiplier }}"
+               name="teleconverter_id"
+               value="{{ item.teleconverter_id }}"
                style="width:auto;"
-               {% if selected_tc is not none and selected_tc == item.multiplier %}checked{% endif %}
+               {% if teleconverter_id is not none and teleconverter_id == item.teleconverter_id %}checked{% endif %}
             >
             <label for="tc-{{ loop.index }}">{{ item.multiplier }}х</label>
           </div>
@@ -32,6 +32,7 @@
 
     </div>
 </div>
+
 
 {% if lens and lens.focal_min != lens.focal_max %}
 
@@ -43,7 +44,7 @@
         name="focal"
         min="{{ lens.focal_min }}"
         max="{{ lens.focal_max }}"
-        step="10"
+        step="1"
         value="{{ focal or lens.focal_max }}"
         oninput="document.getElementById('focal-output').value = this.value"
     >

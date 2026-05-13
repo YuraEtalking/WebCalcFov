@@ -1,8 +1,6 @@
-from sqlalchemy import select
-from sqlalchemy.orm import joinedload
+from sqlalchemy import select, exists
+from sqlalchemy.orm import joinedload, selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
-
-from loguru import logger
 
 from backend.models import Camera
 
@@ -16,12 +14,16 @@ async def get_active_cameras(session: AsyncSession):
     return active_cameras
 
 
-async def get_camera_with_sensor(camera_id, session: AsyncSession):
+async def get_active_camera_with_sensor(camera_id, session: AsyncSession):
     """Получаем камеру и сенсор этой камеры."""
     stmt = await session.execute(select(
         Camera
     ).options(
-        joinedload(Camera.sensor)
-    ).where(Camera.id == camera_id))
+        joinedload(Camera.sensor),
+        selectinload(Camera.camera_lenses),
+    ).where(
+        Camera.id == camera_id,
+        Camera.is_active.is_(True),
+    ))
     camera = stmt.scalars().first()
     return camera
