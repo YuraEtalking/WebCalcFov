@@ -4,8 +4,14 @@
 {% endblock %}
 {% block content %}
 <h1>Считать FoV</h1>
+{% if message %}
+  <div class="message {{ message_type or 'info' }}">
+    {{ message }}
+  </div>
+{% endif %}
   <form action="/" method="post" enctype="multipart/form-data">
     <div class="form-row">
+
         <div class="field">
             <label for="camera_id">Камера</label>
             <select id="camera_id" name="camera_id" required>
@@ -17,9 +23,17 @@
                 {% endfor %}
             </select>
         </div>
+
         <div class="field">
             <label for="lens_id">Объектив</label>
-            <select id="lens_id" name="lens_id" required>
+            <select
+                id="lens_id"
+                name="lens_id"
+                required
+                hx-get="/lens/focal-field"
+                hx-trigger="change"
+                hx-target="#focal-field-container"
+            >
                 <option value="">-- Выберите объектив --</option>
                 {% for lens in lenses %}
                   <option value="{{ lens.id }}" {% if data and data.lens.id == lens.id %}selected{% endif %}>
@@ -29,10 +43,20 @@
             </select>
         </div>
     </div>
+
     <div class="form-row-distance">
         <div class="field">
             <label for="distance">Дистанция до объекта съемки в метрах</label>
-            <input type="text" id="distance" name="distance" placeholder="Введите расстояние до объекта съемки." value="{{ data.distance if data else '' }}" required>
+            <input
+               type="number"
+               step="1"
+               min="0"
+               id="distance"
+               name="distance"
+               placeholder="Введите расстояние до объекта съемки."
+               value="{{ data.distance if data else '' }}"
+               required
+            >
         </div>
 
         <!-- submit -->
@@ -40,9 +64,17 @@
             <button type="submit">Считать</button>
         </div>
     </div>
+
+    <div id="focal-field-container">
+        {% set lens = data.lens %}
+        {% include "partials/focal_field.html" %}
+    </div>
+
   </form>
 
+
 <div class="container">
+  {% if result %}
 
     <h2>Результат</h2>
       {% if data %}
@@ -56,27 +88,18 @@
       </div>
 
         <h3>Расчеты</h3>
-          <h4>Без телеконвертора:</h4>
           <ul>
             <li>Фокусное расстояние: <span class="value">{{ result.focal }} mm</span></li>
-            <li>Ширина кадра: <span class="value">{{ result.width }}</span></li>
-            <li>Высота кадра: <span class="value">{{ result.height }}</span></li>
+            {% if result.tc is not none %}
+              <li>Телеконвертор: <span class="value">{{ result.tc }}х</span></li>
+            {% endif %}
+            <li>Ширина кадра: <span class="value">{{ result.frame_width_m|round(1) }} м., {{ result.fov_width_deg|round(1) }}°</span></li>
+            <li>Высота кадра: <span class="value">{{ result.frame_height_m|round(1) }} м., {{ result.fov_height_deg|round(1) }}°</span></li>
           </ul>
-
-
-        {% if result.with_teleconverter %}
-          {% for result_tc in result.with_teleconverter %}
-              <h4>C телеконвертором <span class="value">{{ result_tc.name }} x</span></h4>
-                <ul>
-                  <li>Фокусное расстояние: <span class="value">{{ result_tc.focal }} mm</span></li>
-                  <li>Ширина кадра: <span class="value">{{ result_tc.width }}</span></li>
-                  <li>Высота кадра: <span class="value">{{ result_tc.height }}</span></li>
-                </ul>
-          {% endfor %}
-        {% endif %}
 
       {% else %}
         <span class="value">Введите данные и нажмите считать</span>
       {% endif %}
+{% endif %}
   </div>
 {% endblock %}

@@ -44,6 +44,7 @@ class Lens(
     teleconverters: Mapped[list['Teleconverter']] = relationship(
         secondary='lens_teleconverter',
         back_populates='lenses',
+        order_by='Teleconverter.multiplier',
     )
 
     focal_min: Mapped[int] = mapped_column(Integer, nullable=True)
@@ -54,9 +55,3 @@ class Lens(
 
     def __str__(self):
         return self.name
-
-    # @property
-    # def compatible_cameras_list(self) -> str:
-    #     if not self.compatible_cameras:
-    #         return '—'
-    #     return ', '.join(camera.name for camera in self.compatible_cameras)

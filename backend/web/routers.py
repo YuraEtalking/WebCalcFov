@@ -1,65 +1,63 @@
-from typing import Optional
+from pydantic import ValidationError as PydanticValidationError
 
-from sqlalchemy import select
-from sqlalchemy.orm import joinedload
-from sqlalchemy.ext.asyncio import AsyncSession
-
-from loguru import logger
-
-from fastapi import APIRouter, Form, Request, Depends
+from fastapi import APIRouter, Form, Request, Depends, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from backend.core.db import get_async_session
-from backend.models import Camera, Lens, Sensor
-from backend.services.calc_fov import calc
+from backend.core.constants import ERROR_LOAD_IN_DB
+from backend.crud.camera import get_active_cameras
+from backend.crud.lens import get_active_lenses
+from backend.schemas.fov import FovCalcInput
+from backend.services.fov_service import (
+    prepare_fov_response_data,
+    get_lens_data,
+    EntityNotFoundError,
+    FovServiceError,
+    InvalidFovInputError,
+)
 
 
 web_router = APIRouter()
 templates = Jinja2Templates(directory='templates')
 
 
-async def get_obj_from_db(model, obj_id, link, session: AsyncSession):
-    """Получаем объект."""
-    stmt = await session.execute(select(
-        model
-    ).options(
-        joinedload(link)
-    ).where(model.id == obj_id))
-    result = stmt.scalars().first()
-    return result
-
-
-async def get_list_obj_from_db(model, session: AsyncSession):
-    """Получаем список объектов."""
-    stmt = await session.execute(select(
-        model
-    ).where(model.is_active.is_(True)))
-    result = stmt.scalars().all()
-    return result
-
-
 async def render_form(
         request: Request,
         session: AsyncSession,
-        data: dict | None = None,
+        context: dict | None = None,
         message: str | None = None,
-        result: dict | None = None,
+        message_type: str | None = None,
 ):
     """Рендер формы с данными."""
-    cameras = await get_list_obj_from_db(Camera, session)
-    lenses = await get_list_obj_from_db(Lens, session)
+    try:
+        cameras = await get_active_cameras(session)
+        lenses = await get_active_lenses(session)
+    except SQLAlchemyError:
+        cameras = []
+        lenses = []
+        message = ERROR_LOAD_IN_DB
+        message_type = 'error'
 
-    return templates.TemplateResponse(
-        'form.html',
-        {
-            'data': data,
-            'result': result,
-            'request': request,
-            'cameras': cameras,
-            'lenses': lenses,
-            'message': message,
-    })
+    template_context = {
+        'request': request,
+        'cameras': cameras,
+        'lenses': lenses,
+        'data': None,
+        'result': None,
+        'focal': None,
+        'teleconverters': None,
+        'teleconverter_id': None,
+        'message': message,
+        'message_type': message_type,
+    }
+    if context:
+        template_context.update(context)
+
+    return templates.TemplateResponse('form.html', template_context)
 
 
 
@@ -76,25 +74,65 @@ async def submit_form(
         request: Request,
         camera_id: int = Form(...),
         lens_id: int = Form(...),
-        distance: int = Form(...),
+        distance: str = Form(...),
+        focal: float | None = Form(None),
+        teleconverter_id: str | None = Form(None),
         session: AsyncSession = Depends(get_async_session)
 ):
-    lens = await get_obj_from_db(Lens, lens_id,Lens.teleconverters, session)
-    camera = await get_obj_from_db(Camera, camera_id, Camera.sensor, session)
+    """Представление форм расчета Field of View."""
+    try:
+        input_data = FovCalcInput(
+            camera_id=camera_id,
+            lens_id=lens_id,
+            distance=distance, # Может прийти пустая строка.
+            focal=focal,
+            teleconverter_id=teleconverter_id
 
-    result = calc(camera.sensor, lens, distance)
+        )
+    except PydanticValidationError as e:
+        return await render_form(
+            request=request,
+            session=session,
+            message_type='error',
+            message=str(e.errors()[0]['msg']),
+        )
 
-    data = {
-        'camera': camera,
-        'lens': lens,
-        'sensor': camera.sensor,
-        'distance': distance,
-    }
+    try:
+        payload = await prepare_fov_response_data(input_data, session)
 
-    return await render_form(
-        request=request,
-        session=session,
-        data=data,
-        result=result,
-        message='Форма отправлена'
+    except (
+            InvalidFovInputError,
+            EntityNotFoundError,
+            FovServiceError,
+            SQLAlchemyError
+    ) as e:
+        return await render_form(
+            request=request,
+            session=session,
+            message_type='error',
+            message=str(e),
+        )
+
+    return await render_form(request=request, session=session, context=payload)
+
+
+@web_router.get('/lens/focal-field', response_class=HTMLResponse)
+async def get_focal_field(
+        request: Request,
+        lens_id: int,
+        session: AsyncSession = Depends(get_async_session),
+):
+    """Предоставляет поле с телеконверторами."""
+    try:
+        data = await get_lens_data(lens_id, session)
+
+    except EntityNotFoundError:
+        return HTMLResponse('')
+    except SQLAlchemyError:
+        return HTMLResponse('', status_code=500)
+
+    return templates.TemplateResponse(
+        'partials/focal_field.html',
+        {'request': request, **data},
     )
+
