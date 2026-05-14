@@ -24,10 +24,22 @@ class FovCalcInput(BaseModel):
     def validate_distance(cls, value):
         if isinstance(value, str):
             value = value.strip()
-            if not value.isdigit():
-                raise ValueError('Дистанция должна быть целым числом')
-            distance = int(value)
+        try:
+            value = int(value)
+        except (TypeError, ValueError):
+            raise ValueError('Дистанция должна быть целым числом')
 
-            if distance <= 0:
-                raise ValueError('Дистанция должна быть больше 0')
+        if value <= 0:
+            raise ValueError('Дистанция должна быть больше 0')
+        return value
+
+
+    @field_validator('focal', mode='before')
+    @classmethod
+    def validate_focal(cls, value):
+        if isinstance(value, float):
+            if value <= 0:
+                raise ValueError(
+                    'Фокусное не может быть равно или меньше ноля'
+                )
         return value
