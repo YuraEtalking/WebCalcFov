@@ -46,5 +46,5 @@ class Sensor(IdMixin, ActiveMixin, Base, TimeFieldsMixin):
         return FULL_FRAME_DIAGONAL / diagonal
 
     def __str__(self):
-        return self.sensor_type.value
-
+        return (f'{self.sensor_type.value} - '
+                f'{self.sensor_type.width} х {self.sensor_type.height} мм')

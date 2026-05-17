@@ -1,6 +1,6 @@
 from pydantic import ValidationError as PydanticValidationError
 
-from fastapi import APIRouter, Form, Request, Depends, HTTPException
+from fastapi import APIRouter, Form, Request, Depends
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
@@ -14,14 +14,13 @@ from backend.crud.lens import get_active_lenses
 from backend.schemas.fov import FovCalcInput
 from backend.services.fov_service import (
     prepare_fov_response_data,
-    get_lens_data,
     EntityNotFoundError,
     FovServiceError,
     InvalidFovInputError,
 )
 
 
-web_router = APIRouter()
+web_router = APIRouter(tags=['FOV'])
 templates = Jinja2Templates(directory='templates')
 
 
@@ -114,25 +113,3 @@ async def submit_form(
         )
 
     return await render_form(request=request, session=session, context=payload)
-
-
-@web_router.get('/lens/focal-field', response_class=HTMLResponse)
-async def get_focal_field(
-        request: Request,
-        lens_id: int,
-        session: AsyncSession = Depends(get_async_session),
-):
-    """Предоставляет поле с телеконверторами."""
-    try:
-        data = await get_lens_data(lens_id, session)
-
-    except EntityNotFoundError:
-        return HTMLResponse('')
-    except SQLAlchemyError:
-        return HTMLResponse('', status_code=500)
-
-    return templates.TemplateResponse(
-        'partials/focal_field.html',
-        {'request': request, **data},
-    )
-
