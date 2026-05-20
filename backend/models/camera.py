@@ -16,6 +16,7 @@ if TYPE_CHECKING:
     from .lens import Lens
     from .associative_model import CameraLens
     from .sensor import Sensor
+    from .link import Link
 
 
 class Camera(
@@ -36,6 +37,12 @@ class Camera(
     )
     sensor_id: Mapped[int] = mapped_column(ForeignKey('sensor.id'))
     sensor: Mapped['Sensor'] = relationship(back_populates='cameras')
+
+    links: Mapped[list['Link']] = relationship(
+        secondary='camera_link',
+        back_populates='cameras',
+        order_by='Link.created_at',
+    )
 
     def __str__(self):
         return self.name

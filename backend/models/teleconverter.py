@@ -15,7 +15,7 @@ from backend.models.enums import ConstructionType
 
 if TYPE_CHECKING:
     from .lens import Lens
-    from .associative_model import lens_teleconverter
+    from .link import Link
 
 
 class Teleconverter(
@@ -29,6 +29,12 @@ class Teleconverter(
     lenses: Mapped[list['Lens']] = relationship(
         secondary='lens_teleconverter',
         back_populates='teleconverters',
+    )
+
+    links: Mapped[list['Link']] = relationship(
+        secondary='teleconverter_link',
+        back_populates='teleconverters',
+        order_by='Link.created_at',
     )
 
     multiplier: Mapped[float] = mapped_column(Float)

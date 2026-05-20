@@ -17,6 +17,7 @@ if TYPE_CHECKING:
     from .camera import Camera
     from .associative_model import CameraLens
     from .teleconverter import Teleconverter
+    from .link import Link
 
 
 class Lens(
@@ -45,6 +46,12 @@ class Lens(
         secondary='lens_teleconverter',
         back_populates='lenses',
         order_by='Teleconverter.multiplier',
+    )
+
+    links: Mapped[list['Link']] = relationship(
+        secondary='lens_link',
+        back_populates='lenses',
+        order_by='Link.created_at',
     )
 
     focal_min: Mapped[int] = mapped_column(Integer, nullable=True)
