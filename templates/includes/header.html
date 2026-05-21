@@ -5,9 +5,10 @@
       src="{{ url_for('static', path='fav/favicon.svg') }}"
       alt=""
     >
-    <h1>Калькулятор FoV</h1>
+    <a href="{{ url_for('fov') }}"><h1>Калькулятор FoV</h1></a>
   </div>
-    <div class="header-inner">
-    <a href="{{ url_for('cameras_list') }}" >Wiki</a>
+
+  <div class="header-inner">
+    <a href="{{ url_for('wiki') }}">Wiki</a>
   </div>
 </header>

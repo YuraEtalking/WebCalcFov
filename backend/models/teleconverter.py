@@ -32,7 +32,7 @@ class Teleconverter(
     )
 
     links: Mapped[list['Link']] = relationship(
-        secondary='teleconverter_link',
+        secondary='link_teleconverter',
         back_populates='teleconverters',
         order_by='Link.created_at',
     )

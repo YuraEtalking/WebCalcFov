@@ -1,0 +1,48 @@
+from fastapi import APIRouter, Request, Depends
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from backend.core.db import get_async_session
+from backend.crud.lens import get_active_lenses, get_active_lens_with_teleconverters
+
+
+web_router = APIRouter(
+    prefix='/lenses',
+    tags=['Lenses'],
+)
+templates = Jinja2Templates(directory='templates')
+
+@web_router.get('/', name='lens_list', response_class=HTMLResponse)
+async def lens_list(
+        request: Request,
+        session: AsyncSession = Depends(get_async_session)
+):
+    lenses = await get_active_lenses(session)
+    return templates.TemplateResponse('lens_list.html', {
+        'request': request,
+        'lenses': lenses
+    })
+
+
+@web_router.get(
+    '/{lens_id}',
+    name='lens_detail',
+    response_class=HTMLResponse,
+)
+async def lens_detail(
+        request: Request,
+        lens_id: int,
+        session: AsyncSession = Depends(get_async_session)
+):
+    lens = await get_active_lens_with_teleconverters(lens_id, session)
+
+    return templates.TemplateResponse('lens_detail.html', {
+        'request': request,
+        'lens':  lens,
+        'links': lens.links,
+        'teleconverters': lens.teleconverters,
+        'compatible_cameras': lens.compatible_cameras,
+        'camera_lenses': lens.camera_lenses,
+    })

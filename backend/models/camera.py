@@ -39,7 +39,7 @@ class Camera(
     sensor: Mapped['Sensor'] = relationship(back_populates='cameras')
 
     links: Mapped[list['Link']] = relationship(
-        secondary='camera_link',
+        secondary='link_camera',
         back_populates='cameras',
         order_by='Link.created_at',
     )

@@ -60,7 +60,7 @@ async def render_form(
 
 
 
-@web_router.get('/', response_class=HTMLResponse)
+@web_router.get('/', name='fov', response_class=HTMLResponse)
 async def show_form(
         request: Request,
         session: AsyncSession = Depends(get_async_session)

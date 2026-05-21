@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}
+Wiki
+{% endblock %}
+{% block content %}
+<h1>Wiki</h1>
+<a href="{{ url_for('cameras_list') }}">Список всех камер</a>
+<a href="{{ url_for('lens_list') }}">Список всех объективов</a>
+{% endblock %}

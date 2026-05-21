@@ -54,3 +54,6 @@ class Link(
         Text(),
         nullable=False,
     )
+
+    def __str__(self):
+        return self.title

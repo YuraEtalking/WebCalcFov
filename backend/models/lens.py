@@ -49,7 +49,7 @@ class Lens(
     )
 
     links: Mapped[list['Link']] = relationship(
-        secondary='lens_link',
+        secondary='link_lens',
         back_populates='lenses',
         order_by='Link.created_at',
     )

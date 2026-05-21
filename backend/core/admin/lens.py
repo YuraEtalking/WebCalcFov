@@ -32,6 +32,7 @@ class LensAdmin(ModelView, model=Lens):
         Lens.is_active,
         Lens.created_at,
         Lens.updated_at,
+        Lens.links,
         'compatible_cameras',
     ]
     column_labels = {
@@ -48,6 +49,7 @@ class LensAdmin(ModelView, model=Lens):
         Lens.created_at: 'Дата создания записи',
         Lens.updated_at: 'Дата обновления записи',
         Lens.is_active: 'Статус',
+        Lens.links: 'Ссылки',
     }
     column_searchable_list = [
         Lens.manufacturer,

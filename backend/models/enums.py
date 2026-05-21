@@ -18,8 +18,8 @@ class BayonetType(str, enum.Enum):
 
 class CompatibilityType(str, enum.Enum):
     """Тип соединения камеры и объектива."""
-    DIRECT = 'Прямое'
-    WITH_CONVERTOR = 'Переходник'
+    DIRECT = 'прямое соединение'
+    WITH_CONVERTOR = 'переходник'
 
 
 class ConstructionType(str, enum.Enum):
