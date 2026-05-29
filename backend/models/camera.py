@@ -2,10 +2,14 @@ from typing import TYPE_CHECKING
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from starlette.requests import Request
+
 from backend.core.db import Base
 from backend.models.mixins import (
     IdMixin,
     ActiveMixin,
+    AdminReprMixin,
     BayonetMixin,
     CommonFieldsMixin,
     TimeFieldsMixin,
@@ -22,6 +26,7 @@ if TYPE_CHECKING:
 class Camera(
     IdMixin,
     ActiveMixin,
+    AdminReprMixin,
     Base,
     BayonetMixin,
     CommonFieldsMixin,

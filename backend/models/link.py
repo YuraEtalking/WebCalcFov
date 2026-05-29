@@ -1,13 +1,15 @@
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey, Text, String
+from sqlalchemy import Text, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from starlette.requests import Request
+
 from backend.core.db import Base
 from backend.models.mixins import (
     IdMixin,
     ActiveMixin,
-    BayonetMixin,
-    CommonFieldsMixin,
+    AdminReprMixin,
     TimeFieldsMixin,
 )
 
@@ -16,17 +18,19 @@ if TYPE_CHECKING:
     from .camera import Camera
     from .lens import Lens
     from .teleconverter import Teleconverter
-    from .sensor import Sensor
-
 
 
 class Link(
     IdMixin,
     ActiveMixin,
+    AdminReprMixin,
     Base,
     TimeFieldsMixin,
 ):
     """Модель ссылок на обзоры/тесты/статьи."""
+
+    __admin_repr_field__ = 'title'
+
     cameras: Mapped[list['Camera']] = relationship(
         secondary='link_camera',
         back_populates='links',

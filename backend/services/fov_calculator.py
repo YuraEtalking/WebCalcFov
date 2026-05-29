@@ -5,19 +5,31 @@ from loguru import logger
 from backend.models.sensor import Sensor
 
 
-def get_focal(focal: float, tc=None) -> float:
+def get_focal(focal: float, tc: float | None) -> float:
+    """Возвращает фокусное расстояние с учётом коэффициента телеконвертера."""
     if tc is None:
         return focal
     return focal * tc
 
 
-def get_degrees_fov(sensor: Sensor, focal: float) -> tuple[float, float]:
-    fov_w = math.degrees(2 * math.atan(sensor.width / (2 * focal)))
-    fov_h = math.degrees(2 * math.atan(sensor.height / (2 * focal)))
+def get_degrees_fov(
+        sensor: Sensor | None,
+        focal: float
+) -> tuple[float, float]:
+    """Рассчитывает горизонтальный и вертикальный угол обзора в градусах."""
+    if sensor is None:
+        # По умолчанию Full Frame
+        width, height = 36.0,  24.0
+    else:
+        width, height = sensor.width, sensor.height
+
+    fov_w = math.degrees(2 * math.atan(width / (2 * focal)))
+    fov_h = math.degrees(2 * math.atan(height / (2 * focal)))
     return fov_w, fov_h
 
 
 def get_size_of_frame_on_plane(d: int, fov: float) -> float:
+    """Рассчитывает размер кадра на плоскости на заданном расстоянии."""
     return 2 * d * math.tan(fov / 2)
 
 

@@ -1,31 +1,23 @@
-from sqladmin import ModelView
+from starlette_admin import StringField, IntegerField, HasMany, BooleanField
+from starlette_admin.contrib.sqla import ModelView
 
-from backend.models import Link
 
-
-class LinkAdmin(ModelView, model=Link):
+class LinkAdmin(ModelView):
+    label = 'Ссылки'
     name = 'Ссылка'
-    name_plural = 'Ссылки'
-    icon = 'fa-solid fa-link'
 
-    column_list = [
-        Link.id,
-        Link.title,
-        Link.url,
-        Link.lenses,
+    fields = [
+        IntegerField('id', label='ID'),
+        StringField('title', label='Название'),
+        StringField('url', label='URL'),
+        StringField('description', label='Описание'),
+        BooleanField('is_active', label='Статус'),
+        HasMany('lenses', label='Объективы', identity='lens'),
     ]
 
-    form_columns = [
-        Link.title,
-        Link.url,
-        Link.description,
-        Link.lenses,
+    exclude_fields_from_list = [
+        'url', 'description',
     ]
 
-    column_labels = {
-        Link.id: 'ID',
-        Link.title: 'Название',
-        Link.url: 'URL',
-        Link.description: 'Описание',
-        Link.lenses: 'Объектив',
-    }
+    searchable_fields = ['title', 'url']
+    sortable_fields = ['id', 'title']

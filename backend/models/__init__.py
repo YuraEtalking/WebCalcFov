@@ -4,3 +4,5 @@ from .lens import Lens
 from .sensor import Sensor
 from .teleconverter import Teleconverter
 from .link import Link
+from .lens_spec import SpecLens
+from .enums import BayonetType, ConstructionType, CompatibilityType

@@ -1,57 +1,30 @@
-from sqladmin import ModelView
+from starlette_admin import (
+    StringField, IntegerField, FloatField, BooleanField,
+    DateTimeField, HasMany, EnumField
+)
+from starlette_admin.contrib.sqla import ModelView
 
-from backend.models import  Teleconverter
+from backend.models import SpecLens, BayonetType, ConstructionType
 
 
-class TeleconverterAdmin(ModelView, model=Teleconverter):
+class TeleconverterAdmin(ModelView):
+    label = 'Телеконверторы'
     name = 'Телеконвертор'
-    name_plural = 'Телеконверторы'
-    icon = 'fa-solid fa-less-than'
 
-    column_list = [
-        Teleconverter.id,
-        Teleconverter.manufacturer,
-        Teleconverter.name,
-        Teleconverter.bayonet,
-        Teleconverter.multiplier,
-        Teleconverter.created_at,
-        Teleconverter.updated_at,
-        Teleconverter.is_active,
-        Teleconverter.lenses,
+    fields = [
+        IntegerField('id', label='ID'),
+        StringField('manufacturer', label='Производитель'),
+        StringField('name', label='Название'),
+        EnumField('bayonet', label='Байонет', enum=BayonetType),
+        FloatField('multiplier', label='Увеличение фокусного расстояния'),
+        BooleanField('is_active', label='Статус'),
+        DateTimeField('created_at', label='Дата создания записи', read_only=True),
+        DateTimeField('updated_at', label='Дата обновления записи', read_only=True),
+        HasMany('lenses', label='Объективы', identity='lens'),
     ]
-    column_details_list = [
-        Teleconverter.id,
-        Teleconverter.manufacturer,
-        Teleconverter.name,
-        Teleconverter.bayonet,
-        Teleconverter.multiplier,
-        Teleconverter.created_at,
-        Teleconverter.updated_at,
-        Teleconverter.is_active,
-        Teleconverter.lenses,
-    ]
-    column_labels = {
-        Teleconverter.id: 'ID',
-        Teleconverter.name: 'Название',
-        Teleconverter.bayonet: 'Байонет',
-        Teleconverter.multiplier: 'Увеличение фокусного расстояния',
-        Teleconverter.manufacturer: 'Производитель',
-        Teleconverter.created_at: 'Дата создания записи',
-        Teleconverter.updated_at: 'Дата обновления записи',
-        Teleconverter.is_active: 'Статус',
-    }
-    column_searchable_list = [
-        Teleconverter.manufacturer,
-        Teleconverter.name,
-    ]
-    column_sortable_list = [
-        Teleconverter.id,
-        Teleconverter.manufacturer,
-        Teleconverter.name,
-        Teleconverter.multiplier,
-        Teleconverter.created_at,
-    ]
-    form_excluded_columns = [
-        Teleconverter.created_at,
-        Teleconverter.updated_at,
-    ]
+
+    exclude_fields_from_create = ['created_at', 'updated_at']
+    exclude_fields_from_edit = ['created_at', 'updated_at']
+
+    searchable_fields = ['manufacturer', 'name']
+    sortable_fields = ['id', 'manufacturer', 'name', 'multiplier', 'created_at']

@@ -3,7 +3,7 @@ from pydantic import ValidationError as PydanticValidationError
 from fastapi import APIRouter, Form, Request, Depends
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-
+from loguru import logger
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -34,17 +34,14 @@ async def render_form(
     """Рендер формы с данными."""
     try:
         cameras = await get_active_cameras(session)
-        lenses = await get_active_lenses(session)
     except SQLAlchemyError:
         cameras = []
-        lenses = []
         message = ERROR_LOAD_IN_DB
         message_type = 'error'
 
     template_context = {
         'request': request,
         'cameras': cameras,
-        'lenses': lenses,
         'data': None,
         'result': None,
         'focal': None,
@@ -111,5 +108,4 @@ async def submit_form(
             message_type='error',
             message=str(e),
         )
-
     return await render_form(request=request, session=session, context=payload)

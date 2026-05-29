@@ -1,10 +1,10 @@
-{% extends "base.html" %}
+{% extends "base_template.html" %}
 {% block title %}
 Список всех камер
 {% endblock %}
 {% block content %}
 <h1>Список всех камер</h1>
 {% for camera in cameras %}
-    <li><a href="{{ url_for('camera_detail', camera_id=camera.id) }}" >{{ camera.name }}</a></li>
+    <li><a href="{{ url_for('camera_detail', slug=camera.manufacturer, camera_id=camera.id) }}" >{{ camera.name }}</a></li>
 {% endfor %}
 {% endblock %}
