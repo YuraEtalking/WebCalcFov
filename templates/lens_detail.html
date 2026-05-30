@@ -1,0 +1,54 @@
+{% extends "base_template.html" %}
+{% block title %}
+{{ lens.name }}
+{% endblock %}
+{% block content %}
+<h1>{{ lens.name }}</h1>
+<li>Название: {{ lens.name }}</li>
+
+{% if lens.focal_wide != lens.focal_tele %}
+  <li>Минимальное фокусное расстояние: {{ lens.focal_tele }} мм</li>
+{% endif %}
+
+<li>
+    {% if lens.focal_wide != lens.focal_tele %}
+    Максимальное фокусное расстояние: {{ lens.focal_wide }} мм
+    {% else %}
+    Фокусное расстояние: {{ lens.focal_wide }} мм
+    {% endif %}
+</li>
+
+{% if lens.aperture_max_tele != lens.aperture_max_wide %}
+  <li>Минимальная диафрагма: f/{{ lens.aperture_max_wide }}</li>
+{% endif %}
+
+<li>
+    {% if lens.aperture_max_tele != lens.aperture_max_wide %}
+    Максимальная диафрагма: f/{{ lens.aperture_max_tele }}
+    {% else %}
+    Диафрагма: f/{{ lens.aperture_max_tele }}
+    {% endif %}
+</li>
+
+<li>Производитель: {{ lens.manufacturer }}</li>
+<li>Байонет: {{ lens.bayonet.name }}</li>
+<li>Диаметр объектива: {{ spec.diameter }} мм</li>
+
+
+
+<h2>Совместимые телеконверторы</h2>
+{% for tс in teleconverters %}
+    <li>{{ tс.name }}</li>
+{% endfor %}
+
+<h2>Совместимые камеры</h2>
+{% for camera in camera_lenses %}
+    <li><a href="{{ url_for('camera_detail', slug=camera.camera.manufacturer, camera_id=camera.camera_id) }}" >{{ camera.camera }} через {{ camera.convertor.value }}</a></li>
+{% endfor %}
+
+<h2>Обзоры/тесты</h2>
+{% for link in links %}
+    <li><a href="{{ link.url }}" >{{ link.title }}</a></li>
+{% endfor %}
+
+{% endblock %}

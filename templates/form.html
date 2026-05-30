@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_template.html" %}
 {% block title %}
 Считать FoV
 {% endblock %}
@@ -14,7 +14,14 @@
 
         <div class="field">
             <label for="camera_id">Камера</label>
-            <select id="camera_id" name="camera_id" required>
+            <select
+               id="camera_id"
+               name="camera_id"
+               required
+               hx-get="/partials/lens/choice_lens_field"
+               hx-trigger="change"
+               hx-target="#choice-lens-field-container"
+            >
                 <option value="">-- Выберите камеру --</option>
                 {% for camera in cameras %}
                   <option value="{{ camera.id }}" {% if data and data.camera.id == camera.id %}selected{% endif %}>
@@ -25,22 +32,10 @@
         </div>
 
         <div class="field">
-            <label for="lens_id">Объектив</label>
-            <select
-                id="lens_id"
-                name="lens_id"
-                required
-                hx-get="/lens/focal-field"
-                hx-trigger="change"
-                hx-target="#focal-field-container"
-            >
-                <option value="">-- Выберите объектив --</option>
-                {% for lens in lenses %}
-                  <option value="{{ lens.id }}" {% if data and data.lens.id == lens.id %}selected{% endif %}>
-                      {{ lens.name }}
-                  </option>
-                {% endfor %}
-            </select>
+          <div id="choice-lens-field-container">
+            {% set lens_list = data.lens_list %}
+            {% include "partials/choice_lens_field.html" %}
+          </div>
         </div>
     </div>
 

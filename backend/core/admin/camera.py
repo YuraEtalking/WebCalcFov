@@ -1,52 +1,36 @@
-from sqladmin import ModelView
+from starlette_admin import StringField, IntegerField, BooleanField, DateTimeField, HasMany, EnumField, HasOne
+from starlette_admin.contrib.sqla import ModelView
 
-from backend.models import Camera
+from backend.models import BayonetType
 
 
-
-class CameraAdmin(ModelView, model=Camera):
+class CameraAdmin(ModelView):
+    label = 'Камеры'
     name = 'Камера'
-    name_plural = 'Камеры'
-    icon = 'fa-solid fa-camera'
 
-    column_list = [
-        Camera.id,
-        Camera.manufacturer,
-        Camera.name,
-        Camera.bayonet,
-        Camera.created_at,
-        Camera.updated_at,
-        Camera.is_active,
+    fields = [
+        IntegerField('id', label='ID'),
+        StringField('manufacturer', label='Производитель'),
+        StringField('name', label='Название'),
+        EnumField('bayonet', label='Байонет', enum=BayonetType),
+        HasMany('compatible_lenses', label='Совместимые объективы', identity='lens'),
+        HasOne('sensor', label='Сенсор', identity='sensor'),
+        DateTimeField('created_at', label='Дата создания записи', read_only=True),
+        DateTimeField('updated_at', label='Дата обновления записи', read_only=True),
+        BooleanField('is_active', label='Статус'),
     ]
-    column_labels = {
-        Camera.id: 'ID',
-        Camera.name: 'Название',
-        Camera.bayonet: 'Байонет',
-        Camera.compatible_lenses: 'Совместимые объективы',
-        Camera.manufacturer: 'Производитель',
-        Camera.created_at: 'Дата создания записи',
-        Camera.updated_at: 'Дата обновления записи',
-        Camera.is_active: 'Статус',
-    }
-    column_details_list = [
-        Camera.id,
-        Camera.manufacturer,
-        Camera.name,
-        Camera.bayonet,
-        Camera.created_at,
-        Camera.updated_at,
-        Camera.is_active,
+
+    exclude_fields_from_list = ['compatible_lenses']
+    exclude_fields_from_create = [
+        'created_at',
+        'updated_at',
         'compatible_lenses',
     ]
-    column_searchable_list = [Camera.manufacturer, Camera.name]
-    column_sortable_list = [
-        Camera.id,
-        Camera.manufacturer,
-        Camera.name,
-        Camera.created_at,
+    exclude_fields_from_edit = [
+        'created_at',
+        'updated_at',
+        'compatible_lenses',
     ]
-    form_excluded_columns = [
-        Camera.created_at,
-        Camera.updated_at,
-        Camera.camera_lenses,
-    ]
+
+    searchable_fields = ['manufacturer', 'name']
+    sortable_fields = ['id', 'manufacturer', 'name', 'created_at']

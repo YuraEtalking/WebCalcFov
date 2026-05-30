@@ -22,6 +22,9 @@ header {
     width: 100vw;
     margin-left: calc(50% - 50vw);
     box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
 }
 
 .header-inner {
@@ -30,10 +33,6 @@ header {
     justify-content: center;
     gap: 12px;
 
-    /*
-      25vw — это середина левой половины экрана.
-      Делаем блок шириной 50vw, чтобы его центр был там.
-    */
     width: 50vw;
 }
 
@@ -47,6 +46,17 @@ header h1 {
     color: #000;
     font-size: 28px;
     font-weight: bold;
+}
+
+header a {
+    color: #000;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+header a:hover {
+    text-decoration: underline;
 }
 
 /* Footer */

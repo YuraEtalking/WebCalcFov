@@ -5,7 +5,7 @@ uvicorn==0.41.0
 pydantic-settings==2.10.1
 
 # --- Админка ---
-sqladmin==0.24.0
+starlette-admin==0.16.0
 psycopg-binary==3.3.3
 
 # --- База данных / ORM ---

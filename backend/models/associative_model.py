@@ -42,3 +42,24 @@ lens_teleconverter = Table(
     Column('lens_id', ForeignKey('lens.id'), primary_key=True),
     Column('teleconverter_id', ForeignKey('teleconverter.id'), primary_key=True),
 )
+
+link_camera = Table(
+    'link_camera',
+    Base.metadata,
+    Column('camera_id', ForeignKey('camera.id'), primary_key=True),
+    Column('link_id', ForeignKey('link.id'), primary_key=True),
+)
+
+link_lens = Table(
+    'link_lens',
+    Base.metadata,
+    Column('lens_id', ForeignKey('lens.id'), primary_key=True),
+    Column('link_id', ForeignKey('link.id'), primary_key=True),
+)
+
+link_teleconverter = Table(
+    'link_teleconverter',
+    Base.metadata,
+    Column('teleconverter_id', ForeignKey('teleconverter.id'), primary_key=True),
+    Column('link_id', ForeignKey('link.id'), primary_key=True),
+)

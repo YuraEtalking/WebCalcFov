@@ -2,10 +2,14 @@ from typing import TYPE_CHECKING
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from starlette.requests import Request
+
 from backend.core.db import Base
 from backend.models.mixins import (
     IdMixin,
     ActiveMixin,
+    AdminReprMixin,
     BayonetMixin,
     CommonFieldsMixin,
     TimeFieldsMixin,
@@ -16,11 +20,13 @@ if TYPE_CHECKING:
     from .lens import Lens
     from .associative_model import CameraLens
     from .sensor import Sensor
+    from .link import Link
 
 
 class Camera(
     IdMixin,
     ActiveMixin,
+    AdminReprMixin,
     Base,
     BayonetMixin,
     CommonFieldsMixin,
@@ -36,6 +42,12 @@ class Camera(
     )
     sensor_id: Mapped[int] = mapped_column(ForeignKey('sensor.id'))
     sensor: Mapped['Sensor'] = relationship(back_populates='cameras')
+
+    links: Mapped[list['Link']] = relationship(
+        secondary='link_camera',
+        back_populates='cameras',
+        order_by='Link.created_at',
+    )
 
     def __str__(self):
         return self.name

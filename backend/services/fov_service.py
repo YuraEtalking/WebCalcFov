@@ -1,7 +1,7 @@
 from typing import Any
 
 from sqlalchemy.ext.asyncio import AsyncSession
-
+from loguru import logger
 from backend.core.constants import WARNING_CAMERA_AND_LENS_INCOMPATIBILITY
 from backend.crud.camera import get_active_camera_with_sensor
 from backend.crud.lens import get_active_lens_with_teleconverters
@@ -50,14 +50,14 @@ def check_camera_and_lens_compatibility(
 
 def checking_distance_within_range(
         focal: float,
-        focal_min: int,
-        focal_max: int,
+        focal_wide: int,
+        focal_tele: int,
 ) -> float:
     """Проверка focal не None и не выходит за диапазон фокусных."""
     if focal is None:
-        focal = focal_max
+        focal = focal_tele
 
-    if not focal_min <= focal <= focal_max:
+    if not focal_wide <= focal <= focal_tele:
         raise InvalidFovInputError('Фокусное выходит за диапазон объектива')
 
     return focal
@@ -107,8 +107,8 @@ async def prepare_fov_response_data(
 
     focal = checking_distance_within_range(
         focal=input_data.focal,
-        focal_min=lens.focal_min,
-        focal_max=lens.focal_max,
+        focal_wide=lens.focal_wide,
+        focal_tele=lens.focal_tele,
     )
 
     result = calculate_fov(
@@ -124,6 +124,7 @@ async def prepare_fov_response_data(
             'lens': lens,
             'sensor': camera.sensor,
             'distance': input_data.distance,
+            'lens_list': camera.compatible_lenses,
         },
         'result': result,
         'focal': focal,
@@ -144,6 +145,6 @@ async def get_lens_data(lens_id: int, session: AsyncSession) -> dict[str, Any]:
 
     return {
             'lens': lens,
-            'focal': lens.focal_max,
+            'focal': lens.focal_tele,
             'teleconverters': teleconverters,
     }

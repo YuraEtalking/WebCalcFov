@@ -34,7 +34,7 @@
 </div>
 
 
-{% if lens and lens.focal_min != lens.focal_max %}
+{% if lens and lens.focal_wide != lens.focal_tele %}
 
     <label for="focal">Выберите фокусное расстояние, мм</label>
 
@@ -42,12 +42,12 @@
         type="range"
         id="focal"
         name="focal"
-        min="{{ lens.focal_min }}"
-        max="{{ lens.focal_max }}"
+        min="{{ lens.focal_wide }}"
+        max="{{ lens.focal_tele }}"
         step="1"
-        value="{{ focal or lens.focal_max }}"
+        value="{{ focal or lens.focal_tele }}"
         oninput="document.getElementById('focal-output').value = this.value"
     >
 
-    <output id="focal-output">{{ focal or lens.focal_max }}</output> мм
+    <output id="focal-output">{{ focal or lens.focal_tele }}</output> мм
 {% endif %}

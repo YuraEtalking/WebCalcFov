@@ -5,3 +5,5 @@ from backend.models import Camera  # noqa
 from backend.models import Lens  # noqa
 from backend.models import Sensor  # noqa
 from backend.models import Teleconverter  # noqa
+from backend.models import Link  # noqa
+from backend.models import SpecLens  # noqa

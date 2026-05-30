@@ -1,0 +1,11 @@
+{% extends "base_template.html" %}
+{% block title %}
+Wiki
+{% endblock %}
+{% block content %}
+<h1>Производитель</h1>
+{% for manufacturer in manufacturers %}
+  <a href="{{ url_for('manufacturer', slug=manufacturer) }}">{{ manufacturer }}</a>
+{% endfor %}
+
+{% endblock %}

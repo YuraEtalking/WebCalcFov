@@ -1,17 +1,19 @@
 import math
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Enum
+from sqlalchemy import Float
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.ext.hybrid import hybrid_property
+
+from starlette.requests import Request
 
 from backend.core.db import Base
 from backend.core.constants import FULL_FRAME_DIAGONAL
-from backend.models.enums import SensorType
 from backend.models.mixins import (
     IdMixin,
     ActiveMixin,
+    AdminReprMixin,
     TimeFieldsMixin,
+    CommonFieldsMixin,
 )
 
 
@@ -19,13 +21,17 @@ if TYPE_CHECKING:
     from .camera import Camera
 
 
-class Sensor(IdMixin, ActiveMixin, Base, TimeFieldsMixin):
+class Sensor(
+    IdMixin,
+    ActiveMixin,
+    AdminReprMixin,
+    Base,
+    TimeFieldsMixin,
+    CommonFieldsMixin,
+):
     """Модель датчика изображения."""
-    sensor_type: Mapped[SensorType] = mapped_column(
-        Enum(SensorType, name='sensor_type_enum'),
-        nullable=False,
-        default=SensorType.FULL_FRAME,
-    )
+    width: Mapped[float] = mapped_column(Float)
+    height: Mapped[float] = mapped_column(Float)
 
     cameras: Mapped[list['Camera']] = relationship(
         back_populates='sensor',
@@ -33,18 +39,10 @@ class Sensor(IdMixin, ActiveMixin, Base, TimeFieldsMixin):
     )
 
     @property
-    def width(self) -> float:
-        return self.sensor_type.width
-
-    @property
-    def height(self) -> float:
-        return self.sensor_type.height
-
-    @property
     def crop_factor(self) -> float:
         diagonal = math.sqrt(self.width ** 2 + self.height ** 2)
         return FULL_FRAME_DIAGONAL / diagonal
 
     def __str__(self):
-        return self.sensor_type.value
-
+        return (f'{self.name} - '
+                f'{self.width} х {self.height} мм')

@@ -2,15 +2,20 @@ from sqlalchemy import select
 from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.models import Lens, Teleconverter
+from backend.models import Lens, CameraLens
 
 
-async def get_active_lenses(session: AsyncSession):
+async def get_active_lenses(session: AsyncSession, manufacturer=None):
     """Получаем список активных объективов."""
-    stmt = await session.execute(select(
+    stmt = select(
         Lens
-    ).where(Lens.is_active.is_(True)).order_by(Lens.focal_max))
-    active_lenses = stmt.scalars().all()
+    ).where(Lens.is_active.is_(True)).order_by(Lens.focal_max)
+
+    if manufacturer is not None:
+        stmt = stmt.where(Lens.manufacturer == manufacturer)
+
+    result = await session.execute(stmt)
+    active_lenses = result.scalars().all()
     return active_lenses
 
 
@@ -19,10 +24,14 @@ async def get_active_lens_with_teleconverters(lens_id, session: AsyncSession):
     stmt = await session.execute(select(
         Lens
     ).options(
-        joinedload(Lens.teleconverters)
+        joinedload(Lens.teleconverters),
+        joinedload(Lens.links),
+        joinedload(Lens.compatible_cameras),
+        joinedload(Lens.camera_lenses).joinedload(CameraLens.camera),
+        joinedload(Lens.spec),
     ).where(
         Lens.id == lens_id,
         Lens.is_active.is_(True)
     ))
-    lens = stmt.scalars().first()
+    lens = stmt.scalars().unique().first()
     return lens

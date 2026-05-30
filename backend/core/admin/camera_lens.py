@@ -1,21 +1,24 @@
-from sqladmin import ModelView
+from starlette_admin import HasOne, EnumField
+from starlette_admin.contrib.sqla import ModelView
 
-from backend.models import CameraLens, Camera, Lens
+from backend.models import CompatibilityType
 
 
-class CameraLensAdmin(ModelView, model=CameraLens):
+class CameraLensAdmin(ModelView):
+    label = 'Совместимости камер и объективов'
     name = 'Совместимость камеры и объектива'
-    name_plural = 'Совместимости камер и объективов'
-    icon = 'fa-solid fa-camera-rotate'
 
-    column_list = [
-        CameraLens.camera,
-        CameraLens.lens,
-        CameraLens.convertor,
+    fields = [
+        HasOne('camera', label='Камера', identity='camera'),
+        HasOne('lens', label='Объектив', identity='lens'),
+        EnumField(
+            'type_lens',
+            label='Тип подключения',
+            enum=CompatibilityType,
+            help_text='Выберите тип подключения прямое соединение(DIRECT) или '
+                      'переходник(WITH_CONVERTOR).'
+        ),
     ]
-    column_labels = {
-        CameraLens.camera: 'Камера',
-        CameraLens.lens: 'Объектив',
-        CameraLens.convertor: 'Метод подключения',
-    }
-# todo нужно добавить поиск и сортировку.
+
+    searchable_fields = ['camera.name', 'lens.name']
+    sortable_fields = ['camera.name', 'lens.name']
