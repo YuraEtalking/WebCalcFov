@@ -16,12 +16,6 @@ class LensAdmin(ModelView):
         StringField('manufacturer', label='Производитель'),
         StringField('name', label='Название'),
         EnumField(
-            'type_lens',
-            label='Тип объектива',
-            enum=ConstructionType,
-            help_text='Выберите фикс(PRIME) или зум(ZOOM) объектив.',
-        ),
-        EnumField(
             'bayonet',
             label='Байонет',
             enum=BayonetType,

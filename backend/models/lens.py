@@ -3,8 +3,6 @@ from typing import TYPE_CHECKING
 from sqlalchemy import Enum, Integer, Float
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from starlette.requests import Request
-
 from backend.core.db import Base
 from backend.models.mixins import (
     IdMixin,
@@ -14,14 +12,14 @@ from backend.models.mixins import (
     CommonFieldsMixin,
     TimeFieldsMixin,
 )
-from backend.models.enums import ConstructionType
+
 
 if TYPE_CHECKING:
     from .camera import Camera
     from .associative_model import CameraLens
     from .teleconverter import Teleconverter
     from .link import Link
-    from .lens_spec import SpecLens
+    from models.specs.lens_spec import SpecLens
 
 
 class Lens(
@@ -40,12 +38,6 @@ class Lens(
     compatible_cameras: Mapped[list['Camera']] = relationship(
         secondary='camera_lens',
         viewonly=True,
-    )
-    type_lens: Mapped[ConstructionType] = mapped_column(
-        Enum(ConstructionType,
-        name='construction_type_enum'),
-        nullable=False,
-        default=ConstructionType.PRIME,
     )
     teleconverters: Mapped[list['Teleconverter']] = relationship(
         secondary='lens_teleconverter',

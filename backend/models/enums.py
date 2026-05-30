@@ -27,6 +27,18 @@ class ConstructionType(str, enum.Enum):
     ZOOM = 'Зум'
     PRIME = 'Фикс'
 
+class LensType(str, enum.Enum):
+    """Тип объектива."""
+    MACRO = 'Макро'
+    FISHEYE = 'Рыбий глаз'
+    TILT_SHIFT = 'Смещение оси'
+    SUPER_TELEPHOTO = 'Длиннофокусный'
+    WIDE_ANGLE = 'Широкоугольный'
+    STANDARD = 'Стандартный'
+    PORTRAIT = 'Портретный'
+    CINE = 'Кинообъектив'
+    PANCAKE = 'Блинчик'
+
 
 # FULL_FRAME = ('Full Frame', 36.0, 24.0)
 # APS_C = ('APS-C', 23.6, 15.8)
