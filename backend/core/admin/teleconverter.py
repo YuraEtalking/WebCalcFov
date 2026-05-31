@@ -17,10 +17,20 @@ class TeleconverterAdmin(ModelView):
         StringField('name', label='Название'),
         EnumField('bayonet', label='Байонет', enum=BayonetType),
         FloatField('multiplier', label='Увеличение фокусного расстояния'),
-        BooleanField('is_active', label='Статус'),
-        DateTimeField('created_at', label='Дата создания записи', read_only=True),
-        DateTimeField('updated_at', label='Дата обновления записи', read_only=True),
         HasMany('lenses', label='Объективы', identity='lens'),
+
+        # Статус и даты создания/редактирования
+        BooleanField('is_active', label='Статус'),
+        DateTimeField(
+            'created_at',
+            label='Дата создания записи',
+            read_only=True,
+        ),
+        DateTimeField(
+            'updated_at',
+            label='Дата обновления записи',
+            read_only=True,
+        ),
     ]
 
     exclude_fields_from_create = ['created_at', 'updated_at']

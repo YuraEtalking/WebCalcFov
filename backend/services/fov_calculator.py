@@ -13,15 +13,14 @@ def get_focal(focal: float, tc: float | None) -> float:
 
 
 def get_degrees_fov(
-        sensor: Sensor | None,
+        width: float | None,
+        height: float | None,
         focal: float
 ) -> tuple[float, float]:
     """Рассчитывает горизонтальный и вертикальный угол обзора в градусах."""
-    if sensor is None:
+    if width is None or height is None:
         # По умолчанию Full Frame
         width, height = 36.0,  24.0
-    else:
-        width, height = sensor.width, sensor.height
 
     fov_w = math.degrees(2 * math.atan(width / (2 * focal)))
     fov_h = math.degrees(2 * math.atan(height / (2 * focal)))
@@ -43,7 +42,11 @@ def calculate_fov(
     logger.debug('selected_tc="{}"', selected_tc)
 
     focal = get_focal(focal, selected_tc)
-    fov_w, fov_h = get_degrees_fov(sensor, focal)
+    fov_w, fov_h = get_degrees_fov(
+        width=sensor.width,
+        height=sensor.height,
+        focal=focal
+    )
 
     return {
         'focal': focal, 'tc': selected_tc,

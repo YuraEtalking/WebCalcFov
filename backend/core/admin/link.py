@@ -1,4 +1,4 @@
-from starlette_admin import StringField, IntegerField, HasMany, BooleanField
+from starlette_admin import StringField, IntegerField, HasMany, BooleanField, DateTimeField
 from starlette_admin.contrib.sqla import ModelView
 
 
@@ -11,8 +11,20 @@ class LinkAdmin(ModelView):
         StringField('title', label='Название'),
         StringField('url', label='URL'),
         StringField('description', label='Описание'),
-        BooleanField('is_active', label='Статус'),
         HasMany('lenses', label='Объективы', identity='lens'),
+
+        # Статус и даты создания/редактирования
+        BooleanField('is_active', label='Статус'),
+        DateTimeField(
+            'created_at',
+            label='Дата создания записи',
+            read_only=True,
+        ),
+        DateTimeField(
+            'updated_at',
+            label='Дата обновления записи',
+            read_only=True,
+        ),
     ]
 
     exclude_fields_from_list = [
