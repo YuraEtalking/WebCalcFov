@@ -54,7 +54,13 @@ class LensAdmin(ModelView):
             identity='teleconverter',
         ),
         HasOne('spec', label='Спецификации', identity='speclens'),
-        BooleanField('is_active', label='Статус'),
+
+
+        BooleanField(
+            'is_active',
+            label='Запись активна',
+            help_text='Снимите отметку, чтобы отключить запись без удаления.'
+        ),
         DateTimeField(
             'created_at',
             label='Дата создания записи',

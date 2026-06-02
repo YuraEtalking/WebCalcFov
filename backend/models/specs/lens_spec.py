@@ -57,7 +57,7 @@ class SpecLens(
         default=LensType.STANDARD,
     )
 
-    # Формата покрытия матрицы todo переделать на Enum
+    # Формат покрытия матрицы
     coverage_format: Mapped[SensorFormat] = mapped_column(
         Enum(SensorFormat, name='coverage_format_enum'),
         nullable=False,
@@ -123,19 +123,22 @@ class SpecLens(
     zoom_lock: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
 
 
+    # Макро-возможности
+    is_macro: Mapped[bool | None] = mapped_column(Boolean,nullable=True)
+    working_distance_m: Mapped[float | None] = mapped_column(Float, nullable=True)  # todo убрать
+    maximum_magnification_ratio: Mapped[float | None] = mapped_column(Float, nullable=True)  # todo убрать
+    max_magnification: Mapped[float | None] = mapped_column(
+        Float,
+        nullable=True,
+    )
+
+
     # Бленда и аксессуары
     hood_model: Mapped[str | None] = mapped_column(String, nullable=True)
     hood_included: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
     tripod_collar_included: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
     tripod_collar_removable: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
     case_included: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
-
-
-    # Макро-возможности
-    is_macro: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
-    working_distance_m: Mapped[float | None] = mapped_column(Float, nullable=True)
-    maximum_magnification_ratio: Mapped[float | None] = mapped_column(Float, nullable=True)
-    reproduction_ratio_text: Mapped[str | None] = mapped_column(String, nullable=True)
 
 
     # Комплект поставки
@@ -146,10 +149,6 @@ class SpecLens(
     weather_sealing: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
     dust_moisture_resistant: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
     fluorine_coating: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
-
-
-    # Конструкция объектива
-    lens_construction: Mapped[str | None] = mapped_column(Text, nullable=True)
 
 
     # Углы обзора объектива

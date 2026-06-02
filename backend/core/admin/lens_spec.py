@@ -1,6 +1,6 @@
 from starlette_admin import (
     StringField, IntegerField, FloatField, BooleanField,
-    DateTimeField, HasMany, HasOne, EnumField
+    DateTimeField, TextAreaField, HasOne, EnumField
 )
 from starlette_admin.contrib.sqla import ModelView
 from backend.models import (
@@ -31,13 +31,13 @@ class SpecLensAdmin(ModelView):
             enum=LensType,
             help_text='Выберите тип объектива.',
         ),
-        StringField('construction_type', label='Конструкция'),
+        StringField('construction_type', label='Конструкция'), # Вычисляемое поле.
 
 
         # Физические данные
-        IntegerField('weight_g', label='Вес грамм'),
-        IntegerField('length_mm', label='Длинна объектива в мм'),
-        IntegerField('diameter_mm', label='Диаметр объектива в мм'),
+        IntegerField('weight_g', label='Вес, грамм'),
+        IntegerField('length_mm', label='Длинна объектива, мм'),
+        IntegerField('diameter_mm', label='Диаметр объектива, мм'),
 
 
         # Формат покрытия матрицы
@@ -56,7 +56,6 @@ class SpecLensAdmin(ModelView):
             'type_diaphragm',
             label='Тип диафрагмы',
             enum=TypeDiaphragm,
-            help_text='Например электронная. electronic, mechanical, manual, camera-controlled',
         ),
         BooleanField(
             'aperture_blades_rounded',
@@ -129,7 +128,23 @@ class SpecLensAdmin(ModelView):
         BooleanField('zoom_lock', label='Фиксатор зума'),
 
 
-        # Углы обзора объектива
+        # Макро-возможности
+        BooleanField('is_macro', label='Макро объектив'),
+        FloatField(
+            'working_distance_m',
+            label='Рабочая дистанция, м',
+        ),
+        FloatField(
+            'max_magnification',
+            label='Коэффициент увеличения (масштаб съёмки)',
+            help_text='Насколько крупно объектив может снять мелкий объект с '
+                      'минимальной дистанции фокусировки. '
+                      '0.10x - 0.15x : обычный объектив, '
+                      '1.0x - 2.0x: настоящее макро 1:1 и более.',
+        ),
+
+
+        # Углы обзора объектива, вычисляемые поля.
         StringField(
             'angle_of_view_wide',
             label='Угол обзора для широкоугольного положения',
@@ -143,8 +158,36 @@ class SpecLensAdmin(ModelView):
         HasOne('lens', label='Объектив', identity='lens'),
 
 
+        # Бленда и аксессуары
+        StringField('hood_model', label='Модель бленды'),
+        BooleanField('hood_included', label='Бленда в комплекте'),
+        BooleanField(
+            'tripod_collar_included',
+            label='Штативное кольцо в комплекте',
+        ),
+        BooleanField(
+            'tripod_collar_removable',
+            label='Съёмное штативное кольцо',
+        ),
+        BooleanField('case_included', label='Чехол в комплекте'),
+
+
+        # Комплект поставки
+        TextAreaField('supplied_accessories', label='Комплект поставки'),
+
+
+        # Дополнительно
+        BooleanField('weather_sealing', label='Погодозащита'),
+        BooleanField('dust_moisture_resistant',
+                     label='Защита от пыли и влаги'),
+        BooleanField('fluorine_coating', label='Фтористое покрытие'),
+
+
         # Статус и даты создания/редактирования
-        BooleanField('is_active', label='Статус'),
+        BooleanField(
+            'is_active',
+            label='Запись активна',
+        ),
         DateTimeField(
             'created_at',
             label='Дата создания записи',
@@ -160,16 +203,16 @@ class SpecLensAdmin(ModelView):
     exclude_fields_from_list = [
         'diameter_mm',
         'min_aperture',
-        'angle_of_view_wide_display',
-        'angle_of_view_tele_display',
+        'angle_of_view_wide',
+        'angle_of_view_tele',
     ]
     exclude_fields_from_create = [
-        'angle_of_view_wide_display',
-        'angle_of_view_tele_display',
-        'construction_type',
+        'angle_of_view_wide',
+        'angle_of_view_tele',
+        'construction_type', 'created_at', 'updated_at', 'is_active',
     ]
     exclude_fields_from_edit = [
-        'angle_of_view_wide_display',
-        'angle_of_view_tele_display',
-        'construction_type',
+        'angle_of_view_wide',
+        'angle_of_view_tele',
+        'construction_type', 'created_at', 'updated_at', 'is_active',
     ]
