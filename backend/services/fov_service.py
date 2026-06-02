@@ -2,7 +2,7 @@ from typing import Any
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from loguru import logger
-from backend.core.constants.constants import (
+from backend.core.constants.message_constants import (
     WARNING_CAMERA_AND_LENS_INCOMPATIBILITY
 )
 from backend.crud.camera import get_active_camera_with_sensor

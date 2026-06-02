@@ -19,7 +19,7 @@ from backend.models.enums import (
     LensType,
     TypeDiaphragm,
     SENSOR_FORMAT_SIZES,
-    FilterMountType,
+    FilterMountType,FocusType,AutofocusMotorType,ZoomType
 )
 
 
@@ -81,18 +81,30 @@ class SpecLens(
     supports_front_filters: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
     rear_filter_holder: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
     filter_mount_type: Mapped[FilterMountType] = mapped_column(
-        Enum(FilterMountType, name='filter_mount_type'),
+        Enum(FilterMountType, name='filter_mount_type_enum'),
         nullable=False,
         default=FilterMountType.SCREW_IN,
     )
 
 
     # Фокусировка
-    focus_type: Mapped[str | None] = mapped_column(String, nullable=True)
+    focus_type: Mapped[FocusType] = mapped_column(
+        Enum(FocusType, name='focus_type_enum'),
+        nullable=False,
+        default=FocusType.INTERNAL,
+    )
     autofocus: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
     full_time_manual_focus: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
     min_focus_distance_m: Mapped[float | None] = mapped_column(Float, nullable=True)
-    autofocus_motor_type: Mapped[str | None] = mapped_column(String, nullable=True)
+    autofocus_motor_type: Mapped[AutofocusMotorType] = mapped_column(
+        Enum(AutofocusMotorType, name='autofocus_motor_type_enum'),
+        nullable=False,
+        default=AutofocusMotorType.OTHER,
+    )
+    brand_name_autofocus: Mapped[str | None] = mapped_column(
+        String,
+        nullable=True
+    )
 
 
     # Стабилизация
@@ -102,7 +114,11 @@ class SpecLens(
 
 
     # Зум
-    zoom_type: Mapped[str | None] = mapped_column(String, nullable=True)
+    zoom_type: Mapped[ZoomType] = mapped_column(
+        Enum(ZoomType, name='zoom_type_enum'),
+        nullable=False,
+        default=ZoomType.NON_ZOOM,
+    )
     internal_zoom: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
     zoom_lock: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
 

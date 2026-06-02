@@ -7,7 +7,9 @@ from backend.models import (
     FilterMountType,
     LensType,
     SensorFormat,
-    TypeDiaphragm
+    TypeDiaphragm,
+    FocusType,
+    AutofocusMotorType,ZoomType
 )
 from loguru import logger
 
@@ -79,6 +81,54 @@ class SpecLensAdmin(ModelView):
         ),
 
 
+        # Фокусировка
+        EnumField(
+            'focus_type',
+            label='Тип/конструкция фокусировки объектива',
+            enum=FocusType,
+        ),
+        BooleanField('autofocus', label='Автофокус'),
+        BooleanField(
+            'full_time_manual_focus',
+            label='Постоянная ручная фокусировка A/M или М/А',
+        ),
+        FloatField(
+            'min_focus_distance_m',
+            label='Минимальная дистанция фокусировки',
+        ),
+        EnumField(
+            'autofocus_motor_type',
+            label='Тип мотора фокусировки',
+            enum=AutofocusMotorType,
+        ),
+        StringField(
+            'brand_name_autofocus',
+            label='Брендовое название автофокуса',
+        ),
+
+
+        # Стабилизация
+        BooleanField('image_stabilization', label='Наличие стабилизатора'),
+        StringField(
+            'stabilization_name',
+            label='Брендовое название стабилизатора',
+        ),
+        FloatField(
+            'stabilization_stops',
+            label='Кол-во стопов стабилизации',
+        ),
+
+
+        # Зум
+        EnumField(
+            'zoom_type',
+            label='Тип изменения фокусного расстояния',
+            enum=ZoomType,
+        ),
+        BooleanField('internal_zoom', label='Внутренний зум'),
+        BooleanField('zoom_lock', label='Фиксатор зума'),
+
+
         # Углы обзора объектива
         StringField(
             'angle_of_view_wide',
@@ -91,6 +141,7 @@ class SpecLensAdmin(ModelView):
             read_only=True,
         ),
         HasOne('lens', label='Объектив', identity='lens'),
+
 
         # Статус и даты создания/редактирования
         BooleanField('is_active', label='Статус'),

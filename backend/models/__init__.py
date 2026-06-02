@@ -12,5 +12,5 @@ from .enums import (
     CompatibilityType,
     LensType,
     TypeDiaphragm,
-    FilterMountType,
+    FilterMountType,FocusType,AutofocusMotorType,ZoomType
 )
