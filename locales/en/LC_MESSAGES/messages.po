@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-06-06 17:53+0300\n"
-"PO-Revision-Date: 2026-06-06 17:53+0300\n"
+"POT-Creation-Date: 2026-06-06 21:09+0300\n"
+"PO-Revision-Date: 2026-06-06 18:48+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
 "Language-Team: en <LL@li.org>\n"
@@ -18,11 +18,216 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: templates/lens_detail.html:9
-msgid "Manufacturer"
-msgstr "Manufacturer"
+#: templates/camera_detail.html:7 templates/form.html:81
+msgid "Sensor"
+msgstr ""
 
-#: templates/lens_detail.html:10
+#: templates/camera_detail.html:8 templates/lens_detail.html:9
+#: templates/wiki.html:6
+msgid "Manufacturer"
+msgstr ""
+
+#: templates/camera_detail.html:9 templates/lens_detail.html:10
 msgid "Mount"
-msgstr "Mount"
+msgstr ""
+
+#: templates/camera_list.html:3 templates/camera_list.html:6
+#: templates/manufacturer.html:8
+msgid "List of all cameras"
+msgstr ""
+
+#: templates/form.html:3 templates/form.html:6 templates/form.html:59
+msgid "Calculate"
+msgstr ""
+
+#: templates/form.html:16 templates/form.html:79
+msgid "Camera"
+msgstr ""
+
+#: templates/form.html:25
+msgid "Select a camera"
+msgstr ""
+
+#: templates/form.html:44
+msgid "Distance to the subject in meters"
+msgstr ""
+
+#: templates/form.html:51
+msgid "Enter the distance to the subject."
+msgstr ""
+
+#: templates/form.html:74
+msgid "Result"
+msgstr ""
+
+#: templates/form.html:77
+msgid "Equipment"
+msgstr ""
+
+#: templates/form.html:80 templates/partials/choice_lens_field.html:3
+msgid "Lens"
+msgstr ""
+
+#: templates/form.html:85
+msgid "Calculations"
+msgstr ""
+
+#: templates/form.html:87 templates/lens_detail.html:18
+msgid "Focal length"
+msgstr ""
+
+#: templates/form.html:89
+msgid "Teleconverter"
+msgstr ""
+
+#: templates/form.html:91
+msgid "Frame width"
+msgstr ""
+
+#: templates/form.html:92
+msgid "Frame height"
+msgstr ""
+
+#: templates/form.html:96
+msgid "Enter the data and click count"
+msgstr ""
+
+#: templates/lens_detail.html:15
+msgid "Minimum focal length"
+msgstr ""
+
+#: templates/lens_detail.html:16
+msgid "Maximum focal length"
+msgstr ""
+
+#: templates/lens_detail.html:24
+msgid "Minimum aperture (max f-number)"
+msgstr ""
+
+#: templates/lens_detail.html:25
+msgid "Maximum aperture (max f-number)"
+msgstr ""
+
+#: templates/lens_detail.html:27
+msgid "Aperture (max f-number)"
+msgstr ""
+
+#: templates/lens_detail.html:33
+msgid "Specifications"
+msgstr ""
+
+#: templates/lens_detail.html:37
+msgid "Lens design and type"
+msgstr ""
+
+#: templates/lens_detail.html:38
+msgid "Lens Type"
+msgstr ""
+
+#: templates/lens_detail.html:39
+msgid "Construction"
+msgstr ""
+
+#: templates/lens_detail.html:43
+msgid "Physical characteristics"
+msgstr ""
+
+#: templates/lens_detail.html:44
+msgid "Length"
+msgstr ""
+
+#: templates/lens_detail.html:45
+msgid "Diameter"
+msgstr ""
+
+#: templates/lens_detail.html:46
+msgid "Weight"
+msgstr ""
+
+#: templates/lens_detail.html:50
+msgid "Sensor coverage format"
+msgstr ""
+
+#: templates/lens_detail.html:55
+msgid "Aperture"
+msgstr ""
+
+#: templates/lens_detail.html:56
+msgid "Minimum aperture (mix f-number)"
+msgstr ""
+
+#: templates/lens_detail.html:57
+msgid "Number of diaphragm blades"
+msgstr ""
+
+#: templates/lens_detail.html:58
+msgid "Type of aperture"
+msgstr ""
+
+#: templates/lens_detail.html:59
+msgid "Rounding of diaphragm blades"
+msgstr ""
+
+#: templates/lens_detail.html:63
+msgid "Macro opportunities"
+msgstr ""
+
+#: templates/lens_detail.html:64
+msgid "Macro lens"
+msgstr ""
+
+#: templates/lens_detail.html:65
+msgid "Working distance"
+msgstr ""
+
+#: templates/lens_detail.html:68
+msgid "Compatible teleconverters"
+msgstr ""
+
+#: templates/lens_detail.html:73
+msgid "Compatible cameras"
+msgstr ""
+
+#: templates/lens_detail.html:75
+msgid "via"
+msgstr ""
+
+#: templates/lens_detail.html:78
+msgid "Reviews/Tests"
+msgstr ""
+
+#: templates/lens_list.html:3 templates/lens_list.html:7
+#: templates/manufacturer.html:9
+msgid "List of all lenses"
+msgstr ""
+
+#: templates/includes/header.html:8
+msgid "Calculator"
+msgstr ""
+
+#: templates/includes/header.html:13
+msgid "Language"
+msgstr ""
+
+#: templates/partials/choice_lens_field.html:12
+msgid "Choose a lens"
+msgstr ""
+
+#: templates/partials/focal_field.html:2
+msgid "Select a teleconverter"
+msgstr ""
+
+#: templates/partials/focal_field.html:14
+msgid "Without a teleconverter"
+msgstr ""
+
+#: templates/partials/focal_field.html:39
+msgid "Select the focal length"
+msgstr ""
+
+#~ msgid "Minimum aperture"
+#~ msgstr ""
+
+#~ msgid "Maximum aperture"
+#~ msgstr ""
 

@@ -1,9 +1,9 @@
 {% extends "base_template.html" %}
 {% block title %}
-Считать FoV
+{{ _("Calculate") }} FoV
 {% endblock %}
 {% block content %}
-<h1>Считать FoV</h1>
+<h1>{{ _("Calculate") }} FoV</h1>
 {% if message %}
   <div class="message {{ message_type or 'info' }}">
     {{ message }}
@@ -13,7 +13,7 @@
     <div class="form-row">
 
         <div class="field">
-            <label for="camera_id">Камера</label>
+            <label for="camera_id">{{ _("Camera") }}</label>
             <select
                id="camera_id"
                name="camera_id"
@@ -22,7 +22,7 @@
                hx-trigger="change"
                hx-target="#choice-lens-field-container"
             >
-                <option value="">-- Выберите камеру --</option>
+                <option value="">-- {{ _("Select a camera") }} --</option>
                 {% for camera in cameras %}
                   <option value="{{ camera.id }}" {% if data and data.camera.id == camera.id %}selected{% endif %}>
                       {{ camera.name }}
@@ -41,14 +41,14 @@
 
     <div class="form-row-distance">
         <div class="field">
-            <label for="distance">Дистанция до объекта съемки в метрах</label>
+            <label for="distance">{{ _("Distance to the subject in meters") }}</label>
             <input
                type="number"
                step="1"
                min="0"
                id="distance"
                name="distance"
-               placeholder="Введите расстояние до объекта съемки."
+               placeholder="{{ _('Enter the distance to the subject.') }}."
                value="{{ data.distance if data else '' }}"
                required
             >
@@ -56,7 +56,7 @@
 
         <!-- submit -->
         <div class="field inline">
-            <button type="submit">Считать</button>
+            <button type="submit">{{ _("Calculate") }}</button>
         </div>
     </div>
 
@@ -71,29 +71,29 @@
 <div class="container">
   {% if result %}
 
-    <h2>Результат</h2>
+    <h2>{{ _("Result") }}</h2>
       {% if data %}
 
-        <h3>Оборудование:</h3>
+        <h3>{{ _("Equipment") }}:</h3>
         <ul>
-          <li>Камера: <span class="value">{{ data.camera }}</span></li>
-          <li>Объектив: <span class="value">{{ data.lens }}</span></li>
-          <li>Сенсор: <span class="value">{{ data.sensor }}</span></li>
+          <li>{{ _("Camera") }}: <span class="value">{{ data.camera }}</span></li>
+          <li>{{ _("Lens") }}: <span class="value">{{ data.lens }}</span></li>
+          <li>{{ _("Sensor") }}: <span class="value">{{ data.sensor }}</span></li>
         </ul>
       </div>
 
-        <h3>Расчеты</h3>
+        <h3>{{ _("Calculations") }}</h3>
           <ul>
-            <li>Фокусное расстояние: <span class="value">{{ result.focal }} mm</span></li>
+            <li>{{ _("Focal length") }}: <span class="value">{{ result.focal }} mm</span></li>
             {% if result.tc is not none %}
-              <li>Телеконвертор: <span class="value">{{ result.tc }}х</span></li>
+              <li>{{ _("Teleconverter") }}: <span class="value">{{ result.tc }}х</span></li>
             {% endif %}
-            <li>Ширина кадра: <span class="value">{{ result.frame_width_m|round(1) }} м., {{ result.fov_width_deg|round(1) }}°</span></li>
-            <li>Высота кадра: <span class="value">{{ result.frame_height_m|round(1) }} м., {{ result.fov_height_deg|round(1) }}°</span></li>
+            <li>{{ _("Frame width") }}: <span class="value">{{ result.frame_width_m|round(1) }} м., {{ result.fov_width_deg|round(1) }}°</span></li>
+            <li>{{ _("Frame height") }}: <span class="value">{{ result.frame_height_m|round(1) }} м., {{ result.fov_height_deg|round(1) }}°</span></li>
           </ul>
 
       {% else %}
-        <span class="value">Введите данные и нажмите считать</span>
+        <span class="value">{{ _("Enter the data and click count") }}</span>
       {% endif %}
 {% endif %}
   </div>

@@ -5,12 +5,13 @@
       src="{{ url_for('static', path='fav/favicon.svg') }}"
       alt=""
     >
-    <a href="{{ url_for('fov') }}"><h1>Калькулятор FoV</h1></a>
+    <a href="{{ url_for('fov') }}"><h1>{{ _("Calculator") }} FoV</h1></a>
   </div>
 
   <div class="header-inner">
     <a href="{{ url_for('wiki') }}">Wiki</a>
+      <b>| {{ _("Language") }}: </b>
       <a href="?lang=ru">RU</a>
-<a href="?lang=en">EN</a>
+      <a href="?lang=en">EN</a>
   </div>
 </header>

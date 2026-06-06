@@ -126,11 +126,11 @@ pybabel compile -d locales
 pybabel extract -F babel.cfg -o messages.pot .
 ```
 ### Шаг 2. Обновление messages.po
-Обновить существующий **messages.po**, например русский
+Обновить существующий **messages.po**
 
 Команда будет не **ini**, а **update**
 
-Эта команда добавит новые строки в существующий файл
+Эта команда добавит новые строки в существующие файлы
 ```
 locales/ru/LC_MESSAGES/messages.po
 ```
@@ -138,7 +138,7 @@ locales/ru/LC_MESSAGES/messages.po
 pybabel update -i messages.pot -d locales
 ```
 ### Шаг 3. Редактирование messages.po
-Редактируем появившиеся строки
+Редактируем появившиеся строки, например в русском файле
 ```
 msgid "Weight"
 msgstr "Вес"

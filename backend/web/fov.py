@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from backend.core.db import get_async_session
 from backend.core.constants.message_constants import ERROR_LOAD_IN_DB
 from backend.crud.camera import get_active_cameras
-from backend.crud.lens import get_active_lenses
+# from backend.web.templates import render
 from backend.schemas.fov import FovCalcInput
 from backend.services.fov_service import (
     prepare_fov_response_data,
@@ -41,6 +41,8 @@ async def render_form(
 
     template_context = {
         'request': request,
+        '_': request.state._,
+        'lang': request.state.lang,
         'cameras': cameras,
         'data': None,
         'result': None,

@@ -4,8 +4,7 @@
 {% endblock %}
 {% block content %}
 <h1>{{ camera.name }}</h1>
-<li>Название: {{ camera.name }}</li>
-<li>Матрица: {{ camera.sensor}}</li>
-<li>Производитель: {{ camera.manufacturer}}</li>
-<li>Байонет: {{ camera.bayonet.name}}</li>
+<li>{{ _("Sensor") }}: {{ camera.sensor}}</li>
+<li>{{ _("Manufacturer") }}: {{ camera.manufacturer}}</li>
+<li>{{ _("Mount") }}: {{ camera.bayonet.name}}</li>
 {% endblock %}

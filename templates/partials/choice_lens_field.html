@@ -1,6 +1,6 @@
 {% if lens_list %}
 <div class="field">
-    <label for="lens_id">Объектив</label>
+    <label for="lens_id">{{ _("Lens") }}</label>
     <select
         id="lens_id"
         name="lens_id"
@@ -9,7 +9,7 @@
         hx-trigger="change"
         hx-target="#focal-field-container"
     >
-        <option value="">-- Выберите объектив --</option>
+        <option value="">-- {{ _("Choose a lens") }} --</option>
         {% for lens in lens_list %}
           <option value="{{ lens.id }}" {% if data and data.lens.id == lens.id %}selected{% endif %}>
               {{ lens.name }}

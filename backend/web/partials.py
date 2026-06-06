@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from backend.core.db import get_async_session
 from backend.services.fov_service import get_lens_data, EntityNotFoundError
 from backend.crud.camera import get_active_camera_with_sensor
+from backend.web.templates import render
 
 web_router = APIRouter(
     prefix='/partials',
@@ -31,9 +32,10 @@ async def get_focal_field(
     except SQLAlchemyError:
         return HTMLResponse('', status_code=500)
 
-    return templates.TemplateResponse(
+    return render(
+        request,
         'partials/focal_field.html',
-        {'request': request, **data},
+        **data
     )
 
 
@@ -52,7 +54,8 @@ async def get_choice_lens_field(
     except SQLAlchemyError:
         return HTMLResponse('', status_code=500)
 
-    return templates.TemplateResponse(
+    return render(
+        request,
         'partials/choice_lens_field.html',
-        {'request': request, 'lens_list': camera.compatible_lenses},
+        {'lens_list': camera.compatible_lenses}
     )

@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.core.db import get_async_session
 from backend.models import Camera, Lens
+from backend.web.templates import render
 
 
 web_router = APIRouter(
@@ -31,9 +32,7 @@ async def wiki(
     result = await session.scalars(stmt)
     manufacturers = result.all()
 
-    return templates.TemplateResponse(
-        'wiki.html',
-        {'request': request, 'manufacturers': manufacturers})
+    return render(request, 'wiki.html', {'manufacturers': manufacturers})
 
 
 
@@ -43,7 +42,8 @@ async def wiki(
     response_class=HTMLResponse
 )
 async def manufacturer(request: Request, slug: str):
-    return templates.TemplateResponse(
+    return render(
+        request,
         'manufacturer.html',
-        {'request': request, 'slug': slug}
+        {'slug': slug}
     )

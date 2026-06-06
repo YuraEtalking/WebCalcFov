@@ -3,7 +3,7 @@
 Wiki
 {% endblock %}
 {% block content %}
-<h1>Производитель</h1>
+<h1>{{ _("Manufacturer") }}</h1>
 {% for manufacturer in manufacturers %}
   <a href="{{ url_for('manufacturer', slug=manufacturer) }}">{{ manufacturer }}</a>
 {% endfor %}
