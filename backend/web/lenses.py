@@ -44,6 +44,8 @@ async def lens_detail(
 
     return templates.TemplateResponse('lens_detail.html', {
         'request': request,
+        '_': request.state._,
+        'lang': request.state.lang,
         'lens':  lens,
         'slug':slug,
         'links': lens.links,

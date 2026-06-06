@@ -3,9 +3,14 @@
 {{ lens.name }}
 {% endblock %}
 {% block content %}
-<h1>{{ lens.name }}</h1>
-<li>Название: {{ lens.name }}</li>
 
+<!-- Общие данные -->
+<h1>{{ lens.name }}</h1>
+<li>{{ _("Manufacturer") }}: {{ lens.manufacturer }}</li>
+<li>{{ _("Mount") }}: {{ lens.bayonet.name }}</li>
+
+
+<!-- Фокусное расстояние -->
 {% if lens.focal_wide != lens.focal_tele %}
   <li>Минимальное фокусное расстояние: {{ lens.focal_tele }} мм</li>
 {% endif %}
@@ -18,6 +23,7 @@
     {% endif %}
 </li>
 
+<!-- Диафрагма -->
 {% if lens.aperture_max_tele != lens.aperture_max_wide %}
   <li>Минимальная диафрагма: f/{{ lens.aperture_max_wide }}</li>
 {% endif %}
@@ -29,12 +35,43 @@
     Диафрагма: f/{{ lens.aperture_max_tele }}
     {% endif %}
 </li>
+<br>
+<!-- Спецификации -->
+<details>
+    <summary>Спецификации</summary>
 
-<li>Производитель: {{ lens.manufacturer }}</li>
-<li>Байонет: {{ lens.bayonet.name }}</li>
-<li>Диаметр объектива: {{ spec.diameter }} мм</li>
+    <br>
+    <!-- Конструкция и тип объектива -->
+    <div><strong>Конструкция и тип объектива:</strong></div>
+    <div>Тип объектива: {{ spec.lens_type.value }}</div>
+    <div>Конструкция: {{ spec.construction_type }}</div>
 
+    <br>
+    <!-- Физические характеристики -->
+    <div><strong>Физические характеристики:</strong></div>
+    <div>Длинна, мм: {{ spec.length_mm }}</div>
+    <div>Диаметр, мм: {{ spec.diameter_mm }}</div>
+    <div>Вес, г: {{ spec.weight_g }}</div>
 
+    <br>
+    <!-- Формат покрытия матрицы -->
+    <div><strong>Формат покрытия матрицы:</strong></div>
+    <div>{{ spec.coverage_format.value }}</div>
+
+    <br>
+    <!-- Диафрагма -->
+    <div><strong>Диафрагма:</strong></div>
+    <div>Минимальная диафрагма: f/{{ spec.min_aperture }}</div>
+    <div>Кол-во лепестков диафрагмы: {{ spec.aperture_blades }}</div>
+    <div>Тип диафрагмы: {{ spec.type_diaphragm.value }}</div>
+    <div>Скругление лепестков диафрагмы: {{ spec.aperture_blades_rounded }}</div>
+
+    <br>
+    <!-- Макро-возможности -->
+    <div><strong>Макро-возможности:</strong></div>
+    <div>Макро объектив: {{ spec.is_macro }}</div>
+    <div>Рабочая дистанция, м: {{ spec.working_distance_m }}</div>
+</details>
 
 <h2>Совместимые телеконверторы</h2>
 {% for tс in teleconverters %}
