@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Request, Depends
 from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from loguru import logger
@@ -12,7 +11,6 @@ web_router = APIRouter(
     prefix='/cameras',
     tags=['Cameras'],
 )
-templates = Jinja2Templates(directory='templates')
 
 
 @web_router.get('/', name='cameras_list', response_class=HTMLResponse)

@@ -29,7 +29,7 @@
 
 <br>
 <!-- Спецификации -->
-<details>
+<details open>
     <summary>{{ _("Specifications") }}</summary>
 
     <br>
@@ -56,12 +56,40 @@
     <div>{{ _("Minimum aperture (mix f-number)") }}: <b>f/{{ spec.min_aperture }}</b></div>
     <div>{{ _("Number of diaphragm blades") }}: <b>{{ spec.aperture_blades }}</b></div>
     <div>{{ _("Type of aperture") }}: <b>{{ spec.type_diaphragm.value }}</b></div>
-    <div>{{ _("Rounding of diaphragm blades") }}: <b>{{ spec.aperture_blades_rounded }}</b></div>
+    <div>
+      {{ _("Rounding of diaphragm blades") }}:
+      <b class="{{ 'bool-true' if spec.aperture_blades_rounded else 'bool-false' }}">
+      {{ _("Yes") if spec.aperture_blades_rounded else _("No") }}
+      </b>
+    </div>
+
+    <br>
+    <!-- Фильтры-->
+    <div><strong>{{ _("Filters") }}:</strong></div>
+    <div>{{ _("Filter size") }}, mm: <b>{{ spec.filter_size_mm }}</b></div>
+    <div>
+      {{ _("Supports front filters") }}:
+      <b class="{{ 'bool-true' if spec.supports_front_filters else 'bool-false' }}">
+      {{ _("Yes") if spec.supports_front_filters else _("No") }}
+      </b>
+    </div>
+    <div>
+      {{ _("Rear filter holder") }}:
+      <b class="{{ 'bool-true' if spec.rear_filter_holder else 'bool-false' }}">
+      {{ _("Yes") if spec.rear_filter_holder else _("No") }}
+      </b>
+    </div>
+    <div>{{ _("Filter mount type") }}: <b>{{ spec.filter_mount_type.value }}</b></div>
 
     <br>
     <!-- Макро-возможности -->
     <div><strong>{{ _("Macro opportunities") }}:</strong></div>
-    <div>{{ _("Macro lens") }}: <b>{{ spec.is_macro }}</b></div>
+    <div>
+      {{ _("Macro lens") }}:
+      <b class="{{ 'bool-true' if spec.is_macro else 'bool-false' }}">
+      {{ _("Yes") if spec.is_macro else _("No") }}
+      </b>
+    </div>
     <div>{{ _("Working distance") }}, m: <b>{{ spec.working_distance_m }}</b></div>
 </details>
 

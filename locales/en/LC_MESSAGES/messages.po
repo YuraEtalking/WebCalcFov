@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-06-06 21:09+0300\n"
+"POT-Creation-Date: 2026-06-07 01:07+0300\n"
 "PO-Revision-Date: 2026-06-06 18:48+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -164,35 +164,43 @@ msgstr ""
 msgid "Type of aperture"
 msgstr ""
 
-#: templates/lens_detail.html:59
+#: templates/lens_detail.html:60
 msgid "Rounding of diaphragm blades"
 msgstr ""
 
-#: templates/lens_detail.html:63
-msgid "Macro opportunities"
+#: templates/lens_detail.html:62 templates/lens_detail.html:72
+msgid "Yes"
 msgstr ""
 
-#: templates/lens_detail.html:64
-msgid "Macro lens"
-msgstr ""
-
-#: templates/lens_detail.html:65
-msgid "Working distance"
+#: templates/lens_detail.html:62 templates/lens_detail.html:72
+msgid "No"
 msgstr ""
 
 #: templates/lens_detail.html:68
-msgid "Compatible teleconverters"
+msgid "Macro opportunities"
 msgstr ""
 
-#: templates/lens_detail.html:73
-msgid "Compatible cameras"
+#: templates/lens_detail.html:70
+msgid "Macro lens"
 msgstr ""
 
 #: templates/lens_detail.html:75
-msgid "via"
+msgid "Working distance"
 msgstr ""
 
 #: templates/lens_detail.html:78
+msgid "Compatible teleconverters"
+msgstr ""
+
+#: templates/lens_detail.html:83
+msgid "Compatible cameras"
+msgstr ""
+
+#: templates/lens_detail.html:85
+msgid "via"
+msgstr ""
+
+#: templates/lens_detail.html:88
 msgid "Reviews/Tests"
 msgstr ""
 

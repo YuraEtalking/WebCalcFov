@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-06-06 21:09+0300\n"
+"POT-Creation-Date: 2026-06-07 01:07+0300\n"
 "PO-Revision-Date: 2026-06-06 18:48+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -38,7 +38,6 @@ msgid "List of all cameras"
 msgstr "Список всех камер"
 
 #: templates/form.html:3 templates/form.html:6 templates/form.html:59
-
 msgid "Calculate"
 msgstr "Вычислять"
 
@@ -166,35 +165,43 @@ msgstr "Кол-во лепестков диафрагмы"
 msgid "Type of aperture"
 msgstr "Тип диафрагмы"
 
-#: templates/lens_detail.html:59
+#: templates/lens_detail.html:60
 msgid "Rounding of diaphragm blades"
 msgstr "Скругление лепестков диафрагмы"
 
-#: templates/lens_detail.html:63
+#: templates/lens_detail.html:62 templates/lens_detail.html:72
+msgid "Yes"
+msgstr "Да"
+
+#: templates/lens_detail.html:62 templates/lens_detail.html:72
+msgid "No"
+msgstr "Нет"
+
+#: templates/lens_detail.html:68
 msgid "Macro opportunities"
 msgstr "Макро-возможности"
 
-#: templates/lens_detail.html:64
+#: templates/lens_detail.html:70
 msgid "Macro lens"
 msgstr "Макро объектив"
 
-#: templates/lens_detail.html:65
+#: templates/lens_detail.html:75
 msgid "Working distance"
 msgstr "Рабочая дистанция"
 
-#: templates/lens_detail.html:68
+#: templates/lens_detail.html:78
 msgid "Compatible teleconverters"
 msgstr "Совместимые телеконверторы"
 
-#: templates/lens_detail.html:73
+#: templates/lens_detail.html:83
 msgid "Compatible cameras"
 msgstr "Совместимые камеры"
 
-#: templates/lens_detail.html:75
+#: templates/lens_detail.html:85
 msgid "via"
 msgstr "через"
 
-#: templates/lens_detail.html:78
+#: templates/lens_detail.html:88
 msgid "Reviews/Tests"
 msgstr "Обзоры/тесты"
 

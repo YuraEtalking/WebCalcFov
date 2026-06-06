@@ -185,4 +185,11 @@ input, textarea, select, button {
   color: #856404;
 }
 
+/* Цветные bool значения */
+.bool-true {
+  color: green;
+}
 
+.bool-false {
+  color: red;
+}
