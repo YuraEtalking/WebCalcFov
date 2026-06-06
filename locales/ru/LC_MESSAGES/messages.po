@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-06-06 17:53+0300\n"
-"PO-Revision-Date: 2026-06-06 17:53+0300\n"
+"POT-Creation-Date: 2026-06-06 21:09+0300\n"
+"PO-Revision-Date: 2026-06-06 18:48+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
 "Language-Team: ru <LL@li.org>\n"
@@ -19,11 +19,211 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: templates/lens_detail.html:9
+#: templates/camera_detail.html:7 templates/form.html:81
+msgid "Sensor"
+msgstr "Датчик"
+
+#: templates/camera_detail.html:8 templates/lens_detail.html:9
+#: templates/wiki.html:6
 msgid "Manufacturer"
 msgstr "Производитель"
 
-#: templates/lens_detail.html:10
+#: templates/camera_detail.html:9 templates/lens_detail.html:10
 msgid "Mount"
 msgstr "Байонет"
+
+#: templates/camera_list.html:3 templates/camera_list.html:6
+#: templates/manufacturer.html:8
+msgid "List of all cameras"
+msgstr "Список всех камер"
+
+#: templates/form.html:3 templates/form.html:6 templates/form.html:59
+
+msgid "Calculate"
+msgstr "Вычислять"
+
+#: templates/form.html:16 templates/form.html:79
+msgid "Camera"
+msgstr "Камера"
+
+#: templates/form.html:25
+msgid "Select a camera"
+msgstr "Выберите камеру"
+
+#: templates/form.html:44
+msgid "Distance to the subject in meters"
+msgstr "Расстояние до объекта в метрах"
+
+#: templates/form.html:51
+msgid "Enter the distance to the subject."
+msgstr "Введите расстояние до объекта съемки."
+
+#: templates/form.html:74
+msgid "Result"
+msgstr "Результат"
+
+#: templates/form.html:77
+msgid "Equipment"
+msgstr "Оборудование"
+
+#: templates/form.html:80 templates/partials/choice_lens_field.html:3
+msgid "Lens"
+msgstr "Объектив"
+
+#: templates/form.html:85
+msgid "Calculations"
+msgstr "Расчеты"
+
+#: templates/form.html:87 templates/lens_detail.html:18
+msgid "Focal length"
+msgstr "Фокусное расстояние"
+
+#: templates/form.html:89
+msgid "Teleconverter"
+msgstr "Телеконвертер"
+
+#: templates/form.html:91
+msgid "Frame width"
+msgstr "Ширина кадра"
+
+#: templates/form.html:92
+msgid "Frame height"
+msgstr "Высота кадра"
+
+#: templates/form.html:96
+msgid "Enter the data and click count"
+msgstr "Введите данные и нажмите кнопку подсчитать"
+
+#: templates/lens_detail.html:15
+msgid "Minimum focal length"
+msgstr "Минимальное фокусное расстояние"
+
+#: templates/lens_detail.html:16
+msgid "Maximum focal length"
+msgstr "Максимальное фокусное расстояние"
+
+#: templates/lens_detail.html:24
+msgid "Minimum aperture (max f-number)"
+msgstr "Минимальная диафрагма (max f-number)"
+
+#: templates/lens_detail.html:25
+msgid "Maximum aperture (max f-number)"
+msgstr "Максимальная диафрагма (max f-number)"
+
+#: templates/lens_detail.html:27
+msgid "Aperture (max f-number)"
+msgstr "Диафрагма (max f-number)"
+
+#: templates/lens_detail.html:33
+msgid "Specifications"
+msgstr "Спецификации"
+
+#: templates/lens_detail.html:37
+msgid "Lens design and type"
+msgstr "Конструкция и тип объектива"
+
+#: templates/lens_detail.html:38
+msgid "Lens Type"
+msgstr "Тип объектива"
+
+#: templates/lens_detail.html:39
+msgid "Construction"
+msgstr "Конструкция"
+
+#: templates/lens_detail.html:43
+msgid "Physical characteristics"
+msgstr "Физические характеристики"
+
+#: templates/lens_detail.html:44
+msgid "Length"
+msgstr "Длинна"
+
+#: templates/lens_detail.html:45
+msgid "Diameter"
+msgstr "Диаметр"
+
+#: templates/lens_detail.html:46
+msgid "Weight"
+msgstr "Вес"
+
+#: templates/lens_detail.html:50
+msgid "Sensor coverage format"
+msgstr "Формат покрытия матрицы"
+
+#: templates/lens_detail.html:55
+msgid "Aperture"
+msgstr "Диафрагма"
+
+#: templates/lens_detail.html:56
+msgid "Minimum aperture (mix f-number)"
+msgstr "Минимальная диафрагма (mix f-number)"
+
+#: templates/lens_detail.html:57
+msgid "Number of diaphragm blades"
+msgstr "Кол-во лепестков диафрагмы"
+
+#: templates/lens_detail.html:58
+msgid "Type of aperture"
+msgstr "Тип диафрагмы"
+
+#: templates/lens_detail.html:59
+msgid "Rounding of diaphragm blades"
+msgstr "Скругление лепестков диафрагмы"
+
+#: templates/lens_detail.html:63
+msgid "Macro opportunities"
+msgstr "Макро-возможности"
+
+#: templates/lens_detail.html:64
+msgid "Macro lens"
+msgstr "Макро объектив"
+
+#: templates/lens_detail.html:65
+msgid "Working distance"
+msgstr "Рабочая дистанция"
+
+#: templates/lens_detail.html:68
+msgid "Compatible teleconverters"
+msgstr "Совместимые телеконверторы"
+
+#: templates/lens_detail.html:73
+msgid "Compatible cameras"
+msgstr "Совместимые камеры"
+
+#: templates/lens_detail.html:75
+msgid "via"
+msgstr "через"
+
+#: templates/lens_detail.html:78
+msgid "Reviews/Tests"
+msgstr "Обзоры/тесты"
+
+#: templates/lens_list.html:3 templates/lens_list.html:7
+#: templates/manufacturer.html:9
+msgid "List of all lenses"
+msgstr "Список всех объективов"
+
+#: templates/includes/header.html:8
+msgid "Calculator"
+msgstr "Калькулятор"
+
+#: templates/includes/header.html:13
+msgid "Language"
+msgstr "Язык"
+
+#: templates/partials/choice_lens_field.html:12
+msgid "Choose a lens"
+msgstr "Выберите объектив"
+
+#: templates/partials/focal_field.html:2
+msgid "Select a teleconverter"
+msgstr "Выберите телеконвертер"
+
+#: templates/partials/focal_field.html:14
+msgid "Without a teleconverter"
+msgstr "Без телеконвертера"
+
+#: templates/partials/focal_field.html:39
+msgid "Select the focal length"
+msgstr "Выберите фокусное расстояние"
 
