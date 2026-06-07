@@ -39,7 +39,7 @@ def calculate_fov(
         selected_tc: float,
 ) -> dict[str, float]:
     """Высчитывает высоту и ширину кадра на заданном расстоянии."""
-    logger.debug('selected_tc="{}"', selected_tc)
+    # logger.debug('selected_tc="{}"', selected_tc)
 
     focal = get_focal(focal, selected_tc)
     fov_w, fov_h = get_degrees_fov(

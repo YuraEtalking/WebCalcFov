@@ -1,0 +1,23 @@
+{% extends "base_template.html" %}
+{% block title %}
+{{ _("index") }}
+{% endblock %}
+{% block content %}
+
+<div class="home-sections">
+  <div class="home-section">
+    <a class="home-card" href="{{ url_for('tools') }}">
+      <img src="{{ url_for('static', path='img/6a2568ec07f0771df1f183b3_tools.webp') }}" alt="">
+      <span class="home-card-title">{{ _("Tools") }}</span>
+    </a>
+  </div>
+
+  <div class="home-section">
+    <a class="home-card" href="{{ url_for('wiki') }}">
+      <img src="{{ url_for('static', path='img/6a25643a07f0771df1f183ad_wiki.webp') }}" alt="">
+      <span class="home-card-title">Wiki</span>
+    </a>
+  </div>
+</div>
+
+{% endblock %}

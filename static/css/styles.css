@@ -193,3 +193,54 @@ input, textarea, select, button {
 .bool-false {
   color: red;
 }
+
+/* главная */
+.home-sections {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  min-height: 400px;
+  gap: 20px;
+}
+
+.home-section {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.home-card img {
+  width: 100%;
+  height: auto;
+  max-height: calc(100vh - 140px);
+  object-fit: contain;
+  display: block;
+}
+
+.home-card-title {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 42px;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.75);
+  transition: transform 0.25s ease;
+  pointer-events: none;
+}
+
+.home-card:hover .home-card-title {
+  transform: translate(-50%, -50%) scale(1.08);
+}

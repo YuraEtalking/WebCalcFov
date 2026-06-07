@@ -9,10 +9,7 @@ from backend.services.fov_service import get_lens_data, EntityNotFoundError
 from backend.crud.camera import get_active_camera_with_sensor
 from backend.web.templates import render
 
-web_router = APIRouter(
-    prefix='/partials',
-    tags=['Partials'],
-)
+web_router = APIRouter(tags=['Partials'],)
 
 
 @web_router.get('/lens/focal-field', response_class=HTMLResponse)
@@ -33,7 +30,7 @@ async def get_focal_field(
     return render(
         request,
         'partials/focal_field.html',
-        **data
+        data
     )
 
 

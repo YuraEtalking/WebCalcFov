@@ -1,7 +1,7 @@
 import gettext
 
 from fastapi import Request
-
+from loguru import logger
 
 SUPPORTED_LANGUAGES = ['ru', 'en']
 DEFAULT_LANGUAGE = 'ru'
@@ -25,6 +25,7 @@ def get_locale(request: Request) -> str:
         return lang
 
     lang = request.cookies.get('lang')
+    logger.debug('lang="{}"', lang)
 
     if lang in SUPPORTED_LANGUAGES:
         return lang

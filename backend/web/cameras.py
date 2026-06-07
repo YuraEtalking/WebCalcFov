@@ -23,7 +23,7 @@ async def camera_list(
 
     return render(
         request,
-        'camera_list.html',
+        'wiki/camera_list.html',
         {'cameras': cameras, 'slug': slug, }
     )
 
@@ -40,6 +40,6 @@ async def camera_detail(
 
     return render(
         request,
-        'camera_detail.html',
+        'wiki/camera_detail.html',
         {'camera': camera, 'slug': slug, }
     )

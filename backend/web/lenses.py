@@ -22,7 +22,7 @@ async def lens_list(
     lenses = await get_active_lenses(session, slug)
     return render(
         request,
-        'lens_list.html',
+        'wiki/lens_list.html',
         {'lenses': lenses, 'slug': slug,}
     )
 
@@ -44,7 +44,7 @@ async def lens_detail(
 
     return render(
             request,
-            'lens_detail.html',
+            'wiki/lens_detail.html',
             {
                 'lens':  lens,
                 'slug':slug,

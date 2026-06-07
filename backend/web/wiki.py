@@ -9,9 +9,7 @@ from backend.models import Camera, Lens
 from backend.web.templates import render
 
 
-web_router = APIRouter(
-    prefix='/wiki',
-    tags=['Wiki'],)
+web_router = APIRouter(tags=['Wiki'])
 
 
 @web_router.get('/', name='wiki', response_class=HTMLResponse)
@@ -32,7 +30,7 @@ async def wiki(
 
     return render(
         request,
-        'wiki.html',
+        'wiki/manufacturer_list.html',
         {'manufacturers': manufacturers}
     )
 
@@ -46,6 +44,6 @@ async def wiki(
 async def manufacturer(request: Request, slug: str):
     return render(
         request,
-        'manufacturer.html',
+        'wiki/manufacturer.html',
         {'slug': slug}
     )

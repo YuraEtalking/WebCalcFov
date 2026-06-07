@@ -30,6 +30,12 @@ class LinkAdmin(ModelView):
     exclude_fields_from_list = [
         'url', 'description',
     ]
+    exclude_fields_from_create = [
+        'created_at', 'updated_at',
+    ]
+    exclude_fields_from_edit = [
+        'created_at', 'updated_at',
+    ]
 
     searchable_fields = ['title', 'url']
     sortable_fields = ['id', 'title']
