@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Request, Depends
 from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
 
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -8,12 +7,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from backend.core.db import get_async_session
 from backend.services.fov_service import get_lens_data, EntityNotFoundError
 from backend.crud.camera import get_active_camera_with_sensor
+from backend.web.templates import render
 
-web_router = APIRouter(
-    prefix='/partials',
-    tags=['Partials'],
-)
-templates = Jinja2Templates(directory='templates')
+web_router = APIRouter(tags=['Partials'],)
 
 
 @web_router.get('/lens/focal-field', response_class=HTMLResponse)
@@ -31,9 +27,10 @@ async def get_focal_field(
     except SQLAlchemyError:
         return HTMLResponse('', status_code=500)
 
-    return templates.TemplateResponse(
+    return render(
+        request,
         'partials/focal_field.html',
-        {'request': request, **data},
+        data
     )
 
 
@@ -52,7 +49,8 @@ async def get_choice_lens_field(
     except SQLAlchemyError:
         return HTMLResponse('', status_code=500)
 
-    return templates.TemplateResponse(
+    return render(
+        request,
         'partials/choice_lens_field.html',
-        {'request': request, 'lens_list': camera.compatible_lenses},
+        {'lens_list': camera.compatible_lenses}
     )

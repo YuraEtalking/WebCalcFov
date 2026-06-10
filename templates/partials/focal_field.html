@@ -1,5 +1,5 @@
 <div class="field">
-    <label for="focal">Выберите телеконвертор</label>
+    <label for="focal">{{ _("Select a teleconverter") }}</label>
     <div class="inline">
 
       <div class="inline-item">
@@ -11,7 +11,7 @@
            style="width:auto;"
            {% if teleconverter_id is none %}checked{% endif %}
         >
-        <label for="tc-none">Без телеконвертора</label>
+        <label for="tc-none">{{ _("Without a teleconverter") }}</label>
       </div>
 
       {% if teleconverters %}
@@ -25,7 +25,7 @@
                style="width:auto;"
                {% if teleconverter_id is not none and teleconverter_id == item.teleconverter_id %}checked{% endif %}
             >
-            <label for="tc-{{ loop.index }}">{{ item.multiplier }}х</label>
+            <label for="tc-{{ loop.index }}">{{ item.multiplier }}x</label>
           </div>
         {% endfor %}
       {% endif %}
@@ -36,7 +36,7 @@
 
 {% if lens and lens.focal_wide != lens.focal_tele %}
 
-    <label for="focal">Выберите фокусное расстояние, мм</label>
+    <label for="focal">{{ _("Select the focal length") }}, mm</label>
 
     <input
         type="range"
@@ -49,5 +49,5 @@
         oninput="document.getElementById('focal-output').value = this.value"
     >
 
-    <output id="focal-output">{{ focal or lens.focal_tele }}</output> мм
+    <output id="focal-output">{{ focal or lens.focal_tele }}</output> mm
 {% endif %}

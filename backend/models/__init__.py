@@ -5,4 +5,12 @@ from .sensor import Sensor
 from .teleconverter import Teleconverter
 from .link import Link
 from .specs.lens_spec import SpecLens
-from .enums import BayonetType, ConstructionType, CompatibilityType, LensType
+from .enums import (
+    BayonetType,
+    SensorFormat,
+    ConstructionType,
+    CompatibilityType,
+    LensType,
+    TypeDiaphragm,
+    FilterMountType,FocusType,AutofocusMotorType,ZoomType
+)

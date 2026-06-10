@@ -1,0 +1,37 @@
+{% extends "base_template.html" %}
+{% block title %}
+{{ lens.name }}
+{% endblock %}
+{% block content %}
+
+
+<div class="wiki_detail-page">
+
+  <!-- Спеки/паспорт -->
+  <main class="main-detail">
+    {% include "wiki/lens_includes/specs.html" %}
+  </main>
+
+   <!-- фото -->
+  <aside class="sidebar">
+    <section class="card">
+      <h3>фото</h3>
+      <img src="{{ url_for('static', path='img/lens/0121_IMG_0134-600x600.jpg') }}" alt="">
+      <img src="{{ url_for('static', path='img/lens/Nikon-800mm-f5.6E-FL-ED-VR.jpg') }}" alt="">
+      <img src="{{ url_for('static', path='img/lens/Nikon-800mm-f5.6E-FL-ED-VR-lens-unboxing-300x180.jpg') }}" alt="">
+    </section>
+
+    <!-- примеры файлов -->
+    <section class="card">
+      <h3>примеры файлов</h3>
+    </section>
+
+    <!-- Доп блок -->
+    <section class="card">
+      <h3>Доп блок</h3>
+    </section>
+  </aside>
+</div>
+
+
+{% endblock %}

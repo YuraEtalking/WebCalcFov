@@ -1,0 +1,11 @@
+{% extends "base_template.html" %}
+{% block title %}
+{{ _("Tools") }}
+{% endblock %}
+{% block content %}
+
+<h1>{{ _("Tools") }}</h1>
+<a href="{{ url_for('fov') }}">{{ _("Calculator") }} FoV</a>
+
+
+{% endblock %}

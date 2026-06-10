@@ -1,9 +1,9 @@
 {% extends "base_template.html" %}
 {% block title %}
-Список всех камер
+{{ _("List of all cameras") }}
 {% endblock %}
 {% block content %}
-<h1>Список всех камер</h1>
+<h1>{{ _("List of all cameras") }}</h1>
 {% for camera in cameras %}
     <li><a href="{{ url_for('camera_detail', slug=camera.manufacturer, camera_id=camera.id) }}" >{{ camera.name }}</a></li>
 {% endfor %}

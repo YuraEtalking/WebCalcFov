@@ -3,6 +3,15 @@ from starlette_admin import (
 )
 from starlette_admin.contrib.sqla import ModelView
 
+from backend.models import (
+    SpecLens,
+    BayonetType,
+    ConstructionType,
+    LensType,
+    SensorFormat,
+    TypeDiaphragm
+)
+
 
 class SensorAdmin(ModelView):
     label = 'Сенсоры'
@@ -12,6 +21,8 @@ class SensorAdmin(ModelView):
         IntegerField('id', label='ID'),
         StringField('manufacturer', label='Производитель'),
         StringField('name', label='Название'),
+
+
         FloatField('width', label='Ширина мм'),
         FloatField('height', label='Высота мм'),
         FloatField(
@@ -21,6 +32,15 @@ class SensorAdmin(ModelView):
             exclude_from_create=True,
             exclude_from_edit=True,
         ),
+
+        EnumField(
+            'sensor_format',
+            label='Формат сенсора',
+            enum=SensorFormat,
+            help_text='При не стандартизированных размерах указывать "Не стандартизированный"',
+        ),
+
+        # Статус и даты создания/редактирования
         BooleanField('is_active', label='Статус'),
         DateTimeField(
             'created_at',

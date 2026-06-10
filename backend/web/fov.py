@@ -2,15 +2,13 @@ from pydantic import ValidationError as PydanticValidationError
 
 from fastapi import APIRouter, Form, Request, Depends
 from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
-from loguru import logger
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.core.db import get_async_session
-from backend.core.constants import ERROR_LOAD_IN_DB
+from backend.core.constants.message_constants import ERROR_LOAD_IN_DB
+from backend.web.templates import render
 from backend.crud.camera import get_active_cameras
-from backend.crud.lens import get_active_lenses
 from backend.schemas.fov import FovCalcInput
 from backend.services.fov_service import (
     prepare_fov_response_data,
@@ -21,7 +19,6 @@ from backend.services.fov_service import (
 
 
 web_router = APIRouter(tags=['FOV'])
-templates = Jinja2Templates(directory='templates')
 
 
 async def render_form(
@@ -53,7 +50,7 @@ async def render_form(
     if context:
         template_context.update(context)
 
-    return templates.TemplateResponse('form.html', template_context)
+    return render(request, 'tools/calculator_fov.html', template_context)
 
 
 
@@ -65,8 +62,8 @@ async def show_form(
     return await render_form(request=request, session=session)
 
 
-@web_router.post('/', response_class=HTMLResponse)
-async def submit_form(
+@web_router.post('/', name='fov_submit', response_class=HTMLResponse)
+async def fov_submit(
         request: Request,
         camera_id: int = Form(...),
         lens_id: int = Form(...),

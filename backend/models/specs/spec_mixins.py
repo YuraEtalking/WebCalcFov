@@ -5,7 +5,7 @@ from sqlalchemy import Boolean, DateTime, Enum, Integer, String, func
 
 from starlette.requests import Request
 
-from backend.core.constants import MANUFACTURER_MAX_LEN, NAME_MAX_LEN
+from backend.core.constants.constants import MANUFACTURER_MAX_LEN, NAME_MAX_LEN
 from backend.models.enums import BayonetType
 
 

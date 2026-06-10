@@ -9,7 +9,7 @@ async def get_active_lenses(session: AsyncSession, manufacturer=None):
     """Получаем список активных объективов."""
     stmt = select(
         Lens
-    ).where(Lens.is_active.is_(True)).order_by(Lens.focal_max)
+    ).where(Lens.is_active.is_(True)).order_by(Lens.focal_tele)
 
     if manufacturer is not None:
         stmt = stmt.where(Lens.manufacturer == manufacturer)

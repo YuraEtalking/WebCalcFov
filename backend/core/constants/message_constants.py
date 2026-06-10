@@ -1,11 +1,3 @@
-# Длины полей.
-MANUFACTURER_MAX_LEN = 150
-NAME_MAX_LEN = 225
-
-# Для высчитывания кропа.
-FULL_FRAME_DIAGONAL = 43.27
-
-
 # Сообщения.
 WARNING_CAMERA_AND_LENS_INCOMPATIBILITY = ('Выбранная камера и объектив '
                                            'несовместимы из-за разных '

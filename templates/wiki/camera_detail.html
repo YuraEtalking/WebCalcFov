@@ -1,0 +1,10 @@
+{% extends "base_template.html" %}
+{% block title %}
+{{ camera.name }}
+{% endblock %}
+{% block content %}
+<h1>{{ camera.name }}</h1>
+<li>{{ _("Sensor") }}: {{ camera.sensor}}</li>
+<li>{{ _("Manufacturer") }}: {{ camera.manufacturer}}</li>
+<li>{{ _("Mount") }}: {{ camera.bayonet.name}}</li>
+{% endblock %}

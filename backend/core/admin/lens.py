@@ -42,17 +42,6 @@ class LensAdmin(ModelView):
             'aperture_max_tele',
             label='Максимальная диафрагма в теле режиме',
         ),
-        BooleanField('is_active', label='Статус'),
-        DateTimeField(
-            'created_at',
-            label='Дата создания записи',
-            read_only=True,
-        ),
-        DateTimeField(
-            'updated_at',
-            label='Дата обновления записи',
-            read_only=True,
-        ),
         HasMany('links', label='Ссылки', identity='link'),
         HasMany(
             'compatible_cameras',
@@ -65,6 +54,23 @@ class LensAdmin(ModelView):
             identity='teleconverter',
         ),
         HasOne('spec', label='Спецификации', identity='speclens'),
+
+
+        BooleanField(
+            'is_active',
+            label='Запись активна',
+            help_text='Снимите отметку, чтобы отключить запись без удаления.'
+        ),
+        DateTimeField(
+            'created_at',
+            label='Дата создания записи',
+            read_only=True,
+        ),
+        DateTimeField(
+            'updated_at',
+            label='Дата обновления записи',
+            read_only=True,
+        ),
     ]
 
     exclude_fields_from_list = [

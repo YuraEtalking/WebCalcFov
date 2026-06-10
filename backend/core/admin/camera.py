@@ -15,9 +15,19 @@ class CameraAdmin(ModelView):
         EnumField('bayonet', label='Байонет', enum=BayonetType),
         HasMany('compatible_lenses', label='Совместимые объективы', identity='lens'),
         HasOne('sensor', label='Сенсор', identity='sensor'),
-        DateTimeField('created_at', label='Дата создания записи', read_only=True),
-        DateTimeField('updated_at', label='Дата обновления записи', read_only=True),
+
+        # Статус и даты создания/редактирования
         BooleanField('is_active', label='Статус'),
+        DateTimeField(
+            'created_at',
+            label='Дата создания записи',
+            read_only=True,
+        ),
+        DateTimeField(
+            'updated_at',
+            label='Дата обновления записи',
+            read_only=True,
+        ),
     ]
 
     exclude_fields_from_list = ['compatible_lenses']

@@ -1,10 +1,10 @@
 {% extends "base_template.html" %}
 {% block title %}
-Список всех объективов
+{{ _("List of all lenses") }}
 {% endblock %}
 {% block content %}
 
-<h1>Список всех объективов</h1>
+<h1>{{ _("List of all lenses") }}</h1>
 {% for lens in lenses %}
     <li><a href="{{ url_for('lens_detail', slug=lens.manufacturer, lens_id=lens.id) }}" >{{ lens.name }}</a></li>
 {% endfor %}

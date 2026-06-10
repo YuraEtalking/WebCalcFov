@@ -1,13 +1,11 @@
 import math
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Float
+from sqlalchemy import Float, Enum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from starlette.requests import Request
-
 from backend.core.db import Base
-from backend.core.constants import FULL_FRAME_DIAGONAL
+from backend.core.constants.sensor_constants import FULL_FRAME_DIAGONAL
 from backend.models.mixins import (
     IdMixin,
     ActiveMixin,
@@ -15,6 +13,7 @@ from backend.models.mixins import (
     TimeFieldsMixin,
     CommonFieldsMixin,
 )
+from backend.models.enums import SensorFormat
 
 
 if TYPE_CHECKING:
@@ -30,13 +29,19 @@ class Sensor(
     CommonFieldsMixin,
 ):
     """Модель датчика изображения."""
-    width: Mapped[float] = mapped_column(Float)
-    height: Mapped[float] = mapped_column(Float)
-
     cameras: Mapped[list['Camera']] = relationship(
         back_populates='sensor',
         cascade='all, delete-orphan',
     )
+
+    sensor_format: Mapped[SensorFormat] = mapped_column(
+        Enum(SensorFormat, name='sensor_format_enum'),
+        nullable=False,
+        default=SensorFormat.FULL_FRAME,
+    )
+
+    width: Mapped[float] = mapped_column(Float)
+    height: Mapped[float] = mapped_column(Float)
 
     @property
     def crop_factor(self) -> float:

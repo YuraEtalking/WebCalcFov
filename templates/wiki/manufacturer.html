@@ -1,0 +1,10 @@
+{% extends "base_template.html" %}
+{% block title %}
+{{ slug }}
+{% endblock %}
+{% block content %}
+<h1>{{ slug }}</h1>
+
+<a href="{{ url_for('cameras_list', slug=slug) }}">{{ _("List of all cameras") }} {{ slug }}</a>
+<a href="{{ url_for('lens_list', slug=slug) }}">{{ _("List of all lenses") }} {{ slug }}</a>
+{% endblock %}

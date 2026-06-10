@@ -1,18 +1,15 @@
 from fastapi import APIRouter, Request, Depends
 from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
 
 from sqlalchemy import select, union
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.core.db import get_async_session
 from backend.models import Camera, Lens
+from backend.web.templates import render
 
 
-web_router = APIRouter(
-    prefix='/wiki',
-    tags=['Wiki'],)
-templates = Jinja2Templates(directory='templates')
+web_router = APIRouter(tags=['Wiki'])
 
 
 @web_router.get('/', name='wiki', response_class=HTMLResponse)
@@ -31,9 +28,11 @@ async def wiki(
     result = await session.scalars(stmt)
     manufacturers = result.all()
 
-    return templates.TemplateResponse(
-        'wiki.html',
-        {'request': request, 'manufacturers': manufacturers})
+    return render(
+        request,
+        'wiki/manufacturer_list.html',
+        {'manufacturers': manufacturers}
+    )
 
 
 
@@ -43,7 +42,8 @@ async def wiki(
     response_class=HTMLResponse
 )
 async def manufacturer(request: Request, slug: str):
-    return templates.TemplateResponse(
-        'manufacturer.html',
-        {'request': request, 'slug': slug}
+    return render(
+        request,
+        'wiki/manufacturer.html',
+        {'slug': slug}
     )

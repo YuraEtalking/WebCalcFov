@@ -1,0 +1,3 @@
+# Длины полей.
+MANUFACTURER_MAX_LEN = 150
+NAME_MAX_LEN = 225

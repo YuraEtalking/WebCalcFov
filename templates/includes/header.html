@@ -1,14 +1,21 @@
 <header>
   <div class="header-inner">
-    <img
-      class="header-icon"
-      src="{{ url_for('static', path='fav/favicon.svg') }}"
-      alt=""
-    >
-    <a href="{{ url_for('fov') }}"><h1>Калькулятор FoV</h1></a>
+      <a href="{{ url_for('index_page') }}">
+          <img
+          class="header-icon"
+          src="{{ url_for('static', path='fav/favicon.svg') }}"
+          alt=""
+          >
+      </a>
   </div>
 
   <div class="header-inner">
+    <a href="{{ url_for('tools') }}">{{ _("Tools") }}</a>
+    <b>|</b>
     <a href="{{ url_for('wiki') }}">Wiki</a>
+    <b>|</b>
+    <b>{{ _("Language") }}: </b>
+    <a href="{{ language_url('ru') }}">RU</a>
+    <a href="{{ language_url('en') }}">EN</a>
   </div>
 </header>
