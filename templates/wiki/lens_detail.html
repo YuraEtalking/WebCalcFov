@@ -4,238 +4,34 @@
 {% endblock %}
 {% block content %}
 
-<!-- Общие данные -->
-<h1>{{ lens.name }}</h1>
-<li>{{ _("Manufacturer") }}: <b>{{ lens.manufacturer }}</b></li>
-<li>{{ _("Mount") }}: <b>{{ lens.bayonet.name }}</b></li>
 
+<div class="wiki_detail-page">
 
-<!-- Фокусное расстояние -->
-{% if lens.focal_wide != lens.focal_tele %}
-  <li>{{ _("Minimum focal length") }}, mm: <b>{{ lens.focal_wide }}</b></li>
-  <li>{{ _("Maximum focal length") }}, mm: <b>{{ lens.focal_tele }}</b></li>
-{% else %}
-  <li>{{ _("Focal length") }}, mm: <b>{{ lens.focal_wide }}</b></li>
-{% endif %}
+  <!-- Спеки/паспорт -->
+  <main class="main-detail">
+    {% include "wiki/lens_includes/specs.html" %}
+  </main>
 
+   <!-- фото -->
+  <aside class="sidebar">
+    <section class="card">
+      <h3>фото</h3>
+      <img src="{{ url_for('static', path='img/lens/0121_IMG_0134-600x600.jpg') }}" alt="">
+      <img src="{{ url_for('static', path='img/lens/Nikon-800mm-f5.6E-FL-ED-VR.jpg') }}" alt="">
+      <img src="{{ url_for('static', path='img/lens/Nikon-800mm-f5.6E-FL-ED-VR-lens-unboxing-300x180.jpg') }}" alt="">
+    </section>
 
-<!-- Диафрагма (max f-number) -->
-{% if lens.aperture_max_tele != lens.aperture_max_wide %}
-  <li>{{ _("Minimum aperture (max f-number)") }}: <b>f/{{ lens.aperture_max_wide }}</b></li>
-  <li>{{ _("Maximum aperture (max f-number)") }}: <b>f/{{ lens.aperture_max_tele }}</b></li>
-{% else %}
-  <li>{{ _("Aperture (max f-number)") }}: <b>f/{{ lens.aperture_max_tele }}</b></li>
-{% endif %}
+    <!-- примеры файлов -->
+    <section class="card">
+      <h3>примеры файлов</h3>
+    </section>
 
-<br>
-<!-- Спецификации -->
-<details> <!-- open -->
-    <summary>{{ _("Specifications") }}</summary>
+    <!-- Доп блок -->
+    <section class="card">
+      <h3>Доп блок</h3>
+    </section>
+  </aside>
+</div>
 
-
-    <br>
-    <!-- Конструкция и тип объектива -->
-    <div><strong>{{ _("Lens design and type") }}:</strong></div>
-    <div>{{ _("Lens Type") }}: <b>{{ spec.lens_type.value }}</b></div>
-    <div>{{ _("Construction") }}: <b>{{ spec.construction_type }}</b></div>
-
-
-    <br>
-    <!-- Физические характеристики -->
-    <div><strong>{{ _("Physical characteristics") }}:</strong></div>
-    <div>{{ _("Length") }}, mm: <b>{{ spec.length_mm }}</b></div>
-    <div>{{ _("Diameter") }}, mm: <b>{{ spec.diameter_mm }}</b></div>
-    <div>{{ _("Weight") }}, g: <b>{{ spec.weight_g }}</b></div>
-
-
-    <br>
-    <!-- Формат покрытия матрицы -->
-    <div><strong>{{ _("Sensor coverage format") }}:</strong></div>
-    <div>{{ spec.coverage_format.value }}</div>
-
-
-    <br>
-    <!-- Диафрагма spec -->
-    <div><strong>{{ _("Aperture") }}:</strong></div>
-    <div>{{ _("Minimum aperture (mix f-number)") }}: <b>f/{{ spec.min_aperture }}</b></div>
-    <div>{{ _("Number of diaphragm blades") }}: <b>{{ spec.aperture_blades }}</b></div>
-    <div>{{ _("Type of aperture") }}: <b>{{ spec.type_diaphragm.value }}</b></div>
-    <div>
-      {{ _("Rounding of diaphragm blades") }}:
-      <b class="{{ 'bool-true' if spec.aperture_blades_rounded else 'bool-false' }}">
-      {{ _("Yes") if spec.aperture_blades_rounded else _("No") }}
-      </b>
-    </div>
-
-
-    <br>
-    <!-- Фильтры -->
-    <div><strong>{{ _("Filters") }}:</strong></div>
-    <div>{{ _("Filter size") }}, mm: <b>{{ spec.filter_size_mm }}</b></div>
-    <div>
-      {{ _("Supports front filters") }}:
-      <b class="{{ 'bool-true' if spec.supports_front_filters else 'bool-false' }}">
-      {{ _("Yes") if spec.supports_front_filters else _("No") }}
-      </b>
-    </div>
-    <div>
-      {{ _("Rear filter holder") }}:
-      <b class="{{ 'bool-true' if spec.rear_filter_holder else 'bool-false' }}">
-      {{ _("Yes") if spec.rear_filter_holder else _("No") }}
-      </b>
-    </div>
-    <div>{{ _("Filter mount type") }}: <b>{{ spec.filter_mount_type.value }}</b></div>
-
-
-    <br>
-    <!-- Фокусировка -->
-    <div><strong>{{ _("Focusing") }}:</strong></div>
-    <div>{{ _("Focus type") }}: <b>{{ spec.focus_type.value }}</b></div>
-    <div>
-      {{ _("Autofocus") }}:
-      <b class="{{ 'bool-true' if spec.autofocus else 'bool-false' }}">
-      {{ _("Yes") if spec.autofocus else _("No") }}
-      </b>
-    </div>
-    <div>
-      {{ _("Full time manual focus") }}:
-      <b class="{{ 'bool-true' if spec.full_time_manual_focus else 'bool-false' }}">
-      {{ _("Yes") if spec.full_time_manual_focus else _("No") }}
-      </b>
-    </div>
-    <div>{{ _("Min focus distance") }}, m: <b>{{ spec.min_focus_distance_m }}</b></div>
-    <div>{{ _("Autofocus motor type") }}: <b>{{ spec.autofocus_motor_type.value }}</b></div>
-    <div>{{ _("Brand name autofocus") }}: <b>{{ spec.brand_name_autofocus }}</b></div>
-
-
-    <br>
-    <!-- Стабилизация -->
-    <div><strong>{{ _("Stabilization") }}:</strong></div>
-    <div>
-      {{ _("Image stabilization") }}:
-      <b class="{{ 'bool-true' if spec.image_stabilization else 'bool-false' }}">
-      {{ _("Yes") if spec.image_stabilization else _("No") }}
-      </b>
-    </div>
-    <div>{{ _("Stabilization name") }}: <b>{{ spec.stabilization_name }}</b></div>
-    <div>{{ _("Stabilization stops") }}: <b>{{ spec.stabilization_stops }}</b></div>
-
-
-    <br>
-    <!-- Зум -->
-    <div><strong>{{ _("Zoom") }}:</strong></div>
-    <div>{{ _("Zoom type") }}: <b>{{ spec.zoom_type.value }}</b></div>
-    <div>
-      {{ _("Internal zoom") }}:
-      <b class="{{ 'bool-true' if spec.internal_zoom else 'bool-false' }}">
-      {{ _("Yes") if spec.internal_zoom else _("No") }}
-      </b>
-    </div>
-    <div>
-      {{ _("Zoom lock") }}:
-      <b class="{{ 'bool-true' if spec.zoom_lock else 'bool-false' }}">
-      {{ _("Yes") if spec.zoom_lock else _("No") }}
-      </b>
-    </div>
-
-
-    <br>
-    <!-- Макро-возможности -->
-    <div><strong>{{ _("Macro opportunities") }}:</strong></div>
-    <div>
-      {{ _("Macro lens") }}:
-      <b class="{{ 'bool-true' if spec.is_macro else 'bool-false' }}">
-      {{ _("Yes") if spec.is_macro else _("No") }}
-      </b>
-    </div>
-    <div>{{ _("Working distance") }}, m: <b>{{ spec.working_distance_m }}</b></div>
-    <div>{{ _("Max magnification") }}: <b>{{ spec.max_magnification }}x</b></div>
-
-
-    <br>
-    <!-- Углы обзора объектива, вычисляемые поля -->
-    <div><strong>{{ _("Lens viewing angles") }}:</strong></div>
-    {% if lens.focal_wide != lens.focal_tele %}
-    <div>{{ _("Angle of view wide") }}: <b>{{ spec.angle_of_view_wide }}</b></div>
-    <div>{{ _("Angle of view tele") }}: <b>{{ spec.angle_of_view_tele }}</b></div>
-    {% else %}
-    <div>{{ _("Angle of view") }}: <b>{{ spec.angle_of_view_tele }}</b></div>
-    {% endif %}
-
-
-    <br>
-    <!-- Бленда и аксессуары -->
-    <div><strong>{{ _("Accessories") }}:</strong></div>
-    <div>{{ _("Hood model") }}: <b>{{ spec.hood_model }}</b></div>
-    <div>
-      {{ _("Hood included") }}:
-      <b class="{{ 'bool-true' if spec.hood_included else 'bool-false' }}">
-      {{ _("Yes") if spec.hood_included else _("No") }}
-      </b>
-    </div>
-    <div>
-      {{ _("Tripod collar included") }}:
-      <b class="{{ 'bool-true' if spec.tripod_collar_included else 'bool-false' }}">
-      {{ _("Yes") if spec.tripod_collar_included else _("No") }}
-      </b>
-    </div>
-    <div>
-      {{ _("Tripod collar removable") }}:
-      <b class="{{ 'bool-true' if spec.tripod_collar_removable else 'bool-false' }}">
-      {{ _("Yes") if spec.tripod_collar_removable else _("No") }}
-      </b>
-    </div>
-    <div>
-      {{ _("Case included") }}:
-      <b class="{{ 'bool-true' if spec.case_included else 'bool-false' }}">
-      {{ _("Yes") if spec.case_included else _("No") }}
-      </b>
-    </div>
-
-
-    <br>
-    <!-- Комплект поставки -->
-    <div><strong>{{ _("Scope of delivery") }}:</strong></div>
-    <div>{{ _("Supplied accessories") }}: <b>{{ spec.supplied_accessories }}</b></div>
-
-
-    <br>
-    <!-- Дополнительно -->
-    <div><strong>{{ _("Additionally") }}:</strong></div>
-    <div>
-      {{ _("Weather sealing") }}:
-      <b class="{{ 'bool-true' if spec.weather_sealing else 'bool-false' }}">
-      {{ _("Yes") if spec.weather_sealing else _("No") }}
-      </b>
-    </div>
-    <div>
-      {{ _("Dust moisture resistant") }}:
-      <b class="{{ 'bool-true' if spec.dust_moisture_resistant else 'bool-false' }}">
-      {{ _("Yes") if spec.dust_moisture_resistant else _("No") }}
-      </b>
-    </div>
-    <div>
-      {{ _("Fluorine_coating") }}:
-      <b class="{{ 'bool-true' if spec.fluorine_coating else 'bool-false' }}">
-      {{ _("Yes") if spec.fluorine_coating else _("No") }}
-      </b>
-    </div>
-
-</details>
-
-<h2>{{ _("Compatible teleconverters") }}:</h2>
-{% for tс in teleconverters %}
-    <li>{{ tс.name }}</li>
-{% endfor %}
-
-<h2>{{ _("Compatible cameras") }}:</h2>
-{% for camera in camera_lenses %}
-    <li><a href="{{ url_for('camera_detail', slug=camera.camera.manufacturer, camera_id=camera.camera_id) }}" >{{ camera.camera }} {{ _("via") }} {{ camera.convertor.value }}</a></li>
-{% endfor %}
-
-<h2>{{ _("Reviews/Tests") }}:</h2>
-{% for link in links %}
-    <li><a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">{{ link.title }}</a></li>
-{% endfor %}
 
 {% endblock %}
