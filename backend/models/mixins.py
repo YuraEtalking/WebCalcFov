@@ -70,11 +70,19 @@ class AdminReprMixin:
 
     По умолчанию использует поле `name`.
     Чтобы переопределить, задайте `__admin_repr_field__` в модели.
+    Поддерживает вложенные поля связанных моделей 'lens.name'.
     """
     __admin_repr_field__: str = 'name'
 
     def _get_admin_repr_value(self) -> str:
-        return getattr(self, self.__admin_repr_field__, '') or ''
+        value = self
+
+        for field in self.__admin_repr_field__.split('.'):
+            value = getattr(value, field, None)
+            if value is None:
+                return ''
+
+        return str(value)
 
     async def __admin_repr__(self, request: Request) -> str:
         return self._get_admin_repr_value()

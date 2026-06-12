@@ -40,7 +40,12 @@ async def lens_detail(
         session: AsyncSession = Depends(get_async_session)
 ):
     lens = await get_active_lens_with_teleconverters(lens_id, session)
-    logger.debug('lens.camera_lenses="{}"', lens.camera_lenses)
+    images = [
+        link.image for link in lens.image_links if link.role == 'photo' and link.image is not None
+    ]
+    mtfs = [link.image for link in lens.image_links if link.role == 'mtf' and link.image is not None]
+    logger.debug('images="{}"', images)
+    logger.debug('mtfs="{}"', mtfs)
 
     return render(
             request,
@@ -53,5 +58,7 @@ async def lens_detail(
                 'compatible_cameras': lens.compatible_cameras,
                 'camera_lenses': lens.camera_lenses,
                 'spec': lens.spec,
+                'images': images,
+                'mtfs': mtfs,
             }
         )

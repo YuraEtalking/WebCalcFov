@@ -12,7 +12,7 @@ class CameraLensAdmin(ModelView):
         HasOne('camera', label='Камера', identity='camera'),
         HasOne('lens', label='Объектив', identity='lens'),
         EnumField(
-            'type_lens',
+            'convertor',
             label='Тип подключения',
             enum=CompatibilityType,
             help_text='Выберите тип подключения прямое соединение(DIRECT) или '

@@ -1,8 +1,8 @@
 from sqlalchemy import select
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import joinedload, with_loader_criteria
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.models import Lens, CameraLens
+from backend.models import Lens, CameraLens, LensImageLink, Image, Camera, Teleconverter
 
 
 async def get_active_lenses(session: AsyncSession, manufacturer=None):
@@ -29,6 +29,11 @@ async def get_active_lens_with_teleconverters(lens_id, session: AsyncSession):
         joinedload(Lens.compatible_cameras),
         joinedload(Lens.camera_lenses).joinedload(CameraLens.camera),
         joinedload(Lens.spec),
+        joinedload(Lens.image_links).joinedload(LensImageLink.image),
+
+        with_loader_criteria(Image, Image.is_active.is_(True)),
+        with_loader_criteria(Camera, Camera.is_active.is_(True)),
+        with_loader_criteria(Teleconverter, Teleconverter.is_active.is_(True)),
     ).where(
         Lens.id == lens_id,
         Lens.is_active.is_(True)

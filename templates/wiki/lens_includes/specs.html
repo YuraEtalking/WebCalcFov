@@ -224,7 +224,14 @@
 
 <h2>{{ _("Compatible cameras") }}:</h2>
 {% for camera in camera_lenses %}
-    <li><a href="{{ url_for('camera_detail', slug=camera.camera.manufacturer, camera_id=camera.camera_id) }}" >{{ camera.camera }} {{ _("via") }} {{ camera.convertor.value }}</a></li>
+    <li><a
+            href="{{ url_for('camera_detail', slug=camera.camera.manufacturer, camera_id=camera.camera_id) }}"
+        >
+        <b>{{ camera.camera }}</b>
+        </a>
+        {{ _("connect") }}
+        <b>{{ _("Direct") if camera.convertor.value=='direct' else _("With convertor") }}</b>
+    </li>
 {% endfor %}
 
 <h2>{{ _("Reviews/Tests") }}:</h2>

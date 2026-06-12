@@ -21,6 +21,7 @@ if TYPE_CHECKING:
     from .associative_model import CameraLens
     from .sensor import Sensor
     from .link import Link
+    from .image import CameraImageLink
 
 
 class Camera(
@@ -47,6 +48,10 @@ class Camera(
         secondary='link_camera',
         back_populates='cameras',
         order_by='Link.created_at',
+    )
+    image_links: Mapped[list['CameraImageLink']] = relationship(
+        back_populates='camera',
+        cascade='all, delete-orphan',
     )
 
     def __str__(self):
