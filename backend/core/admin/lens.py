@@ -55,7 +55,7 @@ class LensAdmin(ModelView):
         ),
         HasOne('spec', label='Спецификации', identity='speclens'),
 
-
+        # Статус и даты создания/редактирования
         BooleanField(
             'is_active',
             label='Запись активна',

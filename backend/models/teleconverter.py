@@ -3,8 +3,6 @@ from typing import TYPE_CHECKING
 from sqlalchemy import Float
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from starlette.requests import Request
-
 from backend.core.db import Base
 from backend.models.mixins import (
     IdMixin,
@@ -14,11 +12,11 @@ from backend.models.mixins import (
     CommonFieldsMixin,
     TimeFieldsMixin,
 )
-from backend.models.enums import ConstructionType
 
 if TYPE_CHECKING:
     from .lens import Lens
     from .link import Link
+    from .image import TeleconverterImageLink
 
 
 class Teleconverter(
@@ -39,6 +37,10 @@ class Teleconverter(
         secondary='link_teleconverter',
         back_populates='teleconverters',
         order_by='Link.created_at',
+    )
+    image_links: Mapped[list['TeleconverterImageLink']] = relationship(
+        back_populates='teleconverter',
+        cascade='all, delete-orphan',
     )
 
     multiplier: Mapped[float] = mapped_column(Float)

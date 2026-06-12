@@ -9,10 +9,11 @@ from .lens_spec import SpecLensAdmin
 from .sensor import SensorAdmin
 from .teleconverter import TeleconverterAdmin
 from .link import LinkAdmin
+from .image import ImageAdmin, LensImageLinkAdmin
 
 from backend.models import (
     Camera, Lens, Sensor, CameraLens,
-    Teleconverter, Link, SpecLens,
+    Teleconverter, Link, SpecLens, Image, LensImageLink
 )
 
 sync_engine = create_engine(settings.database_sync_url)
@@ -31,5 +32,7 @@ def setup_admin(app):
     admin.add_view(TeleconverterAdmin(Teleconverter, icon='fa fa-less-than'))
     admin.add_view(LinkAdmin(Link, icon='fa fa-link'))
     admin.add_view(SpecLensAdmin(SpecLens, icon='fa fa-list'))
+    admin.add_view(ImageAdmin(Image, icon='fa fa-list'))
+    admin.add_view(LensImageLinkAdmin(LensImageLink, icon='fa fa-list'))
     admin.mount_to(app)
 

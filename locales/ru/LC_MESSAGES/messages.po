@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-06-07 16:50+0300\n"
+"POT-Creation-Date: 2026-06-12 19:14+0300\n"
 "PO-Revision-Date: 2026-06-06 18:48+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -19,11 +19,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: templates/index.html:3
+#: templates/index_page.html:3
 msgid "index"
 msgstr "Главная"
 
-#: templates/includes/header.html:13 templates/index.html:11
+#: templates/includes/header.html:13 templates/index_page.html:11
 #: templates/tools/tools_list.html:3 templates/tools/tools_list.html:7
 msgid "Tools"
 msgstr "Инструменты"
@@ -91,7 +91,8 @@ msgstr "Датчик"
 msgid "Calculations"
 msgstr "Расчеты"
 
-#: templates/tools/calculator_fov.html:87 templates/wiki/lens_detail.html:18
+#: templates/tools/calculator_fov.html:87
+#: templates/wiki/lens_includes/specs.html:12
 msgid "Focal length"
 msgstr "Фокусное расстояние"
 
@@ -115,11 +116,13 @@ msgstr "Введите данные и нажмите кнопку подсчи�
 msgid "Calculator"
 msgstr "Калькулятор"
 
-#: templates/wiki/camera_detail.html:8 templates/wiki/lens_detail.html:9
+#: templates/wiki/camera_detail.html:8
+#: templates/wiki/lens_includes/specs.html:3
 msgid "Manufacturer"
 msgstr "Производитель"
 
-#: templates/wiki/camera_detail.html:9 templates/wiki/lens_detail.html:10
+#: templates/wiki/camera_detail.html:9
+#: templates/wiki/lens_includes/specs.html:4
 msgid "Mount"
 msgstr "Байонет"
 
@@ -128,139 +131,29 @@ msgstr "Байонет"
 msgid "List of all cameras"
 msgstr "Список всех камер"
 
-#: templates/wiki/lens_detail.html:15
-msgid "Minimum focal length"
-msgstr "Минимальное фокусное расстояние"
+#: templates/wiki/lens_detail.html:18
+msgid "Appearance"
+msgstr "Внешний вид"
 
-#: templates/wiki/lens_detail.html:16
-msgid "Maximum focal length"
-msgstr "Максимальное фокусное расстояние"
+#: templates/wiki/lens_detail.html:22
+msgid "The images haven't been uploaded yet."
+msgstr "Изображения еще не были загружены."
 
-#: templates/wiki/lens_detail.html:24
-msgid "Minimum aperture (max f-number)"
-msgstr "Минимальная диафрагма (max f-number)"
-
-#: templates/wiki/lens_detail.html:25
-msgid "Maximum aperture (max f-number)"
-msgstr "Максимальная диафрагма (max f-number)"
-
-#: templates/wiki/lens_detail.html:27
-msgid "Aperture (max f-number)"
-msgstr "Диафрагма (max f-number)"
+#: templates/wiki/lens_detail.html:28
+msgid "Sample files"
+msgstr "Примеры файлов"
 
 #: templates/wiki/lens_detail.html:33
-msgid "Specifications"
-msgstr "Спецификации"
+msgid "MTF Charts"
+msgstr "Графики MTF"
 
 #: templates/wiki/lens_detail.html:37
-msgid "Lens design and type"
-msgstr "Конструкция и тип объектива"
-
-#: templates/wiki/lens_detail.html:38
-msgid "Lens Type"
-msgstr "Тип объектива"
-
-#: templates/wiki/lens_detail.html:39
-msgid "Construction"
-msgstr "Конструкция"
+msgid "Charts are not available yet."
+msgstr "Графики пока недоступны."
 
 #: templates/wiki/lens_detail.html:43
-msgid "Physical characteristics"
-msgstr "Физические характеристики"
-
-#: templates/wiki/lens_detail.html:44
-msgid "Length"
-msgstr "Длинна"
-
-#: templates/wiki/lens_detail.html:45
-msgid "Diameter"
-msgstr "Диаметр"
-
-#: templates/wiki/lens_detail.html:46
-msgid "Weight"
-msgstr "Вес"
-
-#: templates/wiki/lens_detail.html:50
-msgid "Sensor coverage format"
-msgstr "Формат покрытия матрицы"
-
-#: templates/wiki/lens_detail.html:55
-msgid "Aperture"
-msgstr "Диафрагма"
-
-#: templates/wiki/lens_detail.html:56
-msgid "Minimum aperture (mix f-number)"
-msgstr "Минимальная диафрагма (mix f-number)"
-
-#: templates/wiki/lens_detail.html:57
-msgid "Number of diaphragm blades"
-msgstr "Кол-во лепестков диафрагмы"
-
-#: templates/wiki/lens_detail.html:58
-msgid "Type of aperture"
-msgstr "Тип диафрагмы"
-
-#: templates/wiki/lens_detail.html:60
-msgid "Rounding of diaphragm blades"
-msgstr "Скругление лепестков диафрагмы"
-
-#: templates/wiki/lens_detail.html:62 templates/wiki/lens_detail.html:73
-#: templates/wiki/lens_detail.html:79 templates/wiki/lens_detail.html:90
-msgid "Yes"
-msgstr "Да"
-
-#: templates/wiki/lens_detail.html:62 templates/wiki/lens_detail.html:73
-#: templates/wiki/lens_detail.html:79 templates/wiki/lens_detail.html:90
-msgid "No"
-msgstr "Нет"
-
-#: templates/wiki/lens_detail.html:68
-msgid "Filters"
-msgstr "Фильтры"
-
-#: templates/wiki/lens_detail.html:69
-msgid "Filter size"
-msgstr "Размер фильтра"
-
-#: templates/wiki/lens_detail.html:71
-msgid "Supports front filters"
-msgstr "Поддерживает фронтальные фильтры"
-
-#: templates/wiki/lens_detail.html:77
-msgid "Rear filter holder"
-msgstr "Задний держатель фильтра"
-
-#: templates/wiki/lens_detail.html:82
-msgid "Filter mount type"
-msgstr "Тип крепления фильтра"
-
-#: templates/wiki/lens_detail.html:86
-msgid "Macro opportunities"
-msgstr "Макро-возможности"
-
-#: templates/wiki/lens_detail.html:88
-msgid "Macro lens"
-msgstr "Макро объектив"
-
-#: templates/wiki/lens_detail.html:93
-msgid "Working distance"
-msgstr "Рабочая дистанция"
-
-#: templates/wiki/lens_detail.html:96
-msgid "Compatible teleconverters"
-msgstr "Совместимые телеконверторы"
-
-#: templates/wiki/lens_detail.html:101
-msgid "Compatible cameras"
-msgstr "Совместимые камеры"
-
-#: templates/wiki/lens_detail.html:103
-msgid "via"
-msgstr "через"
-
-#: templates/wiki/lens_detail.html:106
-msgid "Reviews/Tests"
-msgstr "Обзоры/тесты"
+msgid "Scheme"
+msgstr "Схема"
 
 #: templates/wiki/lens_list.html:3 templates/wiki/lens_list.html:7
 #: templates/wiki/manufacturer.html:9
@@ -270,4 +163,305 @@ msgstr "Список всех объективов"
 #: templates/wiki/manufacturer_list.html:6
 msgid "Manufacturers"
 msgstr "Производители"
+
+#: templates/wiki/lens_includes/specs.html:9
+msgid "Minimum focal length"
+msgstr "Минимальное фокусное расстояние"
+
+#: templates/wiki/lens_includes/specs.html:10
+msgid "Maximum focal length"
+msgstr "Максимальное фокусное расстояние"
+
+#: templates/wiki/lens_includes/specs.html:18
+msgid "Minimum aperture (max f-number)"
+msgstr "Минимальная диафрагма (max f-number)"
+
+#: templates/wiki/lens_includes/specs.html:19
+msgid "Maximum aperture (max f-number)"
+msgstr "Максимальная диафрагма (max f-number)"
+
+#: templates/wiki/lens_includes/specs.html:21
+msgid "Aperture (max f-number)"
+msgstr "Диафрагма (max f-number)"
+
+#: templates/wiki/lens_includes/specs.html:27
+msgid "Specifications"
+msgstr "Спецификации"
+
+#: templates/wiki/lens_includes/specs.html:32
+msgid "Lens design and type"
+msgstr "Конструкция и тип объектива"
+
+#: templates/wiki/lens_includes/specs.html:33
+msgid "Lens Type"
+msgstr "Тип объектива"
+
+#: templates/wiki/lens_includes/specs.html:34
+msgid "Construction"
+msgstr "Конструкция"
+
+#: templates/wiki/lens_includes/specs.html:39
+msgid "Physical characteristics"
+msgstr "Физические характеристики"
+
+#: templates/wiki/lens_includes/specs.html:40
+msgid "Length"
+msgstr "Длинна"
+
+#: templates/wiki/lens_includes/specs.html:41
+msgid "Diameter"
+msgstr "Диаметр"
+
+#: templates/wiki/lens_includes/specs.html:42
+msgid "Weight"
+msgstr "Вес"
+
+#: templates/wiki/lens_includes/specs.html:47
+msgid "Sensor coverage format"
+msgstr "Формат покрытия матрицы"
+
+#: templates/wiki/lens_includes/specs.html:53
+msgid "Aperture"
+msgstr "Диафрагма"
+
+#: templates/wiki/lens_includes/specs.html:54
+msgid "Minimum aperture (mix f-number)"
+msgstr "Минимальная диафрагма (mix f-number)"
+
+#: templates/wiki/lens_includes/specs.html:55
+msgid "Number of diaphragm blades"
+msgstr "Кол-во лепестков диафрагмы"
+
+#: templates/wiki/lens_includes/specs.html:56
+msgid "Type of aperture"
+msgstr "Тип диафрагмы"
+
+#: templates/wiki/lens_includes/specs.html:58
+msgid "Rounding of diaphragm blades"
+msgstr "Скругление лепестков диафрагмы"
+
+#: templates/wiki/lens_includes/specs.html:60
+#: templates/wiki/lens_includes/specs.html:72
+#: templates/wiki/lens_includes/specs.html:78
+#: templates/wiki/lens_includes/specs.html:91
+#: templates/wiki/lens_includes/specs.html:97
+#: templates/wiki/lens_includes/specs.html:111
+#: templates/wiki/lens_includes/specs.html:125
+#: templates/wiki/lens_includes/specs.html:131
+#: templates/wiki/lens_includes/specs.html:142
+#: templates/wiki/lens_includes/specs.html:167
+#: templates/wiki/lens_includes/specs.html:173
+#: templates/wiki/lens_includes/specs.html:179
+#: templates/wiki/lens_includes/specs.html:185
+#: templates/wiki/lens_includes/specs.html:202
+#: templates/wiki/lens_includes/specs.html:208
+#: templates/wiki/lens_includes/specs.html:214
+msgid "Yes"
+msgstr "Да"
+
+#: templates/wiki/lens_includes/specs.html:60
+#: templates/wiki/lens_includes/specs.html:72
+#: templates/wiki/lens_includes/specs.html:78
+#: templates/wiki/lens_includes/specs.html:91
+#: templates/wiki/lens_includes/specs.html:97
+#: templates/wiki/lens_includes/specs.html:111
+#: templates/wiki/lens_includes/specs.html:125
+#: templates/wiki/lens_includes/specs.html:131
+#: templates/wiki/lens_includes/specs.html:142
+#: templates/wiki/lens_includes/specs.html:167
+#: templates/wiki/lens_includes/specs.html:173
+#: templates/wiki/lens_includes/specs.html:179
+#: templates/wiki/lens_includes/specs.html:185
+#: templates/wiki/lens_includes/specs.html:202
+#: templates/wiki/lens_includes/specs.html:208
+#: templates/wiki/lens_includes/specs.html:214
+msgid "No"
+msgstr "Нет"
+
+#: templates/wiki/lens_includes/specs.html:67
+msgid "Filters"
+msgstr "Фильтры"
+
+#: templates/wiki/lens_includes/specs.html:68
+msgid "Filter size"
+msgstr "Размер фильтра"
+
+#: templates/wiki/lens_includes/specs.html:70
+msgid "Supports front filters"
+msgstr "Поддерживает фронтальные фильтры"
+
+#: templates/wiki/lens_includes/specs.html:76
+msgid "Rear filter holder"
+msgstr "Задний держатель фильтра"
+
+#: templates/wiki/lens_includes/specs.html:81
+msgid "Filter mount type"
+msgstr "Тип крепления фильтра"
+
+#: templates/wiki/lens_includes/specs.html:86
+msgid "Focusing"
+msgstr "Фокусировка"
+
+#: templates/wiki/lens_includes/specs.html:87
+msgid "Focus type"
+msgstr "Тип фокусировки"
+
+#: templates/wiki/lens_includes/specs.html:89
+msgid "Autofocus"
+msgstr "Автофокус"
+
+#: templates/wiki/lens_includes/specs.html:95
+msgid "Full time manual focus"
+msgstr "Постоянная ручная фокусировка"
+
+#: templates/wiki/lens_includes/specs.html:100
+msgid "Min focus distance"
+msgstr "Минимальное расстояние фокусировки"
+
+#: templates/wiki/lens_includes/specs.html:101
+msgid "Autofocus motor type"
+msgstr "Тип двигателя автофокусировки"
+
+#: templates/wiki/lens_includes/specs.html:102
+msgid "Brand name autofocus"
+msgstr "Брендовое название автофокуса"
+
+#: templates/wiki/lens_includes/specs.html:107
+msgid "Stabilization"
+msgstr "Стабилизация"
+
+#: templates/wiki/lens_includes/specs.html:109
+msgid "Image stabilization"
+msgstr "Стабилизация изображения"
+
+#: templates/wiki/lens_includes/specs.html:114
+msgid "Stabilization name"
+msgstr "Название системы стабилизации"
+
+#: templates/wiki/lens_includes/specs.html:115
+msgid "Stabilization stops"
+msgstr "Кол-во стопов стабилизации"
+
+#: templates/wiki/lens_includes/specs.html:120
+msgid "Zoom"
+msgstr "Зум"
+
+#: templates/wiki/lens_includes/specs.html:121
+msgid "Zoom type"
+msgstr "Тип зума"
+
+#: templates/wiki/lens_includes/specs.html:123
+msgid "Internal zoom"
+msgstr "Внутренний зум"
+
+#: templates/wiki/lens_includes/specs.html:129
+msgid "Zoom lock"
+msgstr "Фиксатор зума"
+
+#: templates/wiki/lens_includes/specs.html:138
+msgid "Macro opportunities"
+msgstr "Макро-возможности"
+
+#: templates/wiki/lens_includes/specs.html:140
+msgid "Macro lens"
+msgstr "Макро объектив"
+
+#: templates/wiki/lens_includes/specs.html:145
+msgid "Working distance"
+msgstr "Рабочая дистанция"
+
+#: templates/wiki/lens_includes/specs.html:146
+msgid "Max magnification"
+msgstr "Максимальное увеличение"
+
+#: templates/wiki/lens_includes/specs.html:151
+msgid "Lens viewing angles"
+msgstr "Углы обзора объектива"
+
+#: templates/wiki/lens_includes/specs.html:153
+msgid "Angle of view wide"
+msgstr "Широкий угол обзора"
+
+#: templates/wiki/lens_includes/specs.html:154
+msgid "Angle of view tele"
+msgstr "Угол обзора в теле-режиме"
+
+#: templates/wiki/lens_includes/specs.html:156
+msgid "Angle of view"
+msgstr "Углы обзора"
+
+#: templates/wiki/lens_includes/specs.html:162
+msgid "Accessories"
+msgstr "Аксессуары"
+
+#: templates/wiki/lens_includes/specs.html:163
+msgid "Hood model"
+msgstr "Модель бленды"
+
+#: templates/wiki/lens_includes/specs.html:165
+msgid "Hood included"
+msgstr "Бленда в комплекте"
+
+#: templates/wiki/lens_includes/specs.html:171
+msgid "Tripod collar included"
+msgstr "Штативное кольцо/лапка"
+
+#: templates/wiki/lens_includes/specs.html:177
+msgid "Tripod collar removable"
+msgstr "Штативное кольцо/лапка съемная"
+
+#: templates/wiki/lens_includes/specs.html:183
+msgid "Case included"
+msgstr "Кейс в комплекте"
+
+#: templates/wiki/lens_includes/specs.html:192
+msgid "Scope of delivery"
+msgstr "Комплектация"
+
+#: templates/wiki/lens_includes/specs.html:193
+msgid "Supplied accessories"
+msgstr "Прилагаемые аксессуары"
+
+#: templates/wiki/lens_includes/specs.html:198
+msgid "Additionally"
+msgstr "Дополнительно"
+
+#: templates/wiki/lens_includes/specs.html:200
+msgid "Weather sealing"
+msgstr "Защита от атмосферных воздействий"
+
+#: templates/wiki/lens_includes/specs.html:206
+msgid "Dust moisture resistant"
+msgstr "Пыле и влагостойкий"
+
+#: templates/wiki/lens_includes/specs.html:212
+msgid "Fluorine_coating"
+msgstr "Фторсодержащее покрытие"
+
+#: templates/wiki/lens_includes/specs.html:220
+msgid "Compatible teleconverters"
+msgstr "Совместимые телеконверторы"
+
+#: templates/wiki/lens_includes/specs.html:225
+msgid "Compatible cameras"
+msgstr "Совместимые камеры"
+
+#: templates/wiki/lens_includes/specs.html:232
+msgid "connect"
+msgstr "подключение"
+
+#: templates/wiki/lens_includes/specs.html:233
+msgid "Direct"
+msgstr "прямое"
+
+#: templates/wiki/lens_includes/specs.html:233
+msgid "With convertor"
+msgstr "через переходник"
+
+#: templates/wiki/lens_includes/specs.html:237
+msgid "Reviews/Tests"
+msgstr "Обзоры/тесты"
+
+#~ msgid "via"
+#~ msgstr "через"
 

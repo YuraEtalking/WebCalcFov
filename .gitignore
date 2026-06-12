@@ -139,3 +139,9 @@ openapi.json
 trsh/
 temp/
 1.py
+
+#загрузки
+/uploads
+
+#todo не пушу пока миграции alembic
+alembic/versions/*

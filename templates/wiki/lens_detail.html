@@ -12,23 +12,36 @@
     {% include "wiki/lens_includes/specs.html" %}
   </main>
 
-   <!-- фото -->
+   <!-- Внешний вид -->
   <aside class="sidebar">
     <section class="card">
-      <h3>фото</h3>
-      <img src="{{ url_for('static', path='img/lens/0121_IMG_0134-600x600.jpg') }}" alt="">
-      <img src="{{ url_for('static', path='img/lens/Nikon-800mm-f5.6E-FL-ED-VR.jpg') }}" alt="">
-      <img src="{{ url_for('static', path='img/lens/Nikon-800mm-f5.6E-FL-ED-VR-lens-unboxing-300x180.jpg') }}" alt="">
+      <h3>{{ _("Appearance") }}</h3>
+        {% if images %}
+        {% include "wiki/lens_includes/image.html" %}
+        {% else %}
+        {{ _("The images haven't been uploaded yet.") }}
+        {% endif %}
     </section>
 
-    <!-- примеры файлов -->
+    <!-- Примеры файлов -->
     <section class="card">
-      <h3>примеры файлов</h3>
+      <h3>{{ _("Sample files") }}</h3>
     </section>
 
-    <!-- Доп блок -->
+    <!-- Графики MTF -->
     <section class="card">
-      <h3>Доп блок</h3>
+      <h3>{{ _("MTF Charts") }}</h3>
+        {% if mtfs %}
+        {% include "wiki/lens_includes/mtf.html" %}
+        {% else %}
+        {{ _("Charts are not available yet.") }}
+        {% endif %}
+    </section>
+
+      <!-- Схема -->
+    <section class="card">
+      <h3>{{ _("Scheme") }}</h3>
+
     </section>
   </aside>
 </div>

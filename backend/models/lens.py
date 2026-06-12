@@ -20,6 +20,7 @@ if TYPE_CHECKING:
     from .teleconverter import Teleconverter
     from .link import Link
     from models.specs.lens_spec import SpecLens
+    from .image import LensImageLink
 
 
 class Lens(
@@ -54,6 +55,10 @@ class Lens(
         uselist=False,
         cascade='all, delete-orphan',
         single_parent=True,
+    )
+    image_links: Mapped[list['LensImageLink']] = relationship(
+        back_populates='lens',
+        cascade='all, delete-orphan',
     )
 
     focal_wide: Mapped[int] = mapped_column(Integer, nullable=True)

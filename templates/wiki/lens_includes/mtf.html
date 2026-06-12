@@ -1,0 +1,11 @@
+{% for mtf in mtfs %}
+    {% if mtf %}
+        <img
+            src="{{ url_for(
+            'media',
+            storage=mtf.file['upload_storage'],
+            file_id=mtf.file['file_id']) }}"
+            alt="{{ mtf.alt or mtf.title or '' }}"
+        >
+    {% endif %}
+{% endfor %}
