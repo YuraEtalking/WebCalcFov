@@ -20,11 +20,10 @@ async def camera_list(
         session: AsyncSession = Depends(get_async_session)
 ):
     cameras = await get_active_cameras(session, slug)
-
     return render(
         request,
         'wiki/camera_list.html',
-        {'cameras': cameras, 'slug': slug, }
+        {'cameras': cameras, 'slug': slug}
     )
 
 

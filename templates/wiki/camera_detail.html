@@ -3,6 +3,14 @@
 {{ camera.name }}
 {% endblock %}
 {% block content %}
+
+<span>
+    / <a href="{{ url_for('index_page') }}">{{ _("Home") }}</a>
+    / <a href="{{ url_for('wiki') }}">{{ _("Manufacturers") }}</a>
+    / <a href="{{ url_for('manufacturer', slug=slug) }}">{{ slug }}</a>
+    / <a href="{{ url_for('cameras_list', slug=slug) }}">{{ _("List of all cameras") }} {{ slug }}</a>
+</span>
+
 <h1>{{ camera.name }}</h1>
 <li>{{ _("Sensor") }}: {{ camera.sensor}}</li>
 <li>{{ _("Manufacturer") }}: {{ camera.manufacturer}}</li>

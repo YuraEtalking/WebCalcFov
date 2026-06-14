@@ -3,6 +3,12 @@
 {{ slug }}
 {% endblock %}
 {% block content %}
+
+<span>
+    / <a href="{{ url_for('index_page') }}">{{ _("Home") }}</a>
+    / <a href="{{ url_for('wiki') }}">{{ _("Manufacturers") }}</a>
+</span>
+
 <h1>{{ slug }}</h1>
 
 <a href="{{ url_for('cameras_list', slug=slug) }}">{{ _("List of all cameras") }} {{ slug }}</a>
