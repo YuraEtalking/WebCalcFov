@@ -5,7 +5,13 @@ from .sensor import Sensor
 from .teleconverter import Teleconverter
 from .link import Link
 from .specs.lens_spec import SpecLens
-from .image import Image, LensImageLink, CameraImageLink, TeleconverterImageLink, ImageRole
+from .image import (
+    Image,
+    LensImageLink,
+    CameraImageLink,
+    TeleconverterImageLink,
+    ImageRole,
+)
 from .enums import (
     BayonetType,
     SensorFormat,

@@ -9,8 +9,10 @@ Wiki
 </span>
 
 <h1>{{ _("Manufacturers") }}</h1>
+<ul>
 {% for manufacturer in manufacturers %}
-  <a href="{{ url_for('manufacturer', slug=manufacturer) }}">{{ manufacturer }}</a>
+  <li><a href="{{ url_for('manufacturer', slug=manufacturer) }}">{{ manufacturer }}</a></li>
 {% endfor %}
+</ul>
 
 {% endblock %}

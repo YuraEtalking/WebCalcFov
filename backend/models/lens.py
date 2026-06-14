@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING
+from datetime import date
 
-from sqlalchemy import Enum, Integer, Float
+from sqlalchemy import Date, Integer, Float
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from backend.core.db import Base
@@ -11,6 +12,7 @@ from backend.models.mixins import (
     BayonetMixin,
     CommonFieldsMixin,
     TimeFieldsMixin,
+    ProductionPeriodMixin,
 )
 
 
@@ -31,6 +33,7 @@ class Lens(
     BayonetMixin,
     CommonFieldsMixin,
     TimeFieldsMixin,
+    ProductionPeriodMixin,
 ):
     camera_lenses: Mapped[list['CameraLens']] = relationship(
         back_populates='lens',
@@ -60,7 +63,6 @@ class Lens(
         back_populates='lens',
         cascade='all, delete-orphan',
     )
-
     focal_wide: Mapped[int] = mapped_column(Integer, nullable=True)
     focal_tele: Mapped[int] = mapped_column(Integer)
 

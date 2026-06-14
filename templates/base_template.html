@@ -8,8 +8,8 @@
   </head>
   <body>
     <script src="/static/js/htmx.min.js"></script>
-    {% include "includes/header.html" %}
-    {% block content %}{% endblock %}
-    {% include "includes/footer.html" %}
+    <header>{% include "includes/header.html" %}</header>
+    <main>{% block content %}{% endblock %}</main>
+    <footer>{% include "includes/footer.html" %}</footer>
   </body>
 </html>

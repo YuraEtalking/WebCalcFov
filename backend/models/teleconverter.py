@@ -11,6 +11,7 @@ from backend.models.mixins import (
     BayonetMixin,
     CommonFieldsMixin,
     TimeFieldsMixin,
+    ProductionPeriodMixin,
 )
 
 if TYPE_CHECKING:
@@ -27,6 +28,7 @@ class Teleconverter(
     BayonetMixin,
     CommonFieldsMixin,
     TimeFieldsMixin,
+    ProductionPeriodMixin,
 ):
     lenses: Mapped[list['Lens']] = relationship(
         secondary='lens_teleconverter',
