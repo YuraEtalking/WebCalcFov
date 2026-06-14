@@ -1,7 +1,7 @@
 import enum
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey, Enum, Integer, String, Text
+from sqlalchemy import ForeignKey, Enum, Integer, String
 from sqlalchemy_file import ImageField
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -43,12 +43,22 @@ class Image(
 ):
     __admin_repr_field__ = 'title'
 
+    # Основное
     file: Mapped[dict] = mapped_column(ImageField(
         upload_storage='images',
         thumbnail_size=(200, 200)
     ))
     title: Mapped[str | None] = mapped_column(String(255), nullable=True)
     alt: Mapped[str | None] = mapped_column(String(255), nullable=True)
+
+    # Данные Exif
+    photographer_name: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    iso: Mapped[int] = mapped_column(Integer, nullable=True)
+    shutter_speed: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    aperture: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    focal_length: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    camera_model_name: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    lens_model_name: Mapped[str | None] = mapped_column(String(255), nullable=True)
 
     lens_links: Mapped[list['LensImageLink']] = relationship(
         back_populates='image',
@@ -78,6 +88,8 @@ class LensImageLink(
     __tablename__ = 'lens_image_link'
     __admin_repr_field__ = 'lens.name'
 
+    # ImageRoleMixin добавляет поле role
+
     lens_id: Mapped[int] = mapped_column(
         ForeignKey('lens.id', ondelete='CASCADE'),
         index=True,
@@ -102,6 +114,8 @@ class CameraImageLink(
 ):
     __tablename__ = 'camera_image_link'
 
+    # ImageRoleMixin добавляет поле role
+
     camera_id: Mapped[int] = mapped_column(
         ForeignKey('camera.id', ondelete='CASCADE'),
         index=True,
@@ -124,6 +138,8 @@ class TeleconverterImageLink(
     ImageRoleMixin,
 ):
     __tablename__ = 'teleconverter_image_link'
+
+    # ImageRoleMixin добавляет поле role
 
     teleconverter_id: Mapped[int] = mapped_column(
         ForeignKey('teleconverter.id', ondelete='CASCADE'),

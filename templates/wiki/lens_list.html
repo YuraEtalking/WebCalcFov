@@ -11,8 +11,10 @@
 </span>
 
 <h1>{{ _("List of all lenses") }}</h1>
+<ul>
 {% for lens in lenses %}
     <li><a href="{{ url_for('lens_detail', slug=lens.manufacturer, lens_id=lens.id) }}" >{{ lens.name }}</a></li>
 {% endfor %}
+</ul>
 
 {% endblock %}

@@ -1,11 +1,23 @@
-{% for mtf in mtfs %}
-    {% if mtf %}
-        <img
-            src="{{ url_for(
-            'media',
-            storage=mtf.file['upload_storage'],
-            file_id=mtf.file['file_id']) }}"
-            alt="{{ mtf.alt or mtf.title or '' }}"
-        >
-    {% endif %}
-{% endfor %}
+<div class="gallery">
+    {% for mtf in mtfs %}
+        {% if mtf %}
+            {% set image_url = url_for(
+                'media',
+                storage=mtf.file['upload_storage'],
+                file_id=mtf.file['file_id']
+            ) %}
+
+            <button class="gallery-item" type="button" data-full="{{ image_url }}">
+                <img
+                    src="{{ image_url }}"
+                    alt="{{ mtf.alt or mtf.title or '' }}"
+                >
+            </button>
+        {% endif %}
+    {% endfor %}
+</div>
+
+<div class="lightbox" id="lightbox" hidden>
+    <button class="lightbox__close" type="button" aria-label="Закрыть">×</button>
+    <img class="lightbox__image" src="" alt="">
+</div>

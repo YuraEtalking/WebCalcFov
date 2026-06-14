@@ -1,7 +1,7 @@
-from datetime import datetime
+from datetime import datetime, date
 
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import Boolean, DateTime, Enum, Integer, String, func
+from sqlalchemy import Boolean, DateTime, Date, Enum, Integer, String, func
 
 from starlette.requests import Request
 
@@ -55,6 +55,12 @@ class NameFieldsMixin:
 class CommonFieldsMixin(ManufacturerFieldsMixin, NameFieldsMixin):
     """Общие поля."""
     pass
+
+
+class ProductionPeriodMixin:
+    """Даты начала и окончания производства"""
+    production_start_date: Mapped[date] = mapped_column(Date, nullable=False)
+    production_end_date: Mapped[date] = mapped_column(Date, nullable=False)
 
 
 class BayonetMixin:

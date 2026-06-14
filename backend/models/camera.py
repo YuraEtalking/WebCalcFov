@@ -13,6 +13,7 @@ from backend.models.mixins import (
     BayonetMixin,
     CommonFieldsMixin,
     TimeFieldsMixin,
+    ProductionPeriodMixin,
 )
 
 
@@ -32,6 +33,7 @@ class Camera(
     BayonetMixin,
     CommonFieldsMixin,
     TimeFieldsMixin,
+    ProductionPeriodMixin,
 ):
     camera_lenses: Mapped[list['CameraLens']] = relationship(
         back_populates='camera',

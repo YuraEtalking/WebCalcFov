@@ -10,7 +10,8 @@
 </span>
 
 <h1>{{ slug }}</h1>
-
-<a href="{{ url_for('cameras_list', slug=slug) }}">{{ _("List of all cameras") }} {{ slug }}</a>
-<a href="{{ url_for('lens_list', slug=slug) }}">{{ _("List of all lenses") }} {{ slug }}</a>
+<ul>
+    <li><a href="{{ url_for('cameras_list', slug=slug) }}">{{ _("List of all cameras") }} {{ slug }}</a></li>
+    <li><a href="{{ url_for('lens_list', slug=slug) }}">{{ _("List of all lenses") }} {{ slug }}</a></li>
+</ul>
 {% endblock %}

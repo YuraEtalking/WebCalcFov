@@ -1,30 +1,33 @@
 <!-- Общие данные -->
 <h1>{{ lens.name }}</h1>
-<li>{{ _("Manufacturer") }}: <b>{{ lens.manufacturer }}</b></li>
-<li>{{ _("Mount") }}: <b>{{ lens.bayonet.name }}</b></li>
+<ul>
+    <li>{{ _("Manufacturer") }}: <b>{{ lens.manufacturer }}</b></li>
+    <li>{{ _("Mount") }}: <b>{{ lens.bayonet.name }}</b></li>
 
 
-<!-- Фокусное расстояние -->
-{% if lens.focal_wide != lens.focal_tele %}
-  <li>{{ _("Minimum focal length") }}, mm: <b>{{ lens.focal_wide }}</b></li>
-  <li>{{ _("Maximum focal length") }}, mm: <b>{{ lens.focal_tele }}</b></li>
-{% else %}
-  <li>{{ _("Focal length") }}, mm: <b>{{ lens.focal_wide }}</b></li>
-{% endif %}
+
+    <!-- Фокусное расстояние -->
+    {% if lens.focal_wide != lens.focal_tele %}
+      <li>{{ _("Minimum focal length") }}, mm: <b>{{ lens.focal_wide }}</b></li>
+      <li>{{ _("Maximum focal length") }}, mm: <b>{{ lens.focal_tele }}</b></li>
+    {% else %}
+      <li>{{ _("Focal length") }}, mm: <b>{{ lens.focal_wide }}</b></li>
+    {% endif %}
 
 
-<!-- Диафрагма (max f-number) -->
-{% if lens.aperture_max_tele != lens.aperture_max_wide %}
-  <li>{{ _("Minimum aperture (max f-number)") }}: <b>f/{{ lens.aperture_max_wide }}</b></li>
-  <li>{{ _("Maximum aperture (max f-number)") }}: <b>f/{{ lens.aperture_max_tele }}</b></li>
-{% else %}
-  <li>{{ _("Aperture (max f-number)") }}: <b>f/{{ lens.aperture_max_tele }}</b></li>
-{% endif %}
+    <!-- Диафрагма (max f-number) -->
+    {% if lens.aperture_max_tele != lens.aperture_max_wide %}
+      <li>{{ _("Minimum aperture (max f-number)") }}: <b>f/{{ lens.aperture_max_wide }}</b></li>
+      <li>{{ _("Maximum aperture (max f-number)") }}: <b>f/{{ lens.aperture_max_tele }}</b></li>
+    {% else %}
+      <li>{{ _("Aperture (max f-number)") }}: <b>f/{{ lens.aperture_max_tele }}</b></li>
+    {% endif %}
+</ul>
 
 <br>
 <!-- Спецификации -->
 <details> <!-- open -->
-    <summary>{{ _("Specifications") }}</summary>
+    <summary><strong>{{ _("Specifications") }}</strong></summary>
 
 
     <br>
@@ -216,25 +219,37 @@
     </div>
 
 </details>
+<br>
 
-<h2>{{ _("Compatible teleconverters") }}:</h2>
-{% for tс in teleconverters %}
-    <li>{{ tс.name }}</li>
-{% endfor %}
+<details> <!-- open -->
+    <summary><strong>{{ _("Compatible teleconverters") }}:</strong></summary>
+    <ul>
+        {% for tс in teleconverters %}
+            <li>{{ tс.name }}</li>
+        {% endfor %}
+    </ul>
+</details>
+<br>
 
-<h2>{{ _("Compatible cameras") }}:</h2>
-{% for camera in camera_lenses %}
-    <li><a
-            href="{{ url_for('camera_detail', slug=camera.camera.manufacturer, camera_id=camera.camera_id) }}"
-        >
-        <b>{{ camera.camera }}</b>
-        </a>
-        {{ _("connect") }}
-        <b>{{ _("Direct") if camera.convertor.value=='direct' else _("With convertor") }}</b>
-    </li>
-{% endfor %}
+<details> <!-- open -->
+    <summary><strong>{{ _("Compatible cameras") }}:</strong></summary>
+    <ul>
+        {% for camera in camera_lenses %}
+            <li><a
+                    href="{{ url_for('camera_detail', slug=camera.camera.manufacturer, camera_id=camera.camera_id) }}"
+                >
+                <b>{{ camera.camera }}</b>
+                </a>
+                {{ _("connect") }}
+                <b>{{ _("Direct") if camera.convertor.value=='direct' else _("With convertor") }}</b>
+            </li>
+        {% endfor %}
+    </ul>
+</details>
 
-<h2>{{ _("Reviews/Tests") }}:</h2>
-{% for link in links %}
-    <li><a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">{{ link.title }}</a></li>
-{% endfor %}
+<h3>{{ _("Reviews/Tests") }}:</h3>
+<ul>
+    {% for link in links %}
+        <li><a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">{{ link.title }}</a></li>
+    {% endfor %}
+</ul>
