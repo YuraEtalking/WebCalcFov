@@ -3,6 +3,12 @@
 {{ _("Calculate") }} FoV
 {% endblock %}
 {% block content %}
+
+<span>
+    / <a href="{{ url_for('index_page') }}">{{ _("Home") }}</a>
+    / <a href="{{ url_for('tools') }}">{{ _("Tools") }}</a>
+</span>
+
 <h1>{{ _("Calculate") }} FoV</h1>
 {% if message %}
   <div class="message {{ message_type or 'info' }}">

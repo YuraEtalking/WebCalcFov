@@ -3,6 +3,13 @@
 {{ _("List of all cameras") }}
 {% endblock %}
 {% block content %}
+
+<span>
+    / <a href="{{ url_for('index_page') }}">{{ _("Home") }}</a>
+    / <a href="{{ url_for('wiki') }}">{{ _("Manufacturers") }}</a>
+    / <a href="{{ url_for('manufacturer', slug=slug) }}">{{ slug }}</a>
+</span>
+
 <h1>{{ _("List of all cameras") }}</h1>
 {% for camera in cameras %}
     <li><a href="{{ url_for('camera_detail', slug=camera.manufacturer, camera_id=camera.id) }}" >{{ camera.name }}</a></li>
