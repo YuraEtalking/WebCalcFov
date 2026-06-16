@@ -7,7 +7,19 @@
                 file_id=image.file['file_id']
             ) %}
 
-            <button class="gallery-item" type="button" data-full="{{ image_url }}">
+            <button
+                class="gallery-item"
+                type="button"
+                data-full="{{ image_url }}"
+                data-title="{{ image.title or '' }}"
+                data-photographer="{{ image.photographer_name or '' }}"
+                data-iso="{{ image.iso or '' }}"
+                data-shutter="{{ image.shutter_speed or '' }}"
+                data-aperture="{{ image.aperture or '' }}"
+                data-focal="{{ image.focal_length or '' }}"
+                data-camera="{{ image.camera_model_name or '' }}"
+                data-lens="{{ image.lens_model_name or '' }}"
+            >
                 <img
                     src="{{ image_url }}"
                     alt="{{ image.alt or image.title or '' }}"
@@ -20,4 +32,17 @@
 <div class="lightbox" id="lightbox" hidden>
     <button class="lightbox__close" type="button" aria-label="Закрыть">×</button>
     <img class="lightbox__image" src="" alt="">
+
+    <div class="lightbox__info">
+        <h3 class="lightbox__title"></h3>
+        <ul class="lightbox__exif">
+            <li class="exif-photographer" hidden><span>Фотограф:</span> <b></b></li>
+            <li class="exif-camera" hidden><span>Камера:</span> <b></b></li>
+            <li class="exif-lens" hidden><span>Объектив:</span> <b></b></li>
+            <li class="exif-iso" hidden><span>ISO:</span> <b></b></li>
+            <li class="exif-shutter" hidden><span>Выдержка:</span> <b></b></li>
+            <li class="exif-aperture" hidden><span>Диафрагма:</span> <b></b></li>
+            <li class="exif-focal" hidden><span>Фокусное:</span> <b></b></li>
+        </ul>
+    </div>
 </div>

@@ -3,6 +3,19 @@ const lightbox = document.querySelector('#lightbox');
 const lightboxImage = lightbox.querySelector('.lightbox__image');
 const closeButton = lightbox.querySelector('.lightbox__close');
 
+// Элементы блока с информацией
+const lightboxInfo = lightbox.querySelector('.lightbox__info');
+const lightboxTitle = lightbox.querySelector('.lightbox__title');
+const exifFields = {
+    photographer: lightbox.querySelector('.exif-photographer'),
+    camera: lightbox.querySelector('.exif-camera'),
+    lens: lightbox.querySelector('.exif-lens'),
+    iso: lightbox.querySelector('.exif-iso'),
+    shutter: lightbox.querySelector('.exif-shutter'),
+    aperture: lightbox.querySelector('.exif-aperture'),
+    focal: lightbox.querySelector('.exif-focal'),
+};
+
 let scale = 1;
 let translateX = 0;
 let translateY = 0;
@@ -18,6 +31,12 @@ function updateImageTransform() {
     } else {
         lightboxImage.classList.remove('is-zoomed');
     }
+
+    // Скрываем инфо при зуме, чтобы не мешало
+    if (lightboxInfo) {
+        lightboxInfo.style.opacity = scale > 1 ? '0' : '1';
+        lightboxInfo.style.pointerEvents = scale > 1 ? 'none' : 'auto';
+    }
 }
 
 function resetZoom() {
@@ -29,6 +48,38 @@ function resetZoom() {
     updateImageTransform();
 }
 
+// Заполняет одно поле или скрывает его, если значения нет
+function setExifField(element, value) {
+    if (!element) {
+        return;
+    }
+
+    if (value) {
+        element.querySelector('b').textContent = value;
+        element.hidden = false;
+    } else {
+        element.hidden = true;
+    }
+}
+
+function fillLightboxInfo(data) {
+    // Заголовок
+    if (data.title) {
+        lightboxTitle.textContent = data.title;
+        lightboxTitle.hidden = false;
+    } else {
+        lightboxTitle.hidden = true;
+    }
+
+    setExifField(exifFields.photographer, data.photographer);
+    setExifField(exifFields.camera, data.camera);
+    setExifField(exifFields.lens, data.lens);
+    setExifField(exifFields.iso, data.iso);
+    setExifField(exifFields.shutter, data.shutter);
+    setExifField(exifFields.aperture, data.aperture);
+    setExifField(exifFields.focal, data.focal);
+}
+
 document.querySelectorAll('.gallery-item').forEach((button) => {
     button.addEventListener('click', () => {
         const image = button.querySelector('img');
@@ -37,6 +88,10 @@ document.querySelectorAll('.gallery-item').forEach((button) => {
 
         lightboxImage.src = button.dataset.full;
         lightboxImage.alt = image.alt;
+
+        // Заполняем инфо из data-атрибутов
+        fillLightboxInfo(button.dataset);
+
         lightbox.hidden = false;
     });
 });
@@ -63,17 +118,6 @@ document.addEventListener('keydown', (event) => {
 
 lightboxImage.addEventListener('wheel', (event) => {
     event.preventDefault();
-
-    const rect = lightboxImage.getBoundingClientRect();
-
-    const mouseX = event.clientX - rect.left;
-    const mouseY = event.clientY - rect.top;
-
-    const imageCenterX = rect.width / 2;
-    const imageCenterY = rect.height / 2;
-
-    const pointX = mouseX - imageCenterX;
-    const pointY = mouseY - imageCenterY;
 
     const oldScale = scale;
 

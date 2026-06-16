@@ -1,6 +1,6 @@
 from starlette_admin import (
     StringField, IntegerField, FloatField, BooleanField,
-    DateTimeField, HasMany, HasOne, EnumField
+    DateTimeField, HasMany, HasOne, EnumField, DateField
 )
 from starlette_admin.contrib.sqla import ModelView
 from backend.models import SpecLens, BayonetType, ConstructionType
@@ -12,6 +12,7 @@ class LensAdmin(ModelView):
     name = 'Объектив'
 
     fields = [
+        # Основное.
         IntegerField('id', label='ID'),
         StringField('manufacturer', label='Производитель'),
         StringField('name', label='Название'),
@@ -21,6 +22,18 @@ class LensAdmin(ModelView):
             enum=BayonetType,
             help_text='Крепление объектива к камере.',
         ),
+
+        # Даты начала и окончания производства.
+        DateField(
+            'production_start_date',
+            label='Дата анонса/начала продаж',
+        ),
+        DateField(
+            'production_end_date',
+            label='Дата окончания продаж',
+        ),
+
+        # Фокусное.
         FloatField(
             'focal_wide',
             label='Фокусное расстояние в широкоугольном режиме',
@@ -31,6 +44,8 @@ class LensAdmin(ModelView):
             'focal_tele',
             label='Фокусное расстояние в теле режиме',
         ),
+
+        # Диафрагма.
         FloatField(
             'aperture_max_wide',
             label='Максимальная диафрагма в широкоугольном режиме',
@@ -42,6 +57,8 @@ class LensAdmin(ModelView):
             'aperture_max_tele',
             label='Максимальная диафрагма в теле режиме',
         ),
+
+        # Поля связанных моделей.
         HasMany('links', label='Ссылки', identity='link'),
         HasMany(
             'compatible_cameras',

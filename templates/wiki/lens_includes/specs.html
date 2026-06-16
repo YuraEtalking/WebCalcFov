@@ -4,7 +4,14 @@
     <li>{{ _("Manufacturer") }}: <b>{{ lens.manufacturer }}</b></li>
     <li>{{ _("Mount") }}: <b>{{ lens.bayonet.name }}</b></li>
 
+    <!-- Даты начала и окончания производства -->
+    {% if lens.production_start_date %}
+      <li>{{ _("Date of the announcement/start of sales, (y-m-d)") }}: <b>{{ lens.production_start_date }}</b></li>
+    {% endif %}
 
+    {% if lens.production_end_datee %}
+      <li>{{ _("Sales end date, (y-m-d)") }}: <b>{{ lens.production_end_date }}</b></li>
+    {% endif %}
 
     <!-- Фокусное расстояние -->
     {% if lens.focal_wide != lens.focal_tele %}
