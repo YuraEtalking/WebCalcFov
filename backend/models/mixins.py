@@ -59,8 +59,8 @@ class CommonFieldsMixin(ManufacturerFieldsMixin, NameFieldsMixin):
 
 class ProductionPeriodMixin:
     """Даты начала и окончания производства"""
-    production_start_date: Mapped[date] = mapped_column(Date, nullable=False)
-    production_end_date: Mapped[date] = mapped_column(Date, nullable=False)
+    production_start_date: Mapped[date] = mapped_column(Date, nullable=True)
+    production_end_date: Mapped[date] = mapped_column(Date, nullable=True)
 
 
 class BayonetMixin:

@@ -25,7 +25,6 @@ def get_locale(request: Request) -> str:
         return lang
 
     lang = request.cookies.get('lang')
-    logger.debug('lang="{}"', lang)
 
     if lang in SUPPORTED_LANGUAGES:
         return lang
