@@ -14,12 +14,13 @@ class LensAdmin(ModelView):
     fields = [
         # Основное.
         IntegerField('id', label='ID'),
-        StringField('manufacturer', label='Производитель'),
-        StringField('name', label='Название'),
+        StringField('manufacturer', label='Производитель', required=True,),
+        StringField('name', label='Название', required=True,),
         EnumField(
             'bayonet',
             label='Байонет',
             enum=BayonetType,
+            required=True,
             help_text='Крепление объектива к камере.',
         ),
 

@@ -21,6 +21,15 @@
 
    <!-- Внешний вид -->
   <aside class="sidebar">
+
+    <section class="card">
+      <form method="post" action="{{ url_for('add_lens_compare', lens_id=lens.id) }}">
+      <button type="submit">
+        {{ _("Add to the comparison") if lens.id not in compare_ids else _("Already on the comparison list") }}
+      </button>
+    </form>
+    </section>
+
     <section class="card">
       <h4>{{ _("Appearance") }}</h4>
         {% if images %}
