@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from fastapi import APIRouter
 from starlette.responses import FileResponse, JSONResponse, RedirectResponse, StreamingResponse
 from sqlalchemy_file.storage import StorageManager
@@ -12,7 +14,9 @@ async def serve_media(storage: str, file_id: str):
     try:
         file = StorageManager.get_file(f'{storage}/{file_id}')
     except ObjectDoesNotExistError:
-        return JSONResponse({'detail': 'Not found'}, status_code=404)
+        return JSONResponse(
+            {'detail': 'Not found'},
+            status_code=HTTPStatus.NOT_FOUND)
 
     if isinstance(file.object.driver, LocalStorageDriver):
         return FileResponse(

@@ -6,17 +6,18 @@
 
 <span>
     / <a href="{{ url_for('index_page') }}">{{ _("Home") }}</a>
-    / <a href="{{ url_for('wiki') }}">{{ _("Manufacturers") }}</a>
+    / <a href="{{ url_for('gear') }}">{{ _("Manufacturers") }}</a>
     / <a href="{{ url_for('manufacturer', slug=slug) }}">{{ slug }}</a>
     / <a href="{{ url_for('lens_list', slug=slug) }}">{{ _("List of all lenses") }} {{ slug }}</a>
+    / {{ lens.name }}
 </span>
 
 
-<div class="wiki_detail-page">
+<div class="gear_detail-page">
 
   <!-- Спеки/паспорт -->
   <main class="main-detail">
-    {% include "wiki/lens_includes/specs.html" %}
+    {% include "gear/lens_includes/specs.html" %}
   </main>
 
    <!-- Внешний вид -->
@@ -33,7 +34,7 @@
     <section class="card">
       <h4>{{ _("Appearance") }}</h4>
         {% if images %}
-        {% include "wiki/lens_includes/image.html" %}
+        {% include "gear/lens_includes/image.html" %}
         {% else %}
         {{ _("The images haven't been uploaded yet.") }}
         {% endif %}
@@ -48,7 +49,7 @@
     <section class="card">
       <h4>{{ _("MTF Charts") }}</h4>
         {% if mtfs %}
-        {% include "wiki/lens_includes/mtf.html" %}
+        {% include "gear/lens_includes/mtf.html" %}
         {% else %}
         {{ _("Charts are not available yet.") }}
         {% endif %}

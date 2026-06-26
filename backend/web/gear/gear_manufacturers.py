@@ -10,18 +10,18 @@ from backend.models import Camera, Lens
 from backend.web.templates import render
 
 
-web_router = APIRouter(tags=['Wiki'])
+web_router = APIRouter(tags=['gear'])
 
 
-@web_router.get('/', name='wiki', response_class=HTMLResponse)
-async def wiki(
+@web_router.get('/', name='gear', response_class=HTMLResponse)
+async def gear_manufacturers(
         request: Request,
         session: AsyncSession = Depends(get_async_session)
 ):
     manufacturers = await get_manufacturers(session)
     return render(
         request,
-        'wiki/manufacturer_list.html',
+        'gear/manufacturer_list.html',
         {'manufacturers': manufacturers}
     )
 
@@ -35,6 +35,6 @@ async def wiki(
 async def manufacturer(request: Request, slug: str):
     return render(
         request,
-        'wiki/manufacturer.html',
+        'gear/manufacturer.html',
         {'slug': slug}
     )

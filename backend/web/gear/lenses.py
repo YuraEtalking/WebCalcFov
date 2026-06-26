@@ -22,7 +22,7 @@ async def lens_list(
     lenses = await get_active_lenses(session, slug)
     return render(
         request,
-        'wiki/lens_list.html',
+        'gear/lens_list.html',
         {'lenses': lenses, 'slug': slug,}
     )
 
@@ -48,7 +48,7 @@ async def lens_detail(
     compare_ids = [int(x) for x in raw.split(',') if x.isdigit()]
     return render(
             request,
-            'wiki/lens_detail.html',
+            'gear/lens_detail.html',
             {
                 'lens':  lens,
                 'slug':slug,
