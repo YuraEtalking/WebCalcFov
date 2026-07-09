@@ -1,4 +1,5 @@
 {% extends "base_template.html" %}
+{% import "gear/macros/specs.html" as specs_macros with context %}
 {% block title %}
 {{ _("Lens Comparison") }}
 {% endblock %}
@@ -48,6 +49,8 @@
 
     <tbody>
 
+
+    <!-- Общие -->
     <tr class="compare-section">
       <th colspan="{{ lenses|length + 1 }}">
         {{ _("General") }}
@@ -97,17 +100,40 @@
       <tr>
         <td>{{ _("Lens Type") }}</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.lens_type.value if lens.spec and lens.spec.lens_type else "—" }}</td>
+          <td>{{ specs_macros.lens_type_label(lens.spec.lens_type.value) if lens.spec and lens.spec.lens_type else "—" }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Construction") }}</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.construction_type if lens.spec else "—" }}</td>
+          <td>{{ specs_macros.construction_type_label(lens.spec.construction_type) if lens.spec.construction_type else "—" }}</td>
         {% endfor %}
       </tr>
 
+      <tr>
+        <td>{{ _("Sensor coverage format") }}</td>
+        {% for lens in lenses %}
+          <td>{{ lens.spec.coverage_format.value if lens.spec.coverage_format.value else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Date of the announcement/start of sales, (y-m-d)") }}</td>
+        {% for lens in lenses %}
+          <td>{{ lens.production_start_date if lens.production_start_date else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Sales end date, (y-m-d)") }}</td>
+        {% for lens in lenses %}
+          <td>{{ lens.production_end_date if lens.production_end_date else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+
+    <!-- Физические характеристики -->
     <tr class="compare-section">
       <th colspan="{{ lenses|length + 1 }}">
         {{ _("Physical characteristics") }}
@@ -117,24 +143,62 @@
       <tr>
         <td>{{ _("Length") }}, mm</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.length_mm if lens.spec else "—" }}</td>
+          <td>{{ lens.spec.length_mm if lens.spec.length_mm else "—" }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Diameter") }}, mm</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.diameter_mm if lens.spec else "—" }}</td>
+          <td>{{ lens.spec.diameter_mm if lens.spec.diameter_mm else "—" }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Weight") }}, g</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.weight_g if lens.spec else "—" }}</td>
+          <td>{{ lens.spec.weight_g if lens.spec.weight_g else "—" }}</td>
         {% endfor %}
       </tr>
 
+
+    <!-- Диафрагма spec -->
+    <tr class="compare-section">
+      <th colspan="{{ lenses|length + 1 }}">
+        {{ _("Aperture") }}
+      </th>
+    </tr>
+
+      <tr>
+        <td>{{ _("Minimum aperture (mix f-number)") }}</td>
+        {% for lens in lenses %}
+          <td>f/{{ lens.spec.min_aperture if lens.spec.min_aperture else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Number of diaphragm blades") }}</td>
+        {% for lens in lenses %}
+          <td>{{ lens.spec.aperture_blades if lens.spec.aperture_blades else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Type of aperture") }}</td>
+        {% for lens in lenses %}
+          <td>{{ specs_macros.type_diaphragm_label(lens.spec.type_diaphragm.value) if lens.spec.type_diaphragm.value else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Rounding of diaphragm blades") }}</td>
+        {% for lens in lenses %}
+          <td>{{ _("Yes") if lens.spec.aperture_blades_rounded else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+
+    <!-- Фильтры -->
     <tr class="compare-section">
       <th colspan="{{ lenses|length + 1 }}">
         {{ _("Filters") }}
@@ -144,42 +208,303 @@
       <tr>
         <td>{{ _("Filter size") }}, mm</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.filter_size_mm if lens.spec else "—" }}</td>
+          <td>{{ lens.spec.filter_size_mm if lens.spec.filter_size_mm is not none else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Supports front filters") }}</td>
+        {% for lens in lenses %}
+          <td>{{ _("Yes") if lens.spec.supports_front_filters else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Rear filter holder") }}</td>
+        {% for lens in lenses %}
+          <td>{{ _("Yes") if lens.spec.rear_filter_holder else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Filter mount type") }}</td>
+        {% for lens in lenses %}
+          <td>{{ specs_macros.filter_mount_type_label(lens.spec.filter_mount_type.value) if lens.spec.filter_mount_type.value is not none else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+
+
+
+
+    <!-- Фокусировка -->
+    <tr class="compare-section">
+      <th colspan="{{ lenses|length + 1 }}">
+        {{ _("Focusing") }}
+      </th>
+    </tr>
+
+      <tr>
+        <td>{{ _("Focus type") }}</td>
+        {% for lens in lenses %}
+          <td>{{ specs_macros.focus_type_label(lens.spec.focus_type.value) if lens.spec.focus_type.value else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Autofocus") }}</td>
+        {% for lens in lenses %}
+          <td>{{ _("Yes") if lens.spec.autofocus else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Full time manual focus") }}</td>
+        {% for lens in lenses %}
+          <td>{{ _("Yes") if lens.spec.full_time_manual_focus else "—" }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Min focus distance") }}, m</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.min_focus_distance_m if lens.spec else "—" }}</td>
+          <td>{{ lens.spec.min_focus_distance_m if lens.spec.min_focus_distance_m else "—" }}</td>
         {% endfor %}
       </tr>
+
+      <tr>
+        <td>{{ _("Autofocus motor type") }}</td>
+        {% for lens in lenses %}
+          <td>{{ specs_macros.focus_motor_type_label(lens.spec.autofocus_motor_type.value) if lens.spec.autofocus_motor_type.value else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Brand name autofocus") }}</td>
+        {% for lens in lenses %}
+          <td>{{ lens.spec.brand_name_autofocus if lens.spec.brand_name_autofocus else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+
+    <!-- Стабилизация -->
+    <tr class="compare-section">
+      <th colspan="{{ lenses|length + 1 }}">
+        {{ _("Stabilization") }}
+      </th>
+    </tr>
 
       <tr>
         <td>{{ _("Image stabilization") }}</td>
         {% for lens in lenses %}
-          <td>
-            {% if lens.spec %}
-              {{ _("Yes") if lens.spec.image_stabilization else _("No") }}
-            {% else %}
-              —
-            {% endif %}
-          </td>
+          <td>{{ _("Yes") if lens.spec.image_stabilization else "—" }}</td>
         {% endfor %}
       </tr>
 
       <tr>
-        <td>{{ _("Weather sealing") }}</td>
+        <td>{{ _("Stabilization name") }}</td>
         {% for lens in lenses %}
-          <td>
-            {% if lens.spec %}
-              {{ _("Yes") if lens.spec.weather_sealing else _("No") }}
-            {% else %}
-              —
-            {% endif %}
-          </td>
+          <td>{{ lens.spec.stabilization_name if lens.spec.stabilization_name else "—" }}</td>
         {% endfor %}
       </tr>
+
+      <tr>
+        <td>{{ _("Stabilization stops") }}</td>
+        {% for lens in lenses %}
+          <td>{{ lens.spec.stabilization_stops if lens.spec.stabilization_stops else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+
+    <!-- Зум -->
+    <tr class="compare-section">
+      <th colspan="{{ lenses|length + 1 }}">
+        {{ _("Zoom") }}
+      </th>
+    </tr>
+
+      <tr>
+        <td>{{ _("Zoom type") }}</td>
+        {% for lens in lenses %}
+          <td>{{ specs_macros.zoom_type_label(lens.spec.zoom_type.value) if lens.spec.zoom_type.value else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Internal zoom") }}</td>
+        {% for lens in lenses %}
+          <td>{{ lens.spec.internal_zoom if lens.spec.internal_zoom else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Zoom lock") }}</td>
+        {% for lens in lenses %}
+          <td>{{ lens.spec.zoom_lock if lens.spec.zoom_lock else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+    <!-- Макро-возможности -->
+    <tr class="compare-section">
+      <th colspan="{{ lenses|length + 1 }}">
+        {{ _("Macro opportunities") }}
+      </th>
+    </tr>
+
+      <tr>
+        <td>{{ _("Macro lens") }}</td>
+        {% for lens in lenses %}
+          <td>{{ lens.spec.is_macro if lens.spec.is_macro else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Working distance") }}, m</td>
+        {% for lens in lenses %}
+          <td>{{ lens.spec.working_distance_m if lens.spec.working_distance_m else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Max magnification") }}</td>
+        {% for lens in lenses %}
+          <td>{{ lens.spec.max_magnification if lens.spec.max_magnification else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+
+    <!-- Углы обзора объектива, вычисляемые поля -->
+    <tr class="compare-section">
+      <th colspan="{{ lenses|length + 1 }}">
+        {{ _("Lens viewing angles") }}
+      </th>
+    </tr>
+
+    {% set ns = namespace(has_zoom_lens=false) %}
+    {% for lens in lenses %}
+      {% if lens.focal_wide != lens.focal_tele %}
+        {% set ns.has_zoom_lens = true %}
+      {% endif %}
+    {% endfor %}
+
+    {% if ns.has_zoom_lens %}
+
+      <tr>
+        <td>{{ _("Angle of view wide") }}</td>
+        {% for lens in lenses %}
+          <td>{{ lens.spec.angle_of_view_wide if lens.spec.angle_of_view_wide else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Angle of view tele") }}</td>
+        {% for lens in lenses %}
+          <td>{{ lens.spec.angle_of_view_tele if lens.spec.angle_of_view_tele else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+    {% else %}
+
+      <tr>
+        <td>{{ _("Angle of view") }}</td>
+        {% for lens in lenses %}
+          <td>{{ lens.spec.angle_of_view_tele if lens.spec.angle_of_view_tele else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+    {% endif %}
+
+
+    <!-- Бленда и аксессуары -->
+    <tr class="compare-section">
+      <th colspan="{{ lenses|length + 1 }}">
+        {{ _("Accessories") }}
+      </th>
+    </tr>
+
+      <tr>
+        <td>{{ _("Hood model") }}</td>
+        {% for lens in lenses %}
+          <td>{{ lens.spec.hood_model if lens.spec.hood_model else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Hood included") }}</td>
+        {% for lens in lenses %}
+          <td>{{ _("Yes") if lens.spec.hood_included else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Tripod collar included") }}</td>
+        {% for lens in lenses %}
+          <td>{{ _("Yes") if lens.spec.tripod_collar_included else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Tripod collar removable") }}</td>
+        {% for lens in lenses %}
+          <td>{{ _("Yes") if lens.spec.tripod_collar_removable else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Case included") }}</td>
+        {% for lens in lenses %}
+          <td>{{ _("Yes") if lens.spec.case_included else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+
+    <tr>
+      <td>{{ _("Supplied accessories") }}</td>
+      {% for lens in lenses %}
+        <td>
+          {% if lens.spec.supplied_accessories %}
+            <ul class="accessories-list">
+              {% for item in lens.spec.supplied_accessories.split(',') %}
+                <li>{{ item.strip() }}</li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            —
+          {% endif %}
+        </td>
+      {% endfor %}
+    </tr>
+
+
+    <!-- Дополнительно -->
+    <tr class="compare-section">
+      <th colspan="{{ lenses|length + 1 }}">
+        {{ _("Additionally") }}
+      </th>
+    </tr>
+
+      <tr>
+        <td>{{ _("Weather sealing") }}</td>
+        {% for lens in lenses %}
+          <td>{{ _("Yes") if lens.spec.weather_sealing else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Dust moisture resistant") }}</td>
+        {% for lens in lenses %}
+          <td>{{ _("Yes") if lens.spec.dust_moisture_resistant else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Fluorine_coating") }}</td>
+        {% for lens in lenses %}
+          <td>{{ _("Yes") if lens.spec.fluorine_coating else "—" }}</td>
+        {% endfor %}
+      </tr>
+
+
     </tbody>
   </table>
 </div>

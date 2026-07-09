@@ -20,7 +20,7 @@
     {% include "gear/lens_includes/specs.html" %}
   </main>
 
-   <!-- Внешний вид -->
+   <!-- Кнопка сравнения -->
   <aside class="sidebar">
 
     <section class="card">
@@ -31,6 +31,7 @@
     </form>
     </section>
 
+    <!-- Внешний вид -->
     <section class="card">
       <h4>{{ _("Appearance") }}</h4>
         {% if images %}
@@ -40,9 +41,19 @@
         {% endif %}
     </section>
 
-    <!-- Примеры файлов -->
+    <!-- Примеры фотографий -->
     <section class="card">
-      <h4>{{ _("Sample files") }}</h4>
+      <h4>{{ _("Sample photography") }}</h4>
+        {% if sample_photos %}
+        {% include "gear/lens_includes/sample_photos.html" %}
+        {% else %}
+        {{ _("Charts are not available yet.") }}
+        {% endif %}
+    </section>
+
+    <!-- Примеры RAW -->
+    <section class="card">
+      <h4>{{ _("Sample RAW files") }}</h4>
     </section>
 
     <!-- Графики MTF -->

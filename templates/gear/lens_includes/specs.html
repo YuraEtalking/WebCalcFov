@@ -1,5 +1,7 @@
+{% import "gear/macros/specs.html" as specs_macros with context %}
 <!-- Общие данные -->
 <h1>{{ lens.name }}</h1>
+<hr>
 <ul>
     <li>{{ _("Manufacturer") }}: <b>{{ lens.manufacturer }}</b></li>
     <li>{{ _("Mount") }}: <b>{{ lens.bayonet.name }}</b></li>
@@ -32,16 +34,23 @@
 </ul>
 
 <br>
+<hr>
 <!-- Спецификации -->
-<details> <!-- open -->
+<details open> <!-- open -->
     <summary><strong>{{ _("Specifications") }}</strong></summary>
 
 
     <br>
     <!-- Конструкция и тип объектива -->
     <div><strong>{{ _("Lens design and type") }}:</strong></div>
-    <div>{{ _("Lens Type") }}: <b>{{ spec.lens_type.value }}</b></div>
-    <div>{{ _("Construction") }}: <b>{{ spec.construction_type }}</b></div>
+    <div>
+        {{ _("Lens Type") }}:
+        <b>{{ specs_macros.lens_type_label(spec.lens_type.value) }}</b>
+    </div>
+    <div>
+        {{ _("Construction") }}:
+        <b>{{ specs_macros.construction_type_label(spec.construction_type) }}</b>
+    </div>
 
 
     <br>
@@ -63,7 +72,10 @@
     <div><strong>{{ _("Aperture") }}:</strong></div>
     <div>{{ _("Minimum aperture (mix f-number)") }}: <b>f/{{ spec.min_aperture }}</b></div>
     <div>{{ _("Number of diaphragm blades") }}: <b>{{ spec.aperture_blades }}</b></div>
-    <div>{{ _("Type of aperture") }}: <b>{{ spec.type_diaphragm.value }}</b></div>
+    <div>
+        {{ _("Type of aperture") }}:
+        <b>{{ specs_macros.type_diaphragm_label(spec.type_diaphragm.value) }}</b>
+    </div>
     <div>
       {{ _("Rounding of diaphragm blades") }}:
       <b class="{{ 'bool-true' if spec.aperture_blades_rounded else 'bool-false' }}">
@@ -88,13 +100,19 @@
       {{ _("Yes") if spec.rear_filter_holder else _("No") }}
       </b>
     </div>
-    <div>{{ _("Filter mount type") }}: <b>{{ spec.filter_mount_type.value }}</b></div>
+    <div>
+        {{ _("Filter mount type") }}:
+        <b>{{ specs_macros.filter_mount_type_label(spec.filter_mount_type.value) }}</b>
+    </div>
 
 
     <br>
     <!-- Фокусировка -->
     <div><strong>{{ _("Focusing") }}:</strong></div>
-    <div>{{ _("Focus type") }}: <b>{{ spec.focus_type.value }}</b></div>
+    <div>
+        {{ _("Focus type") }}:
+        <b>{{ specs_macros.focus_type_label(spec.focus_type.value) }}</b>
+    </div>
     <div>
       {{ _("Autofocus") }}:
       <b class="{{ 'bool-true' if spec.autofocus else 'bool-false' }}">
@@ -108,7 +126,10 @@
       </b>
     </div>
     <div>{{ _("Min focus distance") }}, m: <b>{{ spec.min_focus_distance_m }}</b></div>
-    <div>{{ _("Autofocus motor type") }}: <b>{{ spec.autofocus_motor_type.value }}</b></div>
+    <div>
+        {{ _("Autofocus motor type") }}:
+        <b>{{ specs_macros.focus_motor_type_label(spec.autofocus_motor_type.value) }}</b>
+    </div>
     <div>{{ _("Brand name autofocus") }}: <b>{{ spec.brand_name_autofocus }}</b></div>
 
 
@@ -128,7 +149,10 @@
     <br>
     <!-- Зум -->
     <div><strong>{{ _("Zoom") }}:</strong></div>
-    <div>{{ _("Zoom type") }}: <b>{{ spec.zoom_type.value }}</b></div>
+    <div>
+        {{ _("Zoom type") }}:
+        <b>{{ specs_macros.zoom_type_label(spec.zoom_type.value) }}</b>
+    </div>
     <div>
       {{ _("Internal zoom") }}:
       <b class="{{ 'bool-true' if spec.internal_zoom else 'bool-false' }}">
@@ -225,10 +249,11 @@
       </b>
     </div>
 
+
 </details>
 <br>
-
-<details> <!-- open -->
+<hr>
+<details open> <!-- open -->
     <summary><strong>{{ _("Compatible teleconverters") }}:</strong></summary>
     <ul>
         {% for tс in teleconverters %}
@@ -237,8 +262,8 @@
     </ul>
 </details>
 <br>
-
-<details> <!-- open -->
+<hr>
+<details open> <!-- open -->
     <summary><strong>{{ _("Compatible cameras") }}:</strong></summary>
     <ul>
         {% for camera in camera_lenses %}
@@ -253,7 +278,7 @@
         {% endfor %}
     </ul>
 </details>
-
+<hr>
 <h3>{{ _("Reviews/Tests") }}:</h3>
 <ul>
     {% for link in links %}

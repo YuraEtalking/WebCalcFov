@@ -1,7 +1,7 @@
 from http import HTTPStatus
 
 from fastapi import APIRouter, Request, Depends
-from fastapi.responses import Response
+from fastapi.responses import Response, RedirectResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from loguru import logger
 
@@ -34,7 +34,10 @@ async def add_lend_to_compare(request: Request, lens_id: int):
 
     ids = ids[:4]
 
-    response = Response(status_code=HTTPStatus.NO_CONTENT)
+    response = RedirectResponse(
+        url=request.headers.get('referer'),
+        status_code=HTTPStatus.SEE_OTHER
+    )
     set_default_cookie(
         response=response,
         key=COMPARE_LENSES_COOKIE,
@@ -69,7 +72,10 @@ async def remove_from_comparison_list(request: Request, lens_id: int):
         ids.remove(lens_id)
 
     logger.debug('Стало: ids="{}"', ids)
-    response = Response(status_code=HTTPStatus.NO_CONTENT)
+    response = RedirectResponse(
+        url=request.headers.get('referer'),
+        status_code=HTTPStatus.SEE_OTHER
+    )
     set_default_cookie(
         response=response,
         key=COMPARE_LENSES_COOKIE,
@@ -84,7 +90,10 @@ async def remove_from_comparison_list(request: Request, lens_id: int):
 )
 async def clear_comparison_list(request: Request):
     """Чистит список сравнений."""
-    response = Response(status_code=HTTPStatus.NO_CONTENT)
+    response = RedirectResponse(
+        url=request.headers.get('referer'),
+        status_code=HTTPStatus.SEE_OTHER
+    )
     response.delete_cookie(
         key=COMPARE_LENSES_COOKIE,
         samesite='lax',

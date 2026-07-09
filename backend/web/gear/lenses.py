@@ -44,6 +44,7 @@ async def lens_detail(
         link.image for link in lens.image_links if link.role == 'photo' and link.image is not None
     ]
     mtfs = [link.image for link in lens.image_links if link.role == 'mtf' and link.image is not None]
+    sample_photos = [link.image for link in lens.image_links if link.role == 'sample' and link.image is not None]
     raw = request.cookies.get('compare_lenses', '')
     compare_ids = [int(x) for x in raw.split(',') if x.isdigit()]
     return render(
@@ -59,6 +60,7 @@ async def lens_detail(
                 'spec': lens.spec,
                 'images': images,
                 'mtfs': mtfs,
+                'sample_photos': sample_photos,
                 'compare_ids': compare_ids,
             }
         )

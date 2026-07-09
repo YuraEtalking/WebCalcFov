@@ -33,21 +33,26 @@ class FilterMountType(str, enum.Enum):
     SCREW_IN = 'screw_in'  # Резьбовой
     DROP_IN = 'drop_in'  # Вставной
     REAR_GEL = 'rear_gel'  # Крепление для пленочного фильтра
-    NONE = 'none'  # Без крепления
+    NONE_FILTER = 'none_filter'  # Без крепления
 
 
 class LensType(str, enum.Enum):
     """Тип объектива."""
+    BODY_CAP_LENS = 'body_cap_lens'  # “Объектив-крышка”. Очень тонкий, простой объектив.
+    CINE = 'cine'  # Кинообъектив.
+    FISHEYE = 'fisheye'  # Рыбий глаз.
     MACRO = 'macro'  # Макро
-    FISHEYE = 'fisheye'  # Рыбий глаз
-    TILT_SHIFT = 'tilt_shift'  # Смещение оси
-    SUPER_TELEPHOTO = 'super_telephoto'  # Длиннофокусный
-    WIDE_ANGLE = 'wide_angle'  # Широкоугольный
-    STANDARD = 'standard'  # Стандартный
-    PORTRAIT = 'portrait'  # Портретный
-    CINE = 'cine'  # Кинообъектив
-    PANCAKE = 'pancake'  # Блинчик
-    THERMAL_LENS = 'thermal_lens'  # Объектив для тепловизора
+    MACRO_PROBE = 'macro_probe'  # Макро зонд типа Laowa 24mm f/14 Probe.
+    PANCAKE = 'pancake'  # Блинчик.
+    PORTRAIT = 'portrait'  # Портретный.
+    POWER_ZOOM = 'power_zoom'  # Объектив с моторизованным зумом.
+    SOFT_FOCUS = 'soft_focus'  # Объектив с “мягким фокусом”. Дает не полностью клинически резкую картинку.
+    STANDARD = 'standard'  # Стандартный.
+    SUPER_TELEPHOTO = 'super_telephoto'  # Длиннофокусный.
+    THERMAL_LENS = 'thermal_lens'  # Объектив для тепловизора.
+    TILT_SHIFT = 'tilt_shift'  # Смещение оси.
+    TRANS_FOCUS_DEFOCUS = 'trans_focus_defocus'  # Trans Focus делает боке очень плавным. Defocus Control типа Nikon DC-объективы
+    WIDE_ANGLE = 'wide_angle'  # Широкоугольный.
 
 
 class TypeDiaphragm(str, enum.Enum):
@@ -71,15 +76,15 @@ class FocusType(str, enum.Enum):
 
 
 class AutofocusMotorType(str, enum.Enum):
-    STEPPER = "stepper"  # Шаговый мотор
-    ULTRASONIC = "ultrasonic"  # Ультразвуковой мотор
-    LINEAR = "linear"  # Линейный мотор
-    VOICE_COIL = "voice_coil"  # Voice coil / катушечный линейный привод
-    PIEZO = "piezo"  # Пьезо-мотор
-    DC = "dc"  # Обычный DC-микромотор
-    SCREW_DRIVE = "screw_drive"  # Отверточный привод от камеры
-    NONE = "none"  # Нет мотора автофокуса
-    OTHER = "other"  # Другое / неизвестно
+    STEPPER = 'stepper'  # Шаговый мотор
+    ULTRASONIC = 'ultrasonic'  # Ультразвуковой мотор
+    LINEAR = 'linear'  # Линейный мотор
+    VOICE_COIL = 'voice_coil'  # Voice coil / катушечный линейный привод
+    PIEZO = 'piezo'  # Пьезо-мотор
+    DC = 'dc'  # Обычный DC-микромотор
+    SCREW_DRIVE = 'screw_drive'  # Отверточный привод от камеры
+    NONE = 'none'  # Нет мотора автофокуса
+    OTHER = 'other'  # Другое / неизвестно
 
 
 class ZoomType(str, enum.Enum):

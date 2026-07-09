@@ -1,0 +1,102 @@
+
+<!-- Тип объектива -->
+{% macro lens_type_label(value) %}
+    {% set labels = {
+        "body_cap_lens": _("Body cap lens"),
+        "cine": _("Cine"),
+        "fisheye": _("Fisheye"),
+        "macro": _("Macro"),
+        "macro_probe": _("Macro probe"),
+        "pancake": _("Pancake"),
+        "portrait": _("Portrait"),
+        "power_zoom": _("Power zoom"),
+        "soft_focus": _("Soft focus"),
+        "standard": _("Standard"),
+        "super_telephoto": _("Super Telephoto"),
+        "thermal_lens": _("Thermal lens"),
+        "tilt_shift": _("Tilt shift"),
+        "trans_focus_defocus": _("Trans Focus Defocus"),
+        "wide_angle": _("Wide angle"),
+    } %}
+    {{ labels.get(value, value) }}
+{% endmacro %}
+
+
+<!-- Конструкция объектива -->
+{% macro construction_type_label(value) %}
+    {% set labels = {
+        "zoom": _("Zoom Lens"),
+        "prime": _("Prime Lens"),
+    } %}
+    {{ labels.get(value, value) }}
+{% endmacro %}
+
+
+<!-- Диафрагма -->
+{% macro type_diaphragm_label(value) %}
+    {% set labels = {
+        "electronic": _("Electronic"),
+        "mechanical": _("Mechanical"),
+        "manual": _("Manual"),
+        "camera_controlled": _("Camera Controlled"),
+    } %}
+    {{ labels.get(value, value) }}
+{% endmacro %}
+
+
+<!-- Фильтры тип крепления -->
+{% macro filter_mount_type_label(value) %}
+    {% set labels = {
+        "screw_in": _("Screw in"),
+        "drop_in": _("Drop in"),
+        "rear_gel": _("Rear Gel"),
+        "none_filter": _("None Filter"),
+    } %}
+    {{ labels.get(value, value) }}
+{% endmacro %}
+
+
+<!-- Тип фокуса -->
+{% macro focus_type_label(value) %}
+    {% set labels = {
+        "internal": _("Internal"),
+        "front": _("Front element/group focusing"),
+        "rear": _("Rear group focusing"),
+        "unit": _("Unit focusing"),
+        "floating": _("Floating focusing system"),
+        "extending": _("Extending focusing"),
+        "rotating_front": _("Rotating front element"),
+        "fixed": _("Fixed focus"),
+        "other": _("Other"),
+    } %}
+    {{ labels.get(value, value) }}
+{% endmacro %}
+
+
+<!-- Тип мотора фокуса -->
+{% macro focus_motor_type_label(value) %}
+    {% set labels = {
+        "stepper": _("Stepper"),
+        "ultrasonic": _("Ultrasonic"),
+        "linear": _("Linear"),
+        "voice_coil": _("Voice coil"),
+        "piezo": _("Piezo"),
+        "dc": _("DC"),
+        "screw_drive": _("Screw drive"),
+        "none": _("None"),
+        "other": _("Other"),
+    } %}
+    {{ labels.get(value, value) }}
+{% endmacro %}
+
+
+<!-- Тип зума -->
+{% macro zoom_type_label(value) %}
+    {% set labels = {
+        "rotary": _("Rotary"),
+        "push_pull": _("Push-pull"),
+        "power_zoom": _("Power zoom"),
+        "non_zoom": _("Non-zoom"),
+    } %}
+    {{ labels.get(value, value) }}
+{% endmacro %}
