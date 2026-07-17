@@ -37,9 +37,15 @@ class FovCalcInput(BaseModel):
     @field_validator('focal', mode='before')
     @classmethod
     def validate_focal(cls, value):
-        if isinstance(value, float):
-            if value <= 0:
-                raise ValueError(
-                    'Фокусное не может быть равно или меньше ноля'
-                )
+        if value in (None, ""):
+            return None
+
+        try:
+            value = float(value)
+        except (TypeError, ValueError):
+            raise ValueError("Фокусное должно быть числом")
+
+        if value <= 0:
+            raise ValueError("Фокусное не может быть равно или меньше ноля")
+
         return value

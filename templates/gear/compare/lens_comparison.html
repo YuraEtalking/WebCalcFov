@@ -193,7 +193,7 @@
       <tr>
         <td>{{ _("Rounding of diaphragm blades") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.aperture_blades_rounded else "—" }}</td>
+          <td>{{ _("Yes") if lens.spec.aperture_blades_rounded else _("No") }}</td>
         {% endfor %}
       </tr>
 
@@ -215,14 +215,14 @@
       <tr>
         <td>{{ _("Supports front filters") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.supports_front_filters else "—" }}</td>
+          <td>{{ _("Yes") if lens.spec.supports_front_filters else _("No") }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Rear filter holder") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.rear_filter_holder else "—" }}</td>
+          <td>{{ _("Yes") if lens.spec.rear_filter_holder else _("No") }}</td>
         {% endfor %}
       </tr>
 
@@ -254,14 +254,14 @@
       <tr>
         <td>{{ _("Autofocus") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.autofocus else "—" }}</td>
+          <td>{{ _("Yes") if lens.spec.autofocus else _("No") }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Full time manual focus") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.full_time_manual_focus else "—" }}</td>
+          <td>{{ _("Yes") if lens.spec.full_time_manual_focus else _("No") }}</td>
         {% endfor %}
       </tr>
 
@@ -297,7 +297,7 @@
       <tr>
         <td>{{ _("Image stabilization") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.image_stabilization else "—" }}</td>
+          <td>{{ _("Yes") if lens.spec.image_stabilization else _("No") }}</td>
         {% endfor %}
       </tr>
 
@@ -333,14 +333,14 @@
       <tr>
         <td>{{ _("Internal zoom") }}</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.internal_zoom if lens.spec.internal_zoom else "—" }}</td>
+          <td>{{ lens.spec.internal_zoom if lens.spec.internal_zoom else _("No") }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Zoom lock") }}</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.zoom_lock if lens.spec.zoom_lock else "—" }}</td>
+          <td>{{ lens.spec.zoom_lock if lens.spec.zoom_lock else _("No") }}</td>
         {% endfor %}
       </tr>
 
@@ -354,7 +354,7 @@
       <tr>
         <td>{{ _("Macro lens") }}</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.is_macro if lens.spec.is_macro else "—" }}</td>
+          <td>{{ lens.spec.is_macro if lens.spec.is_macro else _("No") }}</td>
         {% endfor %}
       </tr>
 
@@ -432,28 +432,28 @@
       <tr>
         <td>{{ _("Hood included") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.hood_included else "—" }}</td>
+          <td>{{ _("Yes") if lens.spec.hood_included else _("No") }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Tripod collar included") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.tripod_collar_included else "—" }}</td>
+          <td>{{ _("Yes") if lens.spec.tripod_collar_included else _("No") }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Tripod collar removable") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.tripod_collar_removable else "—" }}</td>
+          <td>{{ _("Yes") if lens.spec.tripod_collar_removable else _("No") }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Case included") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.case_included else "—" }}</td>
+          <td>{{ _("Yes") if lens.spec.case_included else _("No") }}</td>
         {% endfor %}
       </tr>
 
@@ -486,21 +486,21 @@
       <tr>
         <td>{{ _("Weather sealing") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.weather_sealing else "—" }}</td>
+          <td>{{ _("Yes") if lens.spec.weather_sealing else _("No") }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Dust moisture resistant") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.dust_moisture_resistant else "—" }}</td>
+          <td>{{ _("Yes") if lens.spec.dust_moisture_resistant else _("No") }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Fluorine_coating") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.fluorine_coating else "—" }}</td>
+          <td>{{ _("Yes") if lens.spec.fluorine_coating else _("No") }}</td>
         {% endfor %}
       </tr>
 

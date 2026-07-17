@@ -1,7 +1,11 @@
+from typing import Any
+
 from starlette_admin import (
     StringField, IntegerField, FloatField, BooleanField,
     DateTimeField, TextAreaField, HasOne, EnumField
 )
+from starlette.requests import Request
+from starlette_admin.exceptions import FormValidationError
 from starlette_admin.contrib.sqla import ModelView
 from backend.models import (
     FilterMountType,
@@ -12,6 +16,7 @@ from backend.models import (
     AutofocusMotorType,ZoomType
 )
 from loguru import logger
+from backend.core.admin.admin_fields import CommaToDotFloatField
 
 
 class SpecLensAdmin(ModelView):
@@ -31,7 +36,7 @@ class SpecLensAdmin(ModelView):
             enum=LensType,
             help_text='Выберите тип объектива.',
         ),
-        StringField('construction_type', label='Конструкция'), # Вычисляемое поле.
+        StringField('construction_type', label='Конструкция'),
 
 
         # Физические данные
@@ -50,7 +55,7 @@ class SpecLensAdmin(ModelView):
 
 
         # Диафрагма
-        FloatField('min_aperture', label='Минимальная диафрагма'),
+        CommaToDotFloatField('min_aperture', label='Минимальная диафрагма'),
         IntegerField('aperture_blades', label='Кол-во лепестков диафрагмы'),
         EnumField(
             'type_diaphragm',
@@ -64,7 +69,7 @@ class SpecLensAdmin(ModelView):
 
 
         # Фильтры
-        IntegerField('filter_size_mm', label='Размер фильтра мм'),
+        IntegerField('filter_size_mm', label='Размер фильтра, мм'),
         BooleanField(
             'supports_front_filters',
             label='Переднее крепление фильтра',
@@ -91,9 +96,9 @@ class SpecLensAdmin(ModelView):
             'full_time_manual_focus',
             label='Постоянная ручная фокусировка A/M или М/А',
         ),
-        FloatField(
+        CommaToDotFloatField(
             'min_focus_distance_m',
-            label='Минимальная дистанция фокусировки',
+            label='Минимальная дистанция фокусировки, м',
         ),
         EnumField(
             'autofocus_motor_type',
@@ -130,10 +135,6 @@ class SpecLensAdmin(ModelView):
 
         # Макро-возможности
         BooleanField('is_macro', label='Макро объектив'),
-        FloatField(
-            'working_distance_m',
-            label='Рабочая дистанция, м',
-        ),
         FloatField(
             'max_magnification',
             label='Коэффициент увеличения (масштаб съёмки)',
@@ -201,10 +202,45 @@ class SpecLensAdmin(ModelView):
     ]
 
     exclude_fields_from_list = [
+        'lens_type',
+        'autofocus',
+        'image_stabilization',
+        'construction_type',
+        'weight_g',
+        'length_mm',
         'diameter_mm',
+        'coverage_format',
         'min_aperture',
+        'aperture_blades',
+        'type_diaphragm',
+        'aperture_blades_rounded',
+        'filter_size_mm',
+        'supports_front_filters',
+        'rear_filter_holder',
+        'filter_mount_type',
+        'focus_type',
+        'full_time_manual_focus',
+        'min_focus_distance_m',
+        'autofocus_motor_type',
+        'brand_name_autofocus',
+        'stabilization_name',
+        'stabilization_stops',
+        'zoom_type',
+        'internal_zoom',
+        'zoom_lock',
+        'is_macro',
+        'max_magnification',
         'angle_of_view_wide',
         'angle_of_view_tele',
+        'hood_model',
+        'hood_included',
+        'tripod_collar_included',
+        'tripod_collar_removable',
+        'case_included',
+        'supplied_accessories',
+        'weather_sealing',
+        'dust_moisture_resistant',
+        'fluorine_coating',
     ]
     exclude_fields_from_create = [
         'angle_of_view_wide',
@@ -214,5 +250,5 @@ class SpecLensAdmin(ModelView):
     exclude_fields_from_edit = [
         'angle_of_view_wide',
         'angle_of_view_tele',
-        'construction_type', 'created_at', 'updated_at', 'is_active',
+        'construction_type', 'created_at', 'updated_at', 'is_active', 'lens'
     ]
