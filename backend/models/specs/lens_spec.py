@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING
 
+from sqlalchemy import CheckConstraint
 from sqlalchemy import Boolean, Float, ForeignKey, Enum, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -13,6 +14,7 @@ from backend.models.mixins import (
 )
 from backend.services.fov_calculator import get_degrees_fov
 from backend.models.specs.spec_mixins import LensPhysicalSpecMixin
+from backend.models.specs.utils import positive_checks
 from backend.models.enums import (
     SensorFormat,
     ConstructionType,
@@ -42,6 +44,16 @@ class SpecLens(
     Все поля характеристик должны быть nullable=True, объект SpecLens
     создается вместе с объектом Lens, так как ограничение админки не позволяет
     наполнить объект SpecLens данными сразу вместе с Lens."""
+
+    __table_args__ = positive_checks(
+        'speclens',
+        'min_aperture',
+        'aperture_blades',
+        'filter_size_mm',
+        'min_focus_distance_m',
+        'stabilization_stops',
+        'max_magnification',
+    )
 
     lens_id: Mapped[int] = mapped_column(
         ForeignKey('lens.id'),
@@ -206,3 +218,18 @@ class SpecLens(
         if self.lens.focal_wide != self.lens.focal_tele:
             return ConstructionType.ZOOM.value
         return ConstructionType.PRIME.value
+
+    __table_args__ = (
+        CheckConstraint(
+            'min_aperture IS NULL OR min_aperture > 0',
+            name='ck_speclens_min_aperture_positive',
+        ),
+        CheckConstraint(
+            'min_focus_distance_m IS NULL OR min_focus_distance_m > 0',
+            name='ck_speclens_min_focus_distance_positive',
+        ),
+        CheckConstraint(
+            'max_magnification IS NULL OR max_magnification > 0',
+            name='ck_speclens_max_magnification_positive',
+        ),
+    )
