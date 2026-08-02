@@ -1,6 +1,5 @@
 from typing import TYPE_CHECKING
 
-from sqlalchemy import CheckConstraint
 from sqlalchemy import Boolean, Float, ForeignKey, Enum, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -135,10 +134,12 @@ class SpecLens(
     zoom_lock: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
 
 
+    # Интегрированный телеконвертор
+    is_tc_integrated: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
+
+
     # Макро-возможности
     is_macro: Mapped[bool | None] = mapped_column(Boolean,nullable=True)
-    working_distance_m: Mapped[float | None] = mapped_column(Float, nullable=True)  # todo убрать
-    maximum_magnification_ratio: Mapped[float | None] = mapped_column(Float, nullable=True)  # todo убрать
     max_magnification: Mapped[float | None] = mapped_column(
         Float,
         nullable=True,
@@ -218,18 +219,3 @@ class SpecLens(
         if self.lens.focal_wide != self.lens.focal_tele:
             return ConstructionType.ZOOM.value
         return ConstructionType.PRIME.value
-
-    __table_args__ = (
-        CheckConstraint(
-            'min_aperture IS NULL OR min_aperture > 0',
-            name='ck_speclens_min_aperture_positive',
-        ),
-        CheckConstraint(
-            'min_focus_distance_m IS NULL OR min_focus_distance_m > 0',
-            name='ck_speclens_min_focus_distance_positive',
-        ),
-        CheckConstraint(
-            'max_magnification IS NULL OR max_magnification > 0',
-            name='ck_speclens_max_magnification_positive',
-        ),
-    )

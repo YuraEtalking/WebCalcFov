@@ -1,6 +1,6 @@
 import enum
 
-
+# Общие
 class BayonetType(str, enum.Enum):
     """Наименование байонета."""
     Z = 'Nikon Z'
@@ -16,6 +16,11 @@ class BayonetType(str, enum.Enum):
     K = 'Pentax K'
 
 
+
+
+
+
+# Для объектива
 class CompatibilityType(str, enum.Enum):
     """Тип соединения камеры и объектива."""
     DIRECT = 'direct'  # Прямое соединение
@@ -61,6 +66,7 @@ class TypeDiaphragm(str, enum.Enum):
     MECHANICAL = 'mechanical'  # Механическая
     MANUAL = 'manual'  # Ручная
     CAMERA_CONTROLLED = 'camera_controlled'  # Управляемая камерой
+    OTHER = 'other'  # Нестандартный/неизвестный тип
 
 
 class FocusType(str, enum.Enum):
@@ -83,18 +89,22 @@ class AutofocusMotorType(str, enum.Enum):
     PIEZO = 'piezo'  # Пьезо-мотор
     DC = 'dc'  # Обычный DC-микромотор
     SCREW_DRIVE = 'screw_drive'  # Отверточный привод от камеры
-    NONE = 'none'  # Нет мотора автофокуса
+    MANUAL = 'manual'  # Нет мотора автофокуса/ Ручная фокусировка
     OTHER = 'other'  # Другое / неизвестно
 
 
 class ZoomType(str, enum.Enum):
     ROTARY = 'rotary'  # кольцо зума
     PUSH_PULL = 'push_pull'  # тромбон / push-pull
-    POWER_ZOOM = 'power_zoom'  # моторизированный зум
-    NON_ZOOM = 'non_zoom'  # Без зума, фикс
+    MOTORIZED_ZOOM = 'motorized_zoom'  # моторизированный зум
+    NONE_ZOOM = 'none_zoom'  # Без зума, фикс
 
 
 
+
+
+
+# Для камеры
 class SensorFormat(str, enum.Enum):
     NON_STANDARD = 'NON_STANDARD'
     FULL_FRAME = 'Full Frame'
@@ -106,7 +116,6 @@ class SensorFormat(str, enum.Enum):
     VOX_384_12 = 'Thermal sensor VOx384×288:12μm'
     VOX_640_17 = 'Thermal sensor VOx640×512:17μm'
     VOX_384_17 = 'Thermal sensor VOx384×288:17μm'
-
 
 SENSOR_FORMAT_SIZES = {
     SensorFormat.FULL_FRAME: (36.0, 24.0),
@@ -120,3 +129,50 @@ SENSOR_FORMAT_SIZES = {
     SensorFormat.VOX_384_17: (6.5, 4.9),
 }
 
+class SensorTechnology(str, enum.Enum):
+    CMOS = 'cmos'
+    CCD = 'ccd'
+    BSI_CMOS = 'bsi_cmos'
+    STACKED_BSI_CMOS = 'stacked_bsi_cmos'
+    FOVEON_X3 = 'foveon_x3'
+    VOX_MICROBOLOMETER = 'vox_microbolometer'
+    A_SI_MICROBOLOMETER = 'a_si_microbolometer'
+    OTHER = 'other'
+
+
+class CameraCategory(str, enum.Enum):
+    """Назначение устройства"""
+    PHOTO = 'photo'                  # фотокамера
+    VIDEO = 'video'                  # видеокамера
+    CINEMA = 'cinema'                # кинокамера
+    ACTION = 'action'                # экшн-камера
+    DRONE = 'drone'                  # камера дрона
+    INSTANT = 'instant'              # моментальная печать
+
+
+class CameraType(str, enum.Enum):
+    """Конструкция"""
+    DSLR = 'dslr'  # зеркальная
+    MIRRORLESS = 'mirrorless'  # беззеркальная
+    RANGEFINDER = 'rangefinder'  # дальномерная
+    COMPACT = 'compact'  # компактная («мыльница»)
+    BRIDGE = 'bridge'  # псевдозеркальная
+    TLR = 'tlr'  # двухобъективная зеркальная
+
+
+class MediumType(str, enum.Enum):
+    """Носитель"""
+    DIGITAL = 'digital'
+    FILM = 'film'
+
+class ViewfinderType(str, enum.Enum):
+    OPTICAL = 'optical'
+    ELECTRONIC = 'electronic'
+    HYBRID = 'hybrid'
+    NONE = 'none'
+
+class ScreenType(str, enum.Enum):
+    FIXED
+    TILTING
+    FULLY_ARTICULATED
+    TWO_AXIS_TILT

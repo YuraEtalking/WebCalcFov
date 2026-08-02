@@ -3,8 +3,6 @@ from typing import TYPE_CHECKING
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from starlette.requests import Request
-
 from backend.core.db import Base
 from backend.models.mixins import (
     IdMixin,
@@ -20,8 +18,9 @@ from backend.models.mixins import (
 if TYPE_CHECKING:
     from .lens import Lens
     from .associative_model import CameraLens
-    from .sensor import Sensor
+    # from .sensor import Sensor
     from .link import Link
+    from .specs.camera_spec import SpecCamera
     from .image import CameraImageLink
 
 
@@ -43,13 +42,19 @@ class Camera(
         secondary='camera_lens',
         viewonly=True,
     )
-    sensor_id: Mapped[int] = mapped_column(ForeignKey('sensor.id'))
-    sensor: Mapped['Sensor'] = relationship(back_populates='cameras')
+    # sensor_id: Mapped[int] = mapped_column(ForeignKey('sensor.id'))
+    # sensor: Mapped['Sensor'] = relationship(back_populates='cameras')
 
     links: Mapped[list['Link']] = relationship(
         secondary='link_camera',
         back_populates='cameras',
         order_by='Link.created_at',
+    )
+    spec: Mapped["SpecCamera | None"] = relationship(
+        back_populates='camera',
+        uselist=False,
+        cascade='all, delete-orphan',
+        single_parent=True,
     )
     image_links: Mapped[list['CameraImageLink']] = relationship(
         back_populates='camera',

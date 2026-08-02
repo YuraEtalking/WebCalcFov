@@ -29,25 +29,25 @@ class Sensor(
     CommonFieldsMixin,
 ):
     """Модель датчика изображения."""
-    cameras: Mapped[list['Camera']] = relationship(
-        back_populates='sensor',
-        cascade='all, delete-orphan',
-    )
+    # cameras: Mapped[list['Camera']] = relationship(
+    #     back_populates='sensor',
+    #     cascade='all, delete-orphan',
+    # )
+    #
+    # sensor_format: Mapped[SensorFormat] = mapped_column(
+    #     Enum(SensorFormat, name='sensor_format_enum'),
+    #     nullable=False,
+    #     default=SensorFormat.FULL_FRAME,
+    # )
 
-    sensor_format: Mapped[SensorFormat] = mapped_column(
-        Enum(SensorFormat, name='sensor_format_enum'),
-        nullable=False,
-        default=SensorFormat.FULL_FRAME,
-    )
-
-    width: Mapped[float] = mapped_column(Float)
-    height: Mapped[float] = mapped_column(Float)
-
-    @property
-    def crop_factor(self) -> float:
-        diagonal = math.sqrt(self.width ** 2 + self.height ** 2)
-        return FULL_FRAME_DIAGONAL / diagonal
-
-    def __str__(self):
-        return (f'{self.name} - '
-                f'{self.width} х {self.height} мм')
+    # width: Mapped[float] = mapped_column(Float)
+    # height: Mapped[float] = mapped_column(Float)
+    #
+    # @property
+    # def crop_factor(self) -> float:
+    #     diagonal = math.sqrt(self.width ** 2 + self.height ** 2)
+    #     return FULL_FRAME_DIAGONAL / diagonal
+    #
+    # def __str__(self):
+    #     return (f'{self.name} - '
+    #             f'{self.width} х {self.height} мм')
