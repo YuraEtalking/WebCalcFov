@@ -1,8 +1,18 @@
 import math
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Boolean, Float, ForeignKey, Enum, Integer, String, Text
+from sqlalchemy import (
+    Boolean,
+    Float,
+    ForeignKey,
+    Enum,
+    Integer,
+    SmallInteger,
+    String,
+    Text,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.dialects.postgresql import ARRAY
 
 from backend.core.db import Base
 from backend.models.mixins import (
@@ -20,9 +30,11 @@ from backend.models.enums import (
     CameraCategory,
     CameraType,
     SensorFormat,
+    SensorTechnology,
     MediumType,
     ViewfinderType,
     ScreenType,
+    CardType,
 )
 
 
@@ -88,6 +100,24 @@ class SpecCamera(
         default=SensorFormat.FULL_FRAME,
     )
 
+    sensor_technology: Mapped[SensorTechnology] = mapped_column(
+        Enum(SensorTechnology, name='sensor_technology_enum'),
+        nullable=False,
+        default=SensorTechnology.CMOS,
+    )
+
+    has_global_shutter: Mapped[bool | None] = mapped_column(
+        Boolean, nullable=True
+    )
+
+    max_raw_bit_depth: Mapped[int | None] = mapped_column(
+        SmallInteger,nullable=True
+    )
+
+    max_readout_time_ms: Mapped[float | None] = mapped_column(
+        Float, nullable=True
+    )
+
     sensor_width_mm: Mapped[float] = mapped_column(Float)
     sensor_height_mm: Mapped[float] = mapped_column(Float)
 
@@ -99,7 +129,12 @@ class SpecCamera(
         nullable=True
     )
 
-    pixel_pitch_um: Mapped[float | None] = mapped_column(Float, nullable=True) # todo может сделать вычисляемое?
+    pixel_pitch_um: Mapped[float | None] = mapped_column(Float, nullable=True)
+
+    native_aspect_ratio: Mapped[str | None] = mapped_column(
+        String(10),
+        nullable=True,
+    )
 
     @property
     def crop_factor(self) -> float:
@@ -246,26 +281,74 @@ class SpecCamera(
     )  # Сенсорный экран
 
 
-    # Видео
-    video_max_resolution: Mapped[str | None] = mapped_column(
+    # Видео RAW
+    raw_video_max_resolution: Mapped[str | None] = mapped_column(
         String(20), nullable=True
-    )  # Макс. разрешение видео ("8K", "4K", "1080p")
+    )  # Макс. разрешение RAW видео
 
-    video_max_fps_at_max_resolution: Mapped[int | None] = mapped_column(
+    raw_video_max_fps_at_max_resolution: Mapped[int | None] = mapped_column(
         Integer, nullable=True
-    )  # Макс. fps на максимальном разрешении (30, 60, 120)
+    )  # Макс. fps на максимальном разрешении RAW
+
+    raw_video_max_fps: Mapped[int | None] = mapped_column(
+        Integer, nullable=True
+    )  # RAW видео макс. fps
+
+    raw_video_max_resolution_at_max_fps: Mapped[int | None] = mapped_column(
+        Integer, nullable=True
+    )  # Макс. разрешение RAW при макс. fps
+
+    raw_video_max_bitrate_mbps: Mapped[int | None] = mapped_column(
+        Integer, nullable=True
+    )  # Максимальный битрейт RAW видео, Мбит/с
+
+    @property
+    def raw_video_max_rate_mb_s(self) -> float | None:
+        """Максимальная скорость потока RAW-видео, МБ/с."""
+        if self.raw_video_max_bitrate_mbps is None:
+            return None
+
+        return self.raw_video_max_bitrate_mbps / 8
+
+    raw_video_max_bit_depth: Mapped[int | None] = mapped_column(
+        Integer, nullable=True
+    )  # Максимальная битность RAW видео
+
+    has_internal_raw_video: Mapped[bool | None] = mapped_column(
+        Boolean, nullable=True
+    )  # Внутренняя RAW-запись
+
+    has_external_raw_video: Mapped[bool | None] = mapped_column(
+        Boolean, nullable=True
+    )  # RAW через HDMI / SDI на внешний рекордер
+
+
+    # Видео кодеки
+    has_log_profile: Mapped[bool | None] = mapped_column(
+        Boolean, nullable=True
+    )  # Поддержка Log-профилей (S-Log, C-Log, N-Log)
+
+    video_codecs: Mapped[str | None] = mapped_column(
+        String(200), nullable=True
+    )  # поддерживаемые кодеки
+
+    video_max_bit_depth: Mapped[int | None] = mapped_column(
+        Integer, nullable=True
+    )  # Максимальная битность RAW видео
 
     video_max_bitrate_mbps: Mapped[int | None] = mapped_column(
         Integer, nullable=True
     )  # Максимальный битрейт, Мбит/с
 
-    has_log_profile: Mapped[bool | None] = mapped_column(
-        Boolean, nullable=True
-    )  # Поддержка Log-профилей (S-Log, C-Log, N-Log)
+    @property
+    def video_max_rate_mb_s(self) -> float | None:
+        """Максимальная скорость потока, МБ/с."""
+        if self.raw_video_max_bitrate_mbps is None:
+            return None
 
-    has_raw_video: Mapped[bool | None] = mapped_column(
-        Boolean, nullable=True
-    )  # Внутренняя запись RAW-видео (ProRes RAW и т.п.)
+        return self.raw_video_max_bitrate_mbps / 8
+
+
 
 
     # === Хранение данных ===
@@ -273,10 +356,17 @@ class SpecCamera(
         Integer, nullable=True
     )  # Количество слотов для карт памяти
 
-    card_types: Mapped[str | None] = mapped_column(
-        String(100), nullable=True
-    )  # Типы карт ("CFexpress Type B + SD UHS-II")
-    # Можно сделать M2M-таблицу для строгой фильтрации
+    card_types: Mapped[list[CardType] | None] = mapped_column(
+        ARRAY(
+            Enum(
+                CardType,
+                name='card_type_enum',
+                native_enum=True,
+            )
+        ),
+        nullable=True,
+        comment='Поддерживаемые типы карт памяти',
+    )
 
 
     # === Интерфейсы и связь ===

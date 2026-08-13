@@ -130,11 +130,16 @@ SENSOR_FORMAT_SIZES = {
 }
 
 class SensorTechnology(str, enum.Enum):
+    """Технология сенсора."""
     CMOS = 'cmos'
     CCD = 'ccd'
     BSI_CMOS = 'bsi_cmos'
     STACKED_BSI_CMOS = 'stacked_bsi_cmos'
+    STACKED = 'stacked'
+    GLOBAL_SHUTTER = 'global_shutter'
     FOVEON_X3 = 'foveon_x3'
+
+    # тепловизионные сенсоры.
     VOX_MICROBOLOMETER = 'vox_microbolometer'
     A_SI_MICROBOLOMETER = 'a_si_microbolometer'
     OTHER = 'other'
@@ -165,14 +170,29 @@ class MediumType(str, enum.Enum):
     DIGITAL = 'digital'
     FILM = 'film'
 
+
 class ViewfinderType(str, enum.Enum):
+    """Тип видоискателя камеры."""
     OPTICAL = 'optical'
     ELECTRONIC = 'electronic'
     HYBRID = 'hybrid'
     NONE = 'none'
 
+
 class ScreenType(str, enum.Enum):
-    FIXED
-    TILTING
-    FULLY_ARTICULATED
-    TWO_AXIS_TILT
+    """Тип крепления дисплея камеры."""
+    FIXED = 'fixed'
+    TILTING = 'tilting'
+    FULLY_ARTICULATED = 'fully_articulated'
+    TWO_AXIS_TILT = 'two_axis_tilt'
+
+
+class CardType(str, enum.Enum):
+    SD = 'SD'
+    SD_UHS_I = 'SD UHS-I'
+    SD_UHS_II = 'SD UHS-II'
+    CFEXPRESS_TYPE_A = 'CFexpress Type A'
+    CFEXPRESS_TYPE_B = 'CFexpress Type B'
+    CF = 'CompactFlash'
+    XQD = 'XQD'
+    CFAST_2 = 'CFast 2.0'
