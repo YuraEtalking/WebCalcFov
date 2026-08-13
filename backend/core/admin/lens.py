@@ -3,7 +3,7 @@ from starlette_admin import (
     DateTimeField, HasMany, HasOne, EnumField, DateField
 )
 from starlette_admin.contrib.sqla import ModelView
-from backend.models import SpecLens, BayonetType, ConstructionType
+from backend.models import SpecLens, BayonetType
 
 
 class LensAdmin(ModelView):

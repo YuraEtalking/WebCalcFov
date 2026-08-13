@@ -78,6 +78,7 @@ async def prepare_fov_response_data(
     if not lens:
         raise EntityNotFoundError('Объектив не выбран')
 
+    # Подгружаем Камеру с SpecCamera, там данные сенсора.
     camera = await get_active_camera_with_sensor(input_data.camera_id, session)
     if not camera:
         raise EntityNotFoundError('Камера не выбрана')
@@ -114,7 +115,7 @@ async def prepare_fov_response_data(
     )
 
     result = calculate_fov(
-        sensor=camera.sensor,
+        sensor=camera.spec,  # SpecCamera содержит данные сенсора.
         focal=focal,
         distance=input_data.distance,
         selected_tc=selected_tc

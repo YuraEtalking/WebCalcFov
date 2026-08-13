@@ -47,7 +47,8 @@ class Image(
     file: Mapped[dict] = mapped_column(ImageField(
         upload_storage='images',
         thumbnail_size=(200, 200)
-    ))
+    ))  #  Alembic не добавляет импорт в миграцию, import sqlalchemy_file
+
     title: Mapped[str | None] = mapped_column(String(255), nullable=True)
     alt: Mapped[str | None] = mapped_column(String(255), nullable=True)
 

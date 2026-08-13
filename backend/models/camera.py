@@ -42,8 +42,6 @@ class Camera(
         secondary='camera_lens',
         viewonly=True,
     )
-    # sensor_id: Mapped[int] = mapped_column(ForeignKey('sensor.id'))
-    # sensor: Mapped['Sensor'] = relationship(back_populates='cameras')
 
     links: Mapped[list['Link']] = relationship(
         secondary='link_camera',

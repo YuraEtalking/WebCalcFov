@@ -118,11 +118,11 @@ class SpecCamera(
         Float, nullable=True
     )
 
-    sensor_width_mm: Mapped[float] = mapped_column(Float)
-    sensor_height_mm: Mapped[float] = mapped_column(Float)
+    sensor_width_mm: Mapped[float] = mapped_column(Float, nullable=True)
+    sensor_height_mm: Mapped[float] = mapped_column(Float, nullable=True)
 
-    sensor_pixels_width: Mapped[int] = mapped_column(Integer)
-    sensor_pixels_height: Mapped[int] = mapped_column(Integer)
+    sensor_pixels_width: Mapped[int] = mapped_column(Integer, nullable=True)
+    sensor_pixels_height: Mapped[int] = mapped_column(Integer, nullable=True)
 
     effective_megapixels: Mapped[float | None] = mapped_column(
         Float,

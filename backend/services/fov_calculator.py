@@ -1,8 +1,9 @@
 import math
+from typing import TYPE_CHECKING
 
 from loguru import logger
 
-from backend.models.sensor import Sensor
+# from backend.models.specs.camera_spec import SpecCamera
 
 
 def get_focal(focal: float, tc: float | None) -> float:
@@ -33,7 +34,7 @@ def get_size_of_frame_on_plane(d: int, fov: float) -> float:
 
 
 def calculate_fov(
-        sensor: Sensor,
+        sensor,  #: SpecCamera
         focal: float,
         distance: int,
         selected_tc: float | None,
@@ -43,8 +44,8 @@ def calculate_fov(
 
     focal = get_focal(focal, selected_tc)
     fov_w, fov_h = get_degrees_fov(
-        width=sensor.width,
-        height=sensor.height,
+        width=sensor.sensor_width_mm,
+        height=sensor.sensor_height_mm,
         focal=focal
     )
 

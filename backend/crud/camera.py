@@ -22,7 +22,7 @@ async def get_active_camera_with_sensor(camera_id, session: AsyncSession):
     stmt = await session.execute(select(
         Camera
     ).options(
-        joinedload(Camera.sensor),
+        joinedload(Camera.spec),
         selectinload(Camera.camera_lenses),
         selectinload(Camera.compatible_lenses),
     ).where(
