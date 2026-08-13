@@ -1,6 +1,6 @@
 import enum
 
-
+# Общие
 class BayonetType(str, enum.Enum):
     """Наименование байонета."""
     Z = 'Nikon Z'
@@ -16,6 +16,11 @@ class BayonetType(str, enum.Enum):
     K = 'Pentax K'
 
 
+
+
+
+
+# Для объектива
 class CompatibilityType(str, enum.Enum):
     """Тип соединения камеры и объектива."""
     DIRECT = 'direct'  # Прямое соединение
@@ -33,21 +38,26 @@ class FilterMountType(str, enum.Enum):
     SCREW_IN = 'screw_in'  # Резьбовой
     DROP_IN = 'drop_in'  # Вставной
     REAR_GEL = 'rear_gel'  # Крепление для пленочного фильтра
-    NONE = 'none'  # Без крепления
+    NONE_FILTER = 'none_filter'  # Без крепления
 
 
 class LensType(str, enum.Enum):
     """Тип объектива."""
+    BODY_CAP_LENS = 'body_cap_lens'  # “Объектив-крышка”. Очень тонкий, простой объектив.
+    CINE = 'cine'  # Кинообъектив.
+    FISHEYE = 'fisheye'  # Рыбий глаз.
     MACRO = 'macro'  # Макро
-    FISHEYE = 'fisheye'  # Рыбий глаз
-    TILT_SHIFT = 'tilt_shift'  # Смещение оси
-    SUPER_TELEPHOTO = 'super_telephoto'  # Длиннофокусный
-    WIDE_ANGLE = 'wide_angle'  # Широкоугольный
-    STANDARD = 'standard'  # Стандартный
-    PORTRAIT = 'portrait'  # Портретный
-    CINE = 'cine'  # Кинообъектив
-    PANCAKE = 'pancake'  # Блинчик
-    THERMAL_LENS = 'thermal_lens'  # Объектив для тепловизора
+    MACRO_PROBE = 'macro_probe'  # Макро зонд типа Laowa 24mm f/14 Probe.
+    PANCAKE = 'pancake'  # Блинчик.
+    PORTRAIT = 'portrait'  # Портретный.
+    POWER_ZOOM = 'power_zoom'  # Объектив с моторизованным зумом.
+    SOFT_FOCUS = 'soft_focus'  # Объектив с “мягким фокусом”. Дает не полностью клинически резкую картинку.
+    STANDARD = 'standard'  # Стандартный.
+    SUPER_TELEPHOTO = 'super_telephoto'  # Длиннофокусный.
+    THERMAL_LENS = 'thermal_lens'  # Объектив для тепловизора.
+    TILT_SHIFT = 'tilt_shift'  # Смещение оси.
+    TRANS_FOCUS_DEFOCUS = 'trans_focus_defocus'  # Trans Focus делает боке очень плавным. Defocus Control типа Nikon DC-объективы
+    WIDE_ANGLE = 'wide_angle'  # Широкоугольный.
 
 
 class TypeDiaphragm(str, enum.Enum):
@@ -56,6 +66,7 @@ class TypeDiaphragm(str, enum.Enum):
     MECHANICAL = 'mechanical'  # Механическая
     MANUAL = 'manual'  # Ручная
     CAMERA_CONTROLLED = 'camera_controlled'  # Управляемая камерой
+    OTHER = 'other'  # Нестандартный/неизвестный тип
 
 
 class FocusType(str, enum.Enum):
@@ -71,25 +82,29 @@ class FocusType(str, enum.Enum):
 
 
 class AutofocusMotorType(str, enum.Enum):
-    STEPPER = "stepper"  # Шаговый мотор
-    ULTRASONIC = "ultrasonic"  # Ультразвуковой мотор
-    LINEAR = "linear"  # Линейный мотор
-    VOICE_COIL = "voice_coil"  # Voice coil / катушечный линейный привод
-    PIEZO = "piezo"  # Пьезо-мотор
-    DC = "dc"  # Обычный DC-микромотор
-    SCREW_DRIVE = "screw_drive"  # Отверточный привод от камеры
-    NONE = "none"  # Нет мотора автофокуса
-    OTHER = "other"  # Другое / неизвестно
+    STEPPER = 'stepper'  # Шаговый мотор
+    ULTRASONIC = 'ultrasonic'  # Ультразвуковой мотор
+    LINEAR = 'linear'  # Линейный мотор
+    VOICE_COIL = 'voice_coil'  # Voice coil / катушечный линейный привод
+    PIEZO = 'piezo'  # Пьезо-мотор
+    DC = 'dc'  # Обычный DC-микромотор
+    SCREW_DRIVE = 'screw_drive'  # Отверточный привод от камеры
+    MANUAL = 'manual'  # Нет мотора автофокуса/ Ручная фокусировка
+    OTHER = 'other'  # Другое / неизвестно
 
 
 class ZoomType(str, enum.Enum):
     ROTARY = 'rotary'  # кольцо зума
     PUSH_PULL = 'push_pull'  # тромбон / push-pull
-    POWER_ZOOM = 'power_zoom'  # моторизированный зум
-    NON_ZOOM = 'non_zoom'  # Без зума, фикс
+    MOTORIZED_ZOOM = 'motorized_zoom'  # моторизированный зум
+    NONE_ZOOM = 'none_zoom'  # Без зума, фикс
 
 
 
+
+
+
+# Для камеры
 class SensorFormat(str, enum.Enum):
     NON_STANDARD = 'NON_STANDARD'
     FULL_FRAME = 'Full Frame'
@@ -101,7 +116,6 @@ class SensorFormat(str, enum.Enum):
     VOX_384_12 = 'Thermal sensor VOx384×288:12μm'
     VOX_640_17 = 'Thermal sensor VOx640×512:17μm'
     VOX_384_17 = 'Thermal sensor VOx384×288:17μm'
-
 
 SENSOR_FORMAT_SIZES = {
     SensorFormat.FULL_FRAME: (36.0, 24.0),
@@ -115,3 +129,70 @@ SENSOR_FORMAT_SIZES = {
     SensorFormat.VOX_384_17: (6.5, 4.9),
 }
 
+class SensorTechnology(str, enum.Enum):
+    """Технология сенсора."""
+    CMOS = 'cmos'
+    CCD = 'ccd'
+    BSI_CMOS = 'bsi_cmos'
+    STACKED_BSI_CMOS = 'stacked_bsi_cmos'
+    STACKED = 'stacked'
+    GLOBAL_SHUTTER = 'global_shutter'
+    FOVEON_X3 = 'foveon_x3'
+
+    # тепловизионные сенсоры.
+    VOX_MICROBOLOMETER = 'vox_microbolometer'
+    A_SI_MICROBOLOMETER = 'a_si_microbolometer'
+    OTHER = 'other'
+
+
+class CameraCategory(str, enum.Enum):
+    """Назначение устройства"""
+    PHOTO = 'photo'                  # фотокамера
+    VIDEO = 'video'                  # видеокамера
+    CINEMA = 'cinema'                # кинокамера
+    ACTION = 'action'                # экшн-камера
+    DRONE = 'drone'                  # камера дрона
+    INSTANT = 'instant'              # моментальная печать
+
+
+class CameraType(str, enum.Enum):
+    """Конструкция"""
+    DSLR = 'dslr'  # зеркальная
+    MIRRORLESS = 'mirrorless'  # беззеркальная
+    RANGEFINDER = 'rangefinder'  # дальномерная
+    COMPACT = 'compact'  # компактная («мыльница»)
+    BRIDGE = 'bridge'  # псевдозеркальная
+    TLR = 'tlr'  # двухобъективная зеркальная
+
+
+class MediumType(str, enum.Enum):
+    """Носитель"""
+    DIGITAL = 'digital'
+    FILM = 'film'
+
+
+class ViewfinderType(str, enum.Enum):
+    """Тип видоискателя камеры."""
+    OPTICAL = 'optical'
+    ELECTRONIC = 'electronic'
+    HYBRID = 'hybrid'
+    NONE = 'none'
+
+
+class ScreenType(str, enum.Enum):
+    """Тип крепления дисплея камеры."""
+    FIXED = 'fixed'
+    TILTING = 'tilting'
+    FULLY_ARTICULATED = 'fully_articulated'
+    TWO_AXIS_TILT = 'two_axis_tilt'
+
+
+class CardType(str, enum.Enum):
+    SD = 'SD'
+    SD_UHS_I = 'SD UHS-I'
+    SD_UHS_II = 'SD UHS-II'
+    CFEXPRESS_TYPE_A = 'CFexpress Type A'
+    CFEXPRESS_TYPE_B = 'CFexpress Type B'
+    CF = 'CompactFlash'
+    XQD = 'XQD'
+    CFAST_2 = 'CFast 2.0'

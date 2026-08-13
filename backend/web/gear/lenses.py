@@ -22,7 +22,7 @@ async def lens_list(
     lenses = await get_active_lenses(session, slug)
     return render(
         request,
-        'wiki/lens_list.html',
+        'gear/lens_list.html',
         {'lenses': lenses, 'slug': slug,}
     )
 
@@ -44,12 +44,12 @@ async def lens_detail(
         link.image for link in lens.image_links if link.role == 'photo' and link.image is not None
     ]
     mtfs = [link.image for link in lens.image_links if link.role == 'mtf' and link.image is not None]
-    logger.debug('images="{}"', images)
-    logger.debug('mtfs="{}"', mtfs)
-
+    sample_photos = [link.image for link in lens.image_links if link.role == 'sample' and link.image is not None]
+    raw = request.cookies.get('compare_lenses', '')
+    compare_ids = [int(x) for x in raw.split(',') if x.isdigit()]
     return render(
             request,
-            'wiki/lens_detail.html',
+            'gear/lens_detail.html',
             {
                 'lens':  lens,
                 'slug':slug,
@@ -60,5 +60,7 @@ async def lens_detail(
                 'spec': lens.spec,
                 'images': images,
                 'mtfs': mtfs,
+                'sample_photos': sample_photos,
+                'compare_ids': compare_ids,
             }
         )

@@ -6,8 +6,9 @@
 
 <span>
     / <a href="{{ url_for('index_page') }}">{{ _("Home") }}</a>
-    / <a href="{{ url_for('wiki') }}">{{ _("Manufacturers") }}</a>
+    / <a href="{{ url_for('gear') }}">{{ _("Manufacturers") }}</a>
     / <a href="{{ url_for('manufacturer', slug=slug) }}">{{ slug }}</a>
+    / {{ _("List of all lenses") }}
 </span>
 
 <h1>{{ _("List of all lenses") }}</h1>

@@ -13,6 +13,7 @@ from backend.models.mixins import (
 )
 from backend.services.fov_calculator import get_degrees_fov
 from backend.models.specs.spec_mixins import LensPhysicalSpecMixin
+from backend.models.specs.utils import positive_checks
 from backend.models.enums import (
     SensorFormat,
     ConstructionType,
@@ -42,6 +43,16 @@ class SpecLens(
     Все поля характеристик должны быть nullable=True, объект SpecLens
     создается вместе с объектом Lens, так как ограничение админки не позволяет
     наполнить объект SpecLens данными сразу вместе с Lens."""
+
+    __table_args__ = positive_checks(
+        'speclens',
+        'min_aperture',
+        'aperture_blades',
+        'filter_size_mm',
+        'min_focus_distance_m',
+        'stabilization_stops',
+        'max_magnification',
+    )
 
     lens_id: Mapped[int] = mapped_column(
         ForeignKey('lens.id'),
@@ -123,10 +134,12 @@ class SpecLens(
     zoom_lock: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
 
 
+    # Интегрированный телеконвертор
+    is_tc_integrated: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
+
+
     # Макро-возможности
     is_macro: Mapped[bool | None] = mapped_column(Boolean,nullable=True)
-    working_distance_m: Mapped[float | None] = mapped_column(Float, nullable=True)  # todo убрать
-    maximum_magnification_ratio: Mapped[float | None] = mapped_column(Float, nullable=True)  # todo убрать
     max_magnification: Mapped[float | None] = mapped_column(
         Float,
         nullable=True,

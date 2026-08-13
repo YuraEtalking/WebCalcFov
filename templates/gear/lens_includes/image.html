@@ -11,14 +11,7 @@
                 class="gallery-item"
                 type="button"
                 data-full="{{ image_url }}"
-                data-title="{{ image.title or '' }}"
-                data-photographer="{{ image.photographer_name or '' }}"
-                data-iso="{{ image.iso or '' }}"
-                data-shutter="{{ image.shutter_speed or '' }}"
-                data-aperture="{{ image.aperture or '' }}"
-                data-focal="{{ image.focal_length or '' }}"
-                data-camera="{{ image.camera_model_name or '' }}"
-                data-lens="{{ image.lens_model_name or '' }}"
+                data-title="{{ image.alt or '' }}"
             >
                 <img
                     src="{{ image_url }}"

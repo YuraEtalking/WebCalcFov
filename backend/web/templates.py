@@ -1,19 +1,37 @@
 from urllib.parse import urlencode
+from typing import Any
 
-from fastapi import Request
+from fastapi import Request, Response
 from fastapi.templating import Jinja2Templates
 
 
 from backend.web.i18n import SUPPORTED_LANGUAGES
+from backend.web.constants import MAX_AGE_30_DAYS, LANG
 
 templates = Jinja2Templates(directory='templates')
+
+
+def set_default_cookie(
+        response: Response,
+        key: str,
+        value: Any,
+        max_age: int = MAX_AGE_30_DAYS,
+) -> None:
+    response.set_cookie(
+        key=key,
+        value=value,
+        max_age=max_age,
+        samesite='lax',
+        # httponly=True
+        # secure=True,    # в прод при HTTPS
+    )
 
 
 def render(request: Request, template_name: str, context: dict | None = None):
     base_context = {
         'request': request,
         '_': request.state._,
-        'lang': request.state.lang,
+        LANG: request.state.lang,
         'language_url': lambda lang: language_url(request, lang),
     }
     if context is not None:
@@ -21,14 +39,9 @@ def render(request: Request, template_name: str, context: dict | None = None):
 
     response = templates.TemplateResponse(template_name, base_context)
 
-    query_lang = request.query_params.get('lang')
+    query_lang = request.query_params.get(LANG)
     if query_lang in SUPPORTED_LANGUAGES:
-        response.set_cookie(
-            key='lang',
-            value=query_lang,
-            max_age=60 * 60 * 24 * 365,
-            samesite='lax',
-        )
+        set_default_cookie(response=response, key=LANG, value=query_lang)
 
     return response
 
@@ -38,6 +51,6 @@ def language_url(request: Request, lang: str) -> str:
         lang = request.state.lang
 
     query_params = dict(request.query_params)
-    query_params['lang'] = lang
+    query_params[LANG] = lang
 
     return f'{request.url.path}?{urlencode(query_params)}'

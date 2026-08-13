@@ -22,12 +22,16 @@ async def camera_list(
     cameras = await get_active_cameras(session, slug)
     return render(
         request,
-        'wiki/camera_list.html',
+        'gear/camera_list.html',
         {'cameras': cameras, 'slug': slug}
     )
 
 
-@web_router.get('/{camera_id}', name='camera_detail', response_class=HTMLResponse)
+@web_router.get(
+    '/{camera_id}',
+    name='camera_detail',
+    response_class=HTMLResponse
+)
 async def camera_detail(
         request: Request,
         camera_id: int,
@@ -39,6 +43,6 @@ async def camera_detail(
 
     return render(
         request,
-        'wiki/camera_detail.html',
+        'gear/camera_detail.html',
         {'camera': camera, 'slug': slug, }
     )

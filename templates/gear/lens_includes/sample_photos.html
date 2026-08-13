@@ -1,0 +1,48 @@
+<div class="gallery">
+    {% for photo in sample_photos %}
+        {% if photo %}
+            {% set image_url = url_for(
+                'media',
+                storage=photo.file['upload_storage'],
+                file_id=photo.file['file_id']
+            ) %}
+
+            <button
+                class="gallery-item"
+                type="button"
+                data-full="{{ image_url }}"
+                data-title="{{ photo.title or '' }}"
+                data-photographer="{{ photo.photographer_name or '' }}"
+                data-iso="{{ photo.iso or '' }}"
+                data-shutter="{{ photo.shutter_speed or '' }}"
+                data-aperture="{{ photo.aperture or '' }}"
+                data-focal="{{ photo.focal_length or '' }}"
+                data-camera="{{ photo.camera_model_name or '' }}"
+                data-lens="{{ photo.lens_model_name or '' }}"
+            >
+                <img
+                    src="{{ image_url }}"
+                    alt="{{ photo.alt or photo.title or '' }}"
+                >
+            </button>
+        {% endif %}
+    {% endfor %}
+</div>
+
+<div class="lightbox" id="lightbox" hidden>
+    <button class="lightbox__close" type="button" aria-label="Закрыть">×</button>
+    <img class="lightbox__image" src="" alt="">
+
+    <div class="lightbox__info">
+        <h3 class="lightbox__title"></h3>
+        <ul class="lightbox__exif">
+            <li class="exif-photographer" hidden><span>Фотограф:</span> <b></b></li>
+            <li class="exif-camera" hidden><span>Камера:</span> <b></b></li>
+            <li class="exif-lens" hidden><span>Объектив:</span> <b></b></li>
+            <li class="exif-iso" hidden><span>ISO:</span> <b></b></li>
+            <li class="exif-shutter" hidden><span>Выдержка:</span> <b></b></li>
+            <li class="exif-aperture" hidden><span>Диафрагма:</span> <b></b></li>
+            <li class="exif-focal" hidden><span>Фокусное:</span> <b></b></li>
+        </ul>
+    </div>
+</div>

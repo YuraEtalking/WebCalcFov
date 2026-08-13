@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-06-12 19:14+0300\n"
+"POT-Creation-Date: 2026-06-26 18:02+0300\n"
 "PO-Revision-Date: 2026-06-06 18:48+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -23,16 +23,456 @@ msgid "index"
 msgstr ""
 
 #: templates/includes/header.html:13 templates/index_page.html:11
-#: templates/tools/tools_list.html:3 templates/tools/tools_list.html:7
+#: templates/tools/calculator_fov.html:9 templates/tools/tools_list.html:3
+#: templates/tools/tools_list.html:9 templates/tools/tools_list.html:12
 msgid "Tools"
 msgstr ""
 
+#: templates/gear/camera_detail.html:8 templates/gear/camera_list.html:8
+#: templates/gear/compare/lens_comparison.html:8
+#: templates/gear/lens_detail.html:8 templates/gear/lens_list.html:8
+#: templates/gear/manufacturer.html:8 templates/gear/manufacturer_list.html:8
+#: templates/tools/calculator_fov.html:8 templates/tools/tools_list.html:8
+msgid "Home"
+msgstr ""
+
+#: templates/gear/camera_detail.html:9 templates/gear/camera_list.html:9
+#: templates/gear/lens_detail.html:9 templates/gear/lens_list.html:9
+#: templates/gear/manufacturer.html:9 templates/gear/manufacturer_list.html:12
+msgid "Manufacturers"
+msgstr ""
+
+#: templates/gear/camera_detail.html:11 templates/gear/camera_list.html:3
+#: templates/gear/camera_list.html:11 templates/gear/camera_list.html:14
+#: templates/gear/manufacturer.html:15
+msgid "List of all cameras"
+msgstr ""
+
+#: templates/gear/camera_detail.html:16 templates/tools/calculator_fov.html:88
+msgid "Sensor"
+msgstr ""
+
+#: templates/gear/camera_detail.html:17
+#: templates/gear/compare/lens_comparison.html:58
+#: templates/gear/lens_includes/specs.html:4
+msgid "Manufacturer"
+msgstr ""
+
+#: templates/gear/camera_detail.html:18
+#: templates/gear/compare/lens_comparison.html:65
+#: templates/gear/lens_includes/specs.html:5
+msgid "Mount"
+msgstr ""
+
+#: templates/gear/lens_detail.html:11 templates/gear/lens_list.html:3
+#: templates/gear/lens_list.html:11 templates/gear/lens_list.html:14
+#: templates/gear/manufacturer.html:16
+msgid "List of all lenses"
+msgstr ""
+
+#: templates/gear/lens_detail.html:29
+msgid "Add to the comparison"
+msgstr ""
+
+#: templates/gear/lens_detail.html:29
+msgid "Already on the comparison list"
+msgstr ""
+
+#: templates/gear/lens_detail.html:35
+msgid "Appearance"
+msgstr ""
+
+#: templates/gear/lens_detail.html:39
+msgid "The images haven't been uploaded yet."
+msgstr ""
+
+#: templates/gear/lens_detail.html:45
+msgid "Sample files"
+msgstr ""
+
+#: templates/gear/lens_detail.html:50
+msgid "MTF Charts"
+msgstr ""
+
+#: templates/gear/lens_detail.html:54
+msgid "Charts are not available yet."
+msgstr ""
+
+#: templates/gear/lens_detail.html:60
+msgid "Scheme"
+msgstr ""
+
+#: templates/gear/compare/comparison_lists.html:3
+#: templates/gear/compare/comparison_lists.html:6
 #: templates/includes/header.html:17
+msgid "Comparison Lists"
+msgstr ""
+
+#: templates/gear/compare/comparison_lists.html:11
+#: templates/gear/compare/comparison_lists.html:27
+#: templates/gear/compare/comparison_lists.html:51
+#: templates/gear/compare/lens_comparison.html:3
+#: templates/gear/compare/lens_comparison.html:11
+msgid "Lens Comparison"
+msgstr ""
+
+#: templates/gear/compare/comparison_lists.html:23
+#: templates/gear/compare/lens_comparison.html:17
+msgid "Add one more or more!"
+msgstr ""
+
+#: templates/gear/compare/comparison_lists.html:44
+#: templates/gear/compare/lens_comparison.html:22
+msgid "Clear the comparison list"
+msgstr ""
+
+#: templates/gear/compare/comparison_lists.html:52
+#: templates/gear/compare/lens_comparison.html:15
+msgid "There are no lenses to compare, add a couple or more!"
+msgstr ""
+
+#: templates/gear/compare/lens_comparison.html:31
+msgid "Parameter"
+msgstr ""
+
+#: templates/gear/compare/lens_comparison.html:53
+msgid "General"
+msgstr ""
+
+#: templates/gear/compare/lens_comparison.html:72
+#: templates/gear/lens_includes/specs.html:21
+#: templates/tools/calculator_fov.html:94
+msgid "Focal length"
+msgstr ""
+
+#: templates/gear/compare/lens_comparison.html:85
+#: templates/gear/lens_includes/specs.html:63
+msgid "Aperture"
+msgstr ""
+
+#: templates/gear/compare/lens_comparison.html:98
+#: templates/gear/lens_includes/specs.html:43
+msgid "Lens Type"
+msgstr ""
+
+#: templates/gear/compare/lens_comparison.html:105
+#: templates/gear/lens_includes/specs.html:44
+msgid "Construction"
+msgstr ""
+
+#: templates/gear/compare/lens_comparison.html:113
+#: templates/gear/lens_includes/specs.html:49
+msgid "Physical characteristics"
+msgstr ""
+
+#: templates/gear/compare/lens_comparison.html:118
+#: templates/gear/lens_includes/specs.html:50
+msgid "Length"
+msgstr ""
+
+#: templates/gear/compare/lens_comparison.html:125
+#: templates/gear/lens_includes/specs.html:51
+msgid "Diameter"
+msgstr ""
+
+#: templates/gear/compare/lens_comparison.html:132
+#: templates/gear/lens_includes/specs.html:52
+msgid "Weight"
+msgstr ""
+
+#: templates/gear/compare/lens_comparison.html:140
+#: templates/gear/lens_includes/specs.html:77
+msgid "Filters"
+msgstr ""
+
+#: templates/gear/compare/lens_comparison.html:145
+#: templates/gear/lens_includes/specs.html:78
+msgid "Filter size"
+msgstr ""
+
+#: templates/gear/compare/lens_comparison.html:152
+#: templates/gear/lens_includes/specs.html:110
+msgid "Min focus distance"
+msgstr ""
+
+#: templates/gear/compare/lens_comparison.html:159
+#: templates/gear/lens_includes/specs.html:119
+msgid "Image stabilization"
+msgstr ""
+
+#: templates/gear/compare/lens_comparison.html:163
+#: templates/gear/compare/lens_comparison.html:176
+#: templates/gear/lens_includes/specs.html:70
+#: templates/gear/lens_includes/specs.html:82
+#: templates/gear/lens_includes/specs.html:88
+#: templates/gear/lens_includes/specs.html:101
+#: templates/gear/lens_includes/specs.html:107
+#: templates/gear/lens_includes/specs.html:121
+#: templates/gear/lens_includes/specs.html:135
+#: templates/gear/lens_includes/specs.html:141
+#: templates/gear/lens_includes/specs.html:152
+#: templates/gear/lens_includes/specs.html:177
+#: templates/gear/lens_includes/specs.html:183
+#: templates/gear/lens_includes/specs.html:189
+#: templates/gear/lens_includes/specs.html:195
+#: templates/gear/lens_includes/specs.html:212
+#: templates/gear/lens_includes/specs.html:218
+#: templates/gear/lens_includes/specs.html:224
+msgid "Yes"
+msgstr ""
+
+#: templates/gear/compare/lens_comparison.html:163
+#: templates/gear/compare/lens_comparison.html:176
+#: templates/gear/lens_includes/specs.html:70
+#: templates/gear/lens_includes/specs.html:82
+#: templates/gear/lens_includes/specs.html:88
+#: templates/gear/lens_includes/specs.html:101
+#: templates/gear/lens_includes/specs.html:107
+#: templates/gear/lens_includes/specs.html:121
+#: templates/gear/lens_includes/specs.html:135
+#: templates/gear/lens_includes/specs.html:141
+#: templates/gear/lens_includes/specs.html:152
+#: templates/gear/lens_includes/specs.html:177
+#: templates/gear/lens_includes/specs.html:183
+#: templates/gear/lens_includes/specs.html:189
+#: templates/gear/lens_includes/specs.html:195
+#: templates/gear/lens_includes/specs.html:212
+#: templates/gear/lens_includes/specs.html:218
+#: templates/gear/lens_includes/specs.html:224
+msgid "No"
+msgstr ""
+
+#: templates/gear/compare/lens_comparison.html:172
+#: templates/gear/lens_includes/specs.html:210
+msgid "Weather sealing"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:9
+msgid "Date of the announcement/start of sales, (y-m-d)"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:13
+msgid "Sales end date, (y-m-d)"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:18
+msgid "Minimum focal length"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:19
+msgid "Maximum focal length"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:27
+msgid "Minimum aperture (max f-number)"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:28
+msgid "Maximum aperture (max f-number)"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:30
+msgid "Aperture (max f-number)"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:37
+msgid "Specifications"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:42
+msgid "Lens design and type"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:57
+msgid "Sensor coverage format"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:64
+msgid "Minimum aperture (mix f-number)"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:65
+msgid "Number of diaphragm blades"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:66
+msgid "Type of aperture"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:68
+msgid "Rounding of diaphragm blades"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:80
+msgid "Supports front filters"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:86
+msgid "Rear filter holder"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:91
+msgid "Filter mount type"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:96
+msgid "Focusing"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:97
+msgid "Focus type"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:99
+msgid "Autofocus"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:105
+msgid "Full time manual focus"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:111
+msgid "Autofocus motor type"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:112
+msgid "Brand name autofocus"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:117
+msgid "Stabilization"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:124
+msgid "Stabilization name"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:125
+msgid "Stabilization stops"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:130
+msgid "Zoom"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:131
+msgid "Zoom type"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:133
+msgid "Internal zoom"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:139
+msgid "Zoom lock"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:148
+msgid "Macro opportunities"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:150
+msgid "Macro lens"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:155
+msgid "Working distance"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:156
+msgid "Max magnification"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:161
+msgid "Lens viewing angles"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:163
+msgid "Angle of view wide"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:164
+msgid "Angle of view tele"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:166
+msgid "Angle of view"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:172
+msgid "Accessories"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:173
+msgid "Hood model"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:175
+msgid "Hood included"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:181
+msgid "Tripod collar included"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:187
+msgid "Tripod collar removable"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:193
+msgid "Case included"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:202
+msgid "Scope of delivery"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:203
+msgid "Supplied accessories"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:208
+msgid "Additionally"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:216
+msgid "Dust moisture resistant"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:222
+msgid "Fluorine_coating"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:232
+msgid "Compatible teleconverters"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:242
+msgid "Compatible cameras"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:250
+msgid "connect"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:251
+msgid "Direct"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:251
+msgid "With convertor"
+msgstr ""
+
+#: templates/gear/lens_includes/specs.html:257
+msgid "Reviews/Tests"
+msgstr ""
+
+#: templates/includes/footer.html:5
 msgid "Language"
 msgstr ""
 
 #: templates/partials/choice_lens_field.html:3
-#: templates/tools/calculator_fov.html:80
+#: templates/tools/calculator_fov.html:87
 msgid "Lens"
 msgstr ""
 
@@ -52,413 +492,59 @@ msgstr ""
 msgid "Select the focal length"
 msgstr ""
 
-#: templates/tools/calculator_fov.html:3 templates/tools/calculator_fov.html:6
-#: templates/tools/calculator_fov.html:59
+#: templates/tools/calculator_fov.html:3 templates/tools/calculator_fov.html:10
+#: templates/tools/calculator_fov.html:13
+#: templates/tools/calculator_fov.html:66
 msgid "Calculate"
 msgstr ""
 
-#: templates/tools/calculator_fov.html:16
-#: templates/tools/calculator_fov.html:79
+#: templates/tools/calculator_fov.html:23
+#: templates/tools/calculator_fov.html:86
 msgid "Camera"
 msgstr ""
 
-#: templates/tools/calculator_fov.html:25
+#: templates/tools/calculator_fov.html:32
 msgid "Select a camera"
 msgstr ""
 
-#: templates/tools/calculator_fov.html:44
+#: templates/tools/calculator_fov.html:51
 msgid "Distance to the subject in meters"
 msgstr ""
 
-#: templates/tools/calculator_fov.html:51
+#: templates/tools/calculator_fov.html:58
 msgid "Enter the distance to the subject."
 msgstr ""
 
-#: templates/tools/calculator_fov.html:74
+#: templates/tools/calculator_fov.html:81
 msgid "Result"
 msgstr ""
 
-#: templates/tools/calculator_fov.html:77
+#: templates/tools/calculator_fov.html:84
 msgid "Equipment"
 msgstr ""
 
-#: templates/tools/calculator_fov.html:81 templates/wiki/camera_detail.html:7
-msgid "Sensor"
-msgstr ""
-
-#: templates/tools/calculator_fov.html:85
+#: templates/tools/calculator_fov.html:92
 msgid "Calculations"
 msgstr ""
 
-#: templates/tools/calculator_fov.html:87
-#: templates/wiki/lens_includes/specs.html:12
-msgid "Focal length"
-msgstr ""
-
-#: templates/tools/calculator_fov.html:89
+#: templates/tools/calculator_fov.html:96
 msgid "Teleconverter"
 msgstr ""
 
-#: templates/tools/calculator_fov.html:91
+#: templates/tools/calculator_fov.html:98
 msgid "Frame width"
 msgstr ""
 
-#: templates/tools/calculator_fov.html:92
+#: templates/tools/calculator_fov.html:99
 msgid "Frame height"
 msgstr ""
 
-#: templates/tools/calculator_fov.html:96
+#: templates/tools/calculator_fov.html:103
 msgid "Enter the data and click count"
 msgstr ""
 
-#: templates/tools/tools_list.html:8
+#: templates/tools/tools_list.html:13
 msgid "Calculator"
-msgstr ""
-
-#: templates/wiki/camera_detail.html:8
-#: templates/wiki/lens_includes/specs.html:3
-msgid "Manufacturer"
-msgstr ""
-
-#: templates/wiki/camera_detail.html:9
-#: templates/wiki/lens_includes/specs.html:4
-msgid "Mount"
-msgstr ""
-
-#: templates/wiki/camera_list.html:3 templates/wiki/camera_list.html:6
-#: templates/wiki/manufacturer.html:8
-msgid "List of all cameras"
-msgstr ""
-
-#: templates/wiki/lens_detail.html:18
-msgid "Appearance"
-msgstr ""
-
-#: templates/wiki/lens_detail.html:22
-msgid "The images haven't been uploaded yet."
-msgstr ""
-
-#: templates/wiki/lens_detail.html:28
-msgid "Sample files"
-msgstr ""
-
-#: templates/wiki/lens_detail.html:33
-msgid "MTF Charts"
-msgstr ""
-
-#: templates/wiki/lens_detail.html:37
-msgid "Charts are not available yet."
-msgstr ""
-
-#: templates/wiki/lens_detail.html:43
-msgid "Scheme"
-msgstr ""
-
-#: templates/wiki/lens_list.html:3 templates/wiki/lens_list.html:7
-#: templates/wiki/manufacturer.html:9
-msgid "List of all lenses"
-msgstr ""
-
-#: templates/wiki/manufacturer_list.html:6
-msgid "Manufacturers"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:9
-msgid "Minimum focal length"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:10
-msgid "Maximum focal length"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:18
-msgid "Minimum aperture (max f-number)"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:19
-msgid "Maximum aperture (max f-number)"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:21
-msgid "Aperture (max f-number)"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:27
-msgid "Specifications"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:32
-msgid "Lens design and type"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:33
-msgid "Lens Type"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:34
-msgid "Construction"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:39
-msgid "Physical characteristics"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:40
-msgid "Length"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:41
-msgid "Diameter"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:42
-msgid "Weight"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:47
-msgid "Sensor coverage format"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:53
-msgid "Aperture"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:54
-msgid "Minimum aperture (mix f-number)"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:55
-msgid "Number of diaphragm blades"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:56
-msgid "Type of aperture"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:58
-msgid "Rounding of diaphragm blades"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:60
-#: templates/wiki/lens_includes/specs.html:72
-#: templates/wiki/lens_includes/specs.html:78
-#: templates/wiki/lens_includes/specs.html:91
-#: templates/wiki/lens_includes/specs.html:97
-#: templates/wiki/lens_includes/specs.html:111
-#: templates/wiki/lens_includes/specs.html:125
-#: templates/wiki/lens_includes/specs.html:131
-#: templates/wiki/lens_includes/specs.html:142
-#: templates/wiki/lens_includes/specs.html:167
-#: templates/wiki/lens_includes/specs.html:173
-#: templates/wiki/lens_includes/specs.html:179
-#: templates/wiki/lens_includes/specs.html:185
-#: templates/wiki/lens_includes/specs.html:202
-#: templates/wiki/lens_includes/specs.html:208
-#: templates/wiki/lens_includes/specs.html:214
-msgid "Yes"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:60
-#: templates/wiki/lens_includes/specs.html:72
-#: templates/wiki/lens_includes/specs.html:78
-#: templates/wiki/lens_includes/specs.html:91
-#: templates/wiki/lens_includes/specs.html:97
-#: templates/wiki/lens_includes/specs.html:111
-#: templates/wiki/lens_includes/specs.html:125
-#: templates/wiki/lens_includes/specs.html:131
-#: templates/wiki/lens_includes/specs.html:142
-#: templates/wiki/lens_includes/specs.html:167
-#: templates/wiki/lens_includes/specs.html:173
-#: templates/wiki/lens_includes/specs.html:179
-#: templates/wiki/lens_includes/specs.html:185
-#: templates/wiki/lens_includes/specs.html:202
-#: templates/wiki/lens_includes/specs.html:208
-#: templates/wiki/lens_includes/specs.html:214
-msgid "No"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:67
-msgid "Filters"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:68
-msgid "Filter size"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:70
-msgid "Supports front filters"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:76
-msgid "Rear filter holder"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:81
-msgid "Filter mount type"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:86
-msgid "Focusing"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:87
-msgid "Focus type"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:89
-msgid "Autofocus"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:95
-msgid "Full time manual focus"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:100
-msgid "Min focus distance"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:101
-msgid "Autofocus motor type"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:102
-msgid "Brand name autofocus"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:107
-msgid "Stabilization"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:109
-msgid "Image stabilization"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:114
-msgid "Stabilization name"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:115
-msgid "Stabilization stops"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:120
-msgid "Zoom"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:121
-msgid "Zoom type"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:123
-msgid "Internal zoom"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:129
-msgid "Zoom lock"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:138
-msgid "Macro opportunities"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:140
-msgid "Macro lens"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:145
-msgid "Working distance"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:146
-msgid "Max magnification"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:151
-msgid "Lens viewing angles"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:153
-msgid "Angle of view wide"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:154
-msgid "Angle of view tele"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:156
-msgid "Angle of view"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:162
-msgid "Accessories"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:163
-msgid "Hood model"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:165
-msgid "Hood included"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:171
-msgid "Tripod collar included"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:177
-msgid "Tripod collar removable"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:183
-msgid "Case included"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:192
-msgid "Scope of delivery"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:193
-msgid "Supplied accessories"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:198
-msgid "Additionally"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:200
-msgid "Weather sealing"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:206
-msgid "Dust moisture resistant"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:212
-msgid "Fluorine_coating"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:220
-msgid "Compatible teleconverters"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:225
-msgid "Compatible cameras"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:232
-msgid "connect"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:233
-msgid "Direct"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:233
-msgid "With convertor"
-msgstr ""
-
-#: templates/wiki/lens_includes/specs.html:237
-msgid "Reviews/Tests"
 msgstr ""
 
 #~ msgid "Minimum aperture"

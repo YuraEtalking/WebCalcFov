@@ -1,0 +1,38 @@
+{% if (lenses_list|default([]))|length < 2 %}
+    <h2>{{ _("Camera Comparison") }}</h2>
+    <ul>
+        {% for lens in lenses_list %}
+            <li class="lens-item">
+                <form method="post" action="{{ url_for('remove_lens_comparison_list', lens_id=lens.id) }}">
+                   <button class="button_remove_comparison_list" type="submit">
+                    X
+                   </button>
+                </form>
+                <b>{{ lens.name }}</b>
+            </li>
+        {% endfor %}
+        <li><b>{{ _("Add one more or more!") }}</b></li>
+    </ul>
+
+{% else %}
+    <h2><a href="{{ url_for('lens_compare') }}">{{ _("Lens Comparison") }}</a></h2>
+    <ul>
+        {% for lens in lenses_list %}
+            <li class="lens-item">
+                <form method="post" action="{{ url_for('remove_lens_comparison_list', lens_id=lens.id) }}">
+                   <button class="button_remove_comparison_list" type="submit">
+                    X
+                   </button>
+                </form>
+                <b>{{ lens.name }}</b>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<form method="post" action="{{ url_for('clear_comparison_list') }}">
+  <button type="submit">
+    {{ _("Clear the comparison list") }}
+  </button>
+</form>
+<br>

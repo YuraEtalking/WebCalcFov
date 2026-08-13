@@ -21,7 +21,7 @@ if TYPE_CHECKING:
     from .associative_model import CameraLens
     from .teleconverter import Teleconverter
     from .link import Link
-    from models.specs.lens_spec import SpecLens
+    from .specs.lens_spec import SpecLens
     from .image import LensImageLink
 
 
