@@ -1,12 +1,5 @@
-from datetime import datetime
-
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import Boolean, DateTime, Enum, Integer, String, func
-
-from starlette.requests import Request
-
-from backend.core.constants.constants import MANUFACTURER_MAX_LEN, NAME_MAX_LEN
-from backend.models.enums import BayonetType
+from sqlalchemy import Integer
 
 
 class WeightMixin:
@@ -33,6 +26,7 @@ class DiameterMixin:
 class LensPhysicalSpecMixin(WeightMixin, DiameterMixin, LengthMixin):
     """Физические характеристики объектива"""
     pass
+
 
 class CameraPhysicalSpecMixin(
     WeightMixin,

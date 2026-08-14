@@ -4,7 +4,7 @@ from starlette_admin import (
 )
 from starlette_admin.contrib.sqla import ModelView
 from backend.models import SpecLens, BayonetType
-
+from backend.core.admin.admin_fields import CommaToDotFloatField
 
 class LensAdmin(ModelView):
     identity = 'lens'
@@ -35,28 +35,28 @@ class LensAdmin(ModelView):
         ),
 
         # Фокусное.
-        FloatField(
+        IntegerField(
             'focal_wide',
             label='Фокусное расстояние в широкоугольном режиме',
             help_text='Если объектив фикс(PRIME), то значение дублируется для '
                       'обоих полей фокусного расстояния.'
         ),
-        FloatField(
+        IntegerField(
             'focal_tele',
-            label='Фокусное расстояние в теле режиме',
+            label='Фокусное расстояние в теле режиме', required=True,
         ),
 
         # Диафрагма.
-        FloatField(
+        CommaToDotFloatField(
             'aperture_max_wide',
             label='Максимальная диафрагма в широкоугольном режиме',
             help_text='Если объектив фикс(PRIME) или зум(ZOOM) с '
                       'фиксированным значением максимальной диафрагмы, '
                       'то значение дублируется для обоих полей диафрагмы.'
         ),
-        FloatField(
+        CommaToDotFloatField(
             'aperture_max_tele',
-            label='Максимальная диафрагма в теле режиме',
+            label='Максимальная диафрагма в теле режиме', required=True,
         ),
 
         # Поля связанных моделей.
@@ -92,8 +92,15 @@ class LensAdmin(ModelView):
     ]
 
     exclude_fields_from_list = [
-        'aperture_max_wide', 'focal_wide', 'links',
-        'compatible_cameras', 'teleconverters', 'created_at', 'updated_at'
+        'aperture_max_wide',
+        'production_start_date',
+        'production_end_date',
+        'focal_wide',
+        'links',
+        'compatible_cameras',
+        'teleconverters',
+        'created_at',
+        'updated_at',
     ]
     exclude_fields_from_create = [
         'created_at',

@@ -24,9 +24,9 @@ class SpecCameraAdmin(ModelView):
 
     fields = [
         # === Основное ===
-        IntegerField('id', label='ID'),
         StringField('name', label='Название'),
-        IntegerField('camera_id', label='ID камеры'),
+        IntegerField('id', label='ID'),
+        HasOne('camera', label='Камера', identity='camera'),
 
         # === Тип камеры ===
         EnumField(
@@ -87,17 +87,17 @@ class SpecCameraAdmin(ModelView):
             'sensor_pixels_height',
             label='Высота сенсора, пикселей',
         ),
-        FloatField(
+        CommaToDotFloatField(
             'effective_megapixels',
             label='Эффективное разрешение, Мп',
         ),
-        FloatField(
+        CommaToDotFloatField(
             'pixel_pitch_um',
             label='Размер пикселя, мкм',
         ),
         StringField(
             'native_aspect_ratio',
-            label='Нативное соотношение сторон',
+            label='Нативное соотношение сторон, строковое значение',
         ),
 
         # === Стабилизация ===
@@ -353,11 +353,25 @@ class SpecCameraAdmin(ModelView):
             'has_built_in_flash',
             label='Встроенная вспышка',
         ),
+
+        # Статус и даты создания/редактирования
+        BooleanField(
+            'is_active',
+            label='Запись активна',
+        ),
+        DateTimeField(
+            'created_at',
+            label='Дата создания записи',
+            read_only=True,
+        ),
+        DateTimeField(
+            'updated_at',
+            label='Дата обновления записи',
+            read_only=True,
+        ),
     ]
 
     exclude_fields_from_list = [
-        'camera_id',
-
         'camera_category',
         'camera_type',
         'medium_type',
@@ -453,4 +467,8 @@ class SpecCameraAdmin(ModelView):
         'depth_mm',
         'is_weather_sealed',
         'has_built_in_flash',
+    ]
+    exclude_fields_from_create = ['created_at', 'updated_at', 'is_active']
+    exclude_fields_from_edit = [
+        'name', 'created_at', 'updated_at', 'is_active', 'camera',
     ]

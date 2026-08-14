@@ -35,6 +35,7 @@ class Lens(
     TimeFieldsMixin,
     ProductionPeriodMixin,
 ):
+    # Связанные модели.
     camera_lenses: Mapped[list['CameraLens']] = relationship(
         back_populates='lens',
         cascade='all, delete-orphan',
@@ -63,6 +64,10 @@ class Lens(
         back_populates='lens',
         cascade='all, delete-orphan',
     )
+
+    # Даты производства и байонет в миксинах.
+
+    # Фокусное и диафрагма.
     focal_wide: Mapped[int] = mapped_column(Integer, nullable=True)
     focal_tele: Mapped[int] = mapped_column(Integer)
 

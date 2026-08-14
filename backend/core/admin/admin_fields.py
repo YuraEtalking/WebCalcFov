@@ -7,6 +7,7 @@ from starlette_admin import RequestAction
 
 @dataclass
 class CommaToDotFloatField(FloatField):
+    """Заменяет запятую на точку в float полях."""
     async def parse_form_data(
         self, request: Request, form_data: FormData, action: RequestAction
     ):

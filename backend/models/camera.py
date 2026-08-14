@@ -18,7 +18,6 @@ from backend.models.mixins import (
 if TYPE_CHECKING:
     from .lens import Lens
     from .associative_model import CameraLens
-    # from .sensor import Sensor
     from .link import Link
     from .specs.camera_spec import SpecCamera
     from .image import CameraImageLink

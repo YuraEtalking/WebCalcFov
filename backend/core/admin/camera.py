@@ -37,7 +37,7 @@ class CameraAdmin(ModelView):
         ),
     ]
 
-    exclude_fields_from_list = ['compatible_lenses', 'spec']
+    exclude_fields_from_list = ['compatible_lenses', 'links',]
     exclude_fields_from_create = [
         'created_at',
         'updated_at',
