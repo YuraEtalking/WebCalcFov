@@ -3,10 +3,10 @@ from starlette_admin.contrib.sqla import Admin
 
 from backend.core.config import settings
 from .camera_lens import CameraLensAdmin
-from .camera import CameraAdmin
-from .lens import LensAdmin
-from .lens_spec import SpecLensAdmin
-from .camera_spec import SpecCameraAdmin
+from .camera.camera import CameraAdmin
+from .lens.lens import LensAdmin
+from .lens.lens_spec import SpecLensAdmin
+from .camera.camera_spec import SpecCameraAdmin
 from .teleconverter import TeleconverterAdmin
 from .link import LinkAdmin
 from .image import ImageAdmin, LensImageLinkAdmin

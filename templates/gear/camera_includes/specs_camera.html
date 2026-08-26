@@ -1,0 +1,295 @@
+{% import "gear/macros/macros_camera_specs.html" as specs_macros with context %}
+{% import "gear/macros/common.html" as common_macros with context %}
+
+<!-- Общие данные -->
+<h1>{{ camera.name }}</h1>
+<hr>
+<ul>
+    <li>{{ _("Manufacturer") }}: <b>{{ camera.manufacturer }}</b></li>
+    <li>{{ _("Mount") }}: <b>{{ camera.bayonet.name }}</b></li>
+
+    <!-- Даты начала и окончания производства -->
+    {% if camera.production_start_date %}
+    <li>{{ _("Date of the announcement/start of sales, (y-m-d)") }}: <b>{{ camera.production_start_date }}</b></li>
+    {% endif %}
+
+    {% if camera.production_end_date %}
+    <li>{{ _("Sales end date, (y-m-d)") }}: <b>{{ camera.production_end_date }}</b></li>
+    {% endif %}
+
+</ul>
+
+
+<br>
+<hr>
+<!-- Спецификации -->
+<details open>
+    <summary><strong>{{ _("Specifications") }}</strong></summary>
+
+
+    <br>
+    <!-- Тип камеры -->
+    <div><strong>{{ _("Camera type") }}:</strong></div>
+
+    <div>
+        {{ _("Camera category") }}:
+        <b>{{ specs_macros.camera_category_label(spec.camera_category.value if spec.camera_category else none) }}</b>
+    </div>
+
+    <div>
+        {{ _("Camera type") }}:
+        <b>{{ specs_macros.camera_type_label(spec.camera_type.value if spec.camera_type else none) }}</b>
+    </div>
+
+    <div>
+        {{ _("Medium type") }}:
+        <b>{{ specs_macros.medium_type_label(spec.medium_type.value if spec.medium_type else none) }}</b>
+    </div>
+
+
+
+    <br>
+    <!-- Процессор -->
+    <div><strong>{{ _("Processor") }}:</strong></div>
+
+    {% if spec.processor is not none %}
+    <div>{{ _("Processor") }}: <b>{{ spec.processor }}</b></div>
+    {% endif %}
+
+
+
+    <br>
+    <!-- Сенсор -->
+    <div><strong>{{ _("Sensor") }}:</strong></div>
+
+
+    <div>
+        {{ _("Sensor format") }}:
+        <b>{{ specs_macros.sensor_format_label(spec.sensor_format.value if spec.sensor_format else none) }}</b>
+    </div>
+
+    <div>
+        {{ _("Sensor technology") }}:
+        <b>{{ specs_macros.sensor_technology_label(spec.sensor_technology.value if spec.sensor_technology else none) }}</b>
+    </div>
+
+    <div>{{ _("Global shutter") }}: {{ common_macros.yes_no(spec.has_global_shutter) }}</div>
+
+    {% if spec.max_raw_bit_depth is not none %}
+    <div>{{ _("Maximum RAW bit depth") }}: <b>{{ spec.max_raw_bit_depth }} bit</b></div>
+    {% endif %}
+
+    {% if spec.max_readout_time_ms is not none %}
+    <div>
+        {{ _("Maximum readout time") }}:
+        <b>{{ spec.max_readout_time_ms }} ms</b>
+    </div>
+    {% endif %}
+
+    {% if spec.sensor_width_mm is not none and spec.sensor_height_mm is not none %}
+        <div>
+            {{ _("Sensor size") }}: <b>{{ spec.sensor_width_mm }} × {{ spec.sensor_height_mm }} mm</b>
+        </div>
+        <div>
+            {{ _("Crop factor") }}: <b>{{ "%.2f"|format(spec.crop_factor) }}x</b>
+        </div>
+    {% endif %}
+
+    {% if spec.sensor_pixels_width is not none and spec.sensor_pixels_height is not none %}
+    <div>
+        {{ _("Sensor resolution") }}: <b>{{ spec.sensor_pixels_width }} × {{ spec.sensor_pixels_height }} px</b>
+    </div>
+    {% endif %}
+
+    {% if spec.effective_megapixels is not none %}
+    <div>
+        {{ _("Effective megapixels") }}: <b>{{ spec.effective_megapixels }} MP</b>
+    </div>
+    {% endif %}
+
+    {% if spec.pixel_pitch_um is not none %}
+    <div>
+        {{ _("Pixel pitch") }}: <b>{{ spec.pixel_pitch_um }} μm</b>
+    </div>
+    {% endif %}
+
+    {% if spec.native_aspect_ratio %}
+    <div>
+        {{ _("Native aspect ratio") }}: <b>{{ spec.native_aspect_ratio }}</b>
+    </div>
+    {% endif %}
+
+    <br>
+
+    <!-- Стабилизация -->
+
+    <div><strong>{{ _("Stabilization") }}:</strong></div>
+    <div>{{ _("In-body image stabilization") }}: {{ common_macros.yes_no(spec.has_ibis) }}</div>
+    {% if spec.ibis_stops is not none %}<div>{{ _("Stabilization stops") }}: <b>{{ spec.ibis_stops }}</b></div>{% endif %}
+
+    <br>
+
+    <!-- ISO -->
+
+    <div><strong>{{ _("ISO") }}:</strong></div>
+    {% if spec.iso_min is not none %}<div>{{ _("Minimum ISO") }}: <b>{{ spec.iso_min }}</b></div>{% endif %}
+    {% if spec.iso_max is not none %}<div>{{ _("Maximum ISO") }}: <b>{{ spec.iso_max }}</b></div>{% endif %}
+    {% if spec.iso_expanded_min is not none %}<div>{{ _("Expanded minimum ISO") }}: <b>{{ spec.iso_expanded_min }}</b></div>{% endif %}
+    {% if spec.iso_expanded_max is not none %}<div>{{ _("Expanded maximum ISO") }}: <b>{{ spec.iso_expanded_max }}</b></div>{% endif %}
+    <div>{{ _("Dual native ISO") }}: {{ common_macros.yes_no(spec.has_dual_gain) }}</div>
+    {% if spec.dual_gain_switch_iso %}<div>{{ _("Dual gain switch ISO") }}: <b>{{ spec.dual_gain_switch_iso }}</b></div>{% endif %}
+
+    <br>
+
+    <!-- Затвор -->
+
+    <div><strong>{{ _("Shutter") }}:</strong></div>
+    {% if spec.shutter_speed_min %}<div>{{ _("Minimum shutter speed") }}: <b>{{ spec.shutter_speed_min }}</b></div>{% endif %}
+    {% if spec.shutter_speed_max %}<div>{{ _("Maximum shutter speed") }}: <b>{{ spec.shutter_speed_max }}</b></div>{% endif %}
+    {% if spec.electronic_shutter_speed_min %}<div>{{ _("Minimum electronic shutter speed") }}: <b>{{ spec.electronic_shutter_speed_min }}</b></div>{% endif %}
+    <div>{{ _("Mechanical shutter") }}: {{ common_macros.yes_no(spec.has_mechanical_shutter) }}</div>
+    {% if spec.flash_sync_speed %}<div>{{ _("Flash sync speed") }}: <b>{{ spec.flash_sync_speed }}</b></div>{% endif %}
+
+    <br>
+
+    <!-- Серийная съемка -->
+
+    <div><strong>{{ _("Continuous shooting") }}:</strong></div>
+    {% if spec.burst_fps_mechanical is not none %}<div>{{ _("Mechanical shutter burst rate") }}: <b>{{ spec.burst_fps_mechanical }} fps</b></div>{% endif %}
+    {% if spec.burst_fps_electronic is not none %}<div>{{ _("Electronic shutter burst rate") }}: <b>{{ spec.burst_fps_electronic }} fps</b></div>{% endif %}
+    {% if spec.burst_fps_jpg is not none %}<div>{{ _("Maximum JPG burst rate") }}: <b>{{ spec.burst_fps_jpg }} fps</b></div>{% endif %}
+    {% if spec.burst_fps_raw is not none %}<div>{{ _("Maximum RAW burst rate") }}: <b>{{ spec.burst_fps_raw }} fps</b></div>{% endif %}
+
+    <br>
+
+    <!-- Буфер -->
+
+    <div><strong>{{ _("Buffer") }}:</strong></div>
+    {% if spec.buffer_high_efficiency_raw_jpg_frames is not none %}<div>{{ _("High-efficiency RAW + JPG buffer") }}: <b>{{ spec.buffer_high_efficiency_raw_jpg_frames }} frames</b></div>{% endif %}
+    {% if spec.buffer_lossless_compressed_raw_frames is not none %}<div>{{ _("Lossless compressed RAW buffer") }}: <b>{{ spec.buffer_lossless_compressed_raw_frames }} frames</b></div>{% endif %}
+    {% if spec.buffer_high_efficiency_raw_frames is not none %}<div>{{ _("High-efficiency RAW buffer") }}: <b>{{ spec.buffer_high_efficiency_raw_frames }} frames</b></div>{% endif %}
+
+    <br>
+
+    <!-- Автофокус -->
+
+    <div><strong>{{ _("Autofocus") }}:</strong></div>
+    {% if spec.af_points is not none %}<div>{{ _("AF points") }}: <b>{{ spec.af_points }}</b></div>{% endif %}
+    {% if spec.af_detection_range_ev_min is not none %}<div>{{ _("AF detection range") }}: <b>{{ spec.af_detection_range_ev_min }} EV</b></div>{% endif %}
+    <div>{{ _("Eye and face detection autofocus") }}: {{ common_macros.yes_no(spec.has_eye_af) }}</div>
+    <div>{{ _("Animal detection autofocus") }}: {{ common_macros.yes_no(spec.has_animal_af) }}</div>
+    {% if spec.detected_objects_af %}<div>{{ _("Detected objects") }}: <b>{{ spec.detected_objects_af }}</b></div>{% endif %}
+
+    <br>
+
+    <!-- Видоискатель -->
+
+    <div><strong>{{ _("Viewfinder") }}:</strong></div>
+    {% if spec.viewfinder_type %}<div>{{ _("Viewfinder type") }}: <b>{{ specs_macros.viewfinder_type_label(spec.viewfinder_type.value) }}</b></div>{% endif %}
+    {% if spec.viewfinder_resolution_dots is not none %}<div>{{ _("Viewfinder resolution") }}: <b>{{ spec.viewfinder_resolution_dots }} dots</b></div>{% endif %}
+    {% if spec.viewfinder_magnification is not none %}<div>{{ _("Viewfinder magnification") }}: <b>{{ spec.viewfinder_magnification }}x</b></div>{% endif %}
+    {% if spec.viewfinder_coverage_percent is not none %}<div>{{ _("Viewfinder coverage") }}: <b>{{ spec.viewfinder_coverage_percent }}%</b></div>{% endif %}
+
+    <br>
+
+    <!-- Экран -->
+
+    <div><strong>{{ _("Screen") }}:</strong></div>
+    {% if spec.screen_size_inches is not none %}<div>{{ _("Screen size") }}: <b>{{ spec.screen_size_inches }}"</b></div>{% endif %}
+    {% if spec.screen_resolution_dots is not none %}<div>{{ _("Screen resolution") }}: <b>{{ spec.screen_resolution_dots }} dots</b></div>{% endif %}
+    {% if spec.screen_type %}<div>{{ _("Screen type") }}: <b>{{ specs_macros.screen_type_label(spec.screen_type.value) }}</b></div>{% endif %}
+    <div>{{ _("Touchscreen") }}: {{ common_macros.yes_no(spec.is_touchscreen) }}</div>
+
+    <br>
+
+    <!-- RAW-видео -->
+
+    <div><strong>{{ _("RAW video") }}:</strong></div>
+    {% if spec.raw_video_max_resolution %}<div>{{ _("Maximum RAW video resolution") }}: <b>{{ spec.raw_video_max_resolution }}</b></div>{% endif %}
+    {% if spec.raw_video_max_fps_at_max_resolution is not none %}<div>{{ _("Maximum FPS at maximum RAW resolution") }}: <b>{{ spec.raw_video_max_fps_at_max_resolution }} fps</b></div>{% endif %}
+    {% if spec.raw_video_max_fps is not none %}<div>{{ _("Maximum RAW video FPS") }}: <b>{{ spec.raw_video_max_fps }} fps</b></div>{% endif %}
+    {% if spec.raw_video_max_resolution_at_max_fps is not none %}<div>{{ _("RAW resolution at maximum FPS") }}: <b>{{ spec.raw_video_max_resolution_at_max_fps }}</b></div>{% endif %}
+    {% if spec.raw_video_max_bitrate_mbps is not none %}
+        <div>{{ _("Maximum RAW video bitrate") }}: <b>{{ spec.raw_video_max_bitrate_mbps }} Mbps</b></div>
+        <div>{{ _("Maximum RAW video data rate") }}: <b>{{ "%.2f"|format(spec.raw_video_max_rate_mb_s) }} MB/s</b></div>
+    {% endif %}
+    {% if spec.raw_video_max_bit_depth is not none %}<div>{{ _("Maximum RAW video bit depth") }}: <b>{{ spec.raw_video_max_bit_depth }} bit</b></div>{% endif %}
+    <div>{{ _("Internal RAW video recording") }}: {{ common_macros.yes_no(spec.has_internal_raw_video) }}</div>
+    <div>{{ _("External RAW video recording") }}: {{ common_macros.yes_no(spec.has_external_raw_video) }}</div>
+
+    <br>
+
+    <!-- Видео-кодеки -->
+
+    <div><strong>{{ _("Video codecs") }}:</strong></div>
+    <div>{{ _("Log profile") }}: {{ common_macros.yes_no(spec.has_log_profile) }}</div>
+    {% if spec.video_codecs %}<div>{{ _("Supported video codecs") }}: <b>{{ spec.video_codecs }}</b></div>{% endif %}
+    {% if spec.video_max_bit_depth is not none %}<div>{{ _("Maximum video bit depth") }}: <b>{{ spec.video_max_bit_depth }} bit</b></div>{% endif %}
+    {% if spec.video_max_bitrate_mbps is not none %}
+        <div>{{ _("Maximum video bitrate") }}: <b>{{ spec.video_max_bitrate_mbps }} Mbps</b></div>
+        <div>{{ _("Maximum video data rate") }}: <b>{{ "%.2f"|format(spec.video_max_rate_mb_s) }} MB/s</b></div>
+    {% endif %}
+
+    <br>
+
+    <!-- Карты памяти -->
+
+    <div><strong>{{ _("Storage") }}:</strong></div>
+    {% if spec.card_slots is not none %}<div>{{ _("Memory card slots") }}: <b>{{ spec.card_slots }}</b></div>{% endif %}
+    {% if spec.card_types %}
+        <div>{{ _("Supported memory cards") }}:</div>
+        <ul>
+            {% for card_type in spec.card_types %}
+                <li><b>{{ specs_macros.card_type_label(card_type.value if card_type else none) }}</b></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <br>
+
+    <!-- Интерфейсы и связь -->
+
+    <div><strong>{{ _("Interfaces and connectivity") }}:</strong></div>
+    <div>{{ _("Wi-Fi") }}: {{ common_macros.yes_no(spec.has_wifi) }}</div>
+    <div>{{ _("Bluetooth") }}: {{ common_macros.yes_no(spec.has_bluetooth) }}</div>
+    <div>{{ _("GPS") }}: {{ common_macros.yes_no(spec.has_gps) }}</div>
+    {% if spec.usb_type %}<div>{{ _("USB type") }}: <b>{{ spec.usb_type }}</b></div>{% endif %}
+    <div>{{ _("Headphone jack") }}: {{ common_macros.yes_no(spec.has_headphone_jack) }}</div>
+    <div>{{ _("Microphone jack") }}: {{ common_macros.yes_no(spec.has_microphone_jack) }}</div>
+    {% if spec.hdmi_type %}<div>{{ _("HDMI type") }}: <b>{{ spec.hdmi_type }}</b></div>{% endif %}
+
+    <br>
+
+    <!-- Питание -->
+
+    <div><strong>{{ _("Power") }}:</strong></div>
+    {% if spec.battery_model %}<div>{{ _("Battery model") }}: <b>{{ spec.battery_model }}</b></div>{% endif %}
+    {% if spec.battery_life_shots_cipa is not none %}<div>{{ _("Battery life according to CIPA") }}: <b>{{ spec.battery_life_shots_cipa }} shots</b></div>{% endif %}
+    <div>{{ _("USB charging") }}: {{ common_macros.yes_no(spec.has_usb_charging) }}</div>
+
+    <br>
+
+    <!-- Корпус -->
+
+    <div><strong>{{ _("Body") }}:</strong></div>
+    {% if spec.weight_g is not none %}<div>{{ _("Weight") }}: <b>{{ spec.weight_g }} g</b></div>{% endif %}
+    {% if spec.width_mm is not none %}<div>{{ _("Width") }}: <b>{{ spec.width_mm }} mm</b></div>{% endif %}
+    {% if spec.height_mm is not none %}<div>{{ _("Height") }}: <b>{{ spec.height_mm }} mm</b></div>{% endif %}
+    {% if spec.depth_mm is not none %}<div>{{ _("Depth") }}: <b>{{ spec.depth_mm }} mm</b></div>{% endif %}
+    {% if spec.width_mm is not none and spec.height_mm is not none and spec.depth_mm is not none %}<div>{{ _("Dimensions, W × H × D") }}: <b>{{ spec.width_mm }} × {{ spec.height_mm }} × {{ spec.depth_mm }} mm</b></div>{% endif %}
+    <div>{{ _("Weather sealing") }}: {{ common_macros.yes_no(spec.is_weather_sealed) }}</div>
+    <div>{{ _("Built-in flash") }}: {{ common_macros.yes_no(spec.has_built_in_flash) }}</div>
+</details>
+
+<br>
+<hr>
+
+<!-- Обзоры и тесты -->
+
+<h3>{{ _("Reviews/Tests") }}:</h3>
+
+<ul>
+    {% for link in links %}
+        <li><a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">{{ link.title }}</a></li>
+    {% endfor %}
+</ul>

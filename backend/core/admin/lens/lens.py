@@ -28,6 +28,7 @@ class LensAdmin(ModelView):
         DateField(
             'production_start_date',
             label='Дата анонса/начала продаж',
+            required=True,
         ),
         DateField(
             'production_end_date',
@@ -39,7 +40,8 @@ class LensAdmin(ModelView):
             'focal_wide',
             label='Фокусное расстояние в широкоугольном режиме',
             help_text='Если объектив фикс(PRIME), то значение дублируется для '
-                      'обоих полей фокусного расстояния.'
+                      'обоих полей фокусного расстояния.',
+            required=True,
         ),
         IntegerField(
             'focal_tele',
@@ -52,7 +54,8 @@ class LensAdmin(ModelView):
             label='Максимальная диафрагма в широкоугольном режиме',
             help_text='Если объектив фикс(PRIME) или зум(ZOOM) с '
                       'фиксированным значением максимальной диафрагмы, '
-                      'то значение дублируется для обоих полей диафрагмы.'
+                      'то значение дублируется для обоих полей диафрагмы.',
+            required=True,
         ),
         CommaToDotFloatField(
             'aperture_max_tele',

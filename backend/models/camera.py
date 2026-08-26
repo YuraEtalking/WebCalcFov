@@ -58,6 +58,8 @@ class Camera(
         cascade='all, delete-orphan',
     )
 
+    # Даты производства и байонет в миксинах.
+
     def __str__(self):
         return self.name
 

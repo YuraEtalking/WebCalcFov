@@ -1,4 +1,13 @@
-from starlette_admin import StringField, IntegerField, BooleanField, DateTimeField, HasMany, EnumField, HasOne
+from starlette_admin import (
+    StringField,
+    IntegerField,
+    BooleanField,
+    DateTimeField,
+    DateField,
+    HasMany,
+    EnumField,
+    HasOne,
+)
 from starlette_admin.contrib.sqla import ModelView
 
 from backend.models import BayonetType, SpecCamera
@@ -10,9 +19,25 @@ class CameraAdmin(ModelView):
 
     fields = [
         IntegerField('id', label='ID'),
-        StringField('manufacturer', label='Производитель'),
-        StringField('name', label='Название'),
-        EnumField('bayonet', label='Байонет', enum=BayonetType),
+        StringField('manufacturer', label='Производитель', required=True,),
+        StringField('name', label='Название', required=True,),
+        EnumField(
+            'bayonet',
+            label='Байонет',
+            enum=BayonetType,
+            required=True,
+        ),
+
+        # Даты начала и окончания производства.
+        DateField(
+            'production_start_date',
+            label='Дата анонса/начала продаж',
+            required=True,
+        ),
+        DateField(
+            'production_end_date',
+            label='Дата окончания продаж',
+        ),
 
         # Поля связанных моделей.
         HasMany('links', label='Ссылки', identity='link'),

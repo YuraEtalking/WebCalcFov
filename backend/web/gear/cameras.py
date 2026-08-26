@@ -44,5 +44,9 @@ async def camera_detail(
     return render(
         request,
         'gear/camera_detail.html',
-        {'camera': camera, 'slug': slug, }
+        {
+            'camera': camera,
+            'slug': slug,
+            'spec': camera.spec,
+        }
     )

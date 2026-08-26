@@ -107,7 +107,7 @@ async def prepare_fov_response_data(
                 'Выбранный телеконвертер не принадлежит объективу'
             )
         selected_tc = selected_tc_obj.multiplier
-
+    logger.debug('input_data.focal="{}", lens.focal_wide="{}", lens.focal_tele="{}"', input_data.focal, lens.focal_wide, lens.focal_tele)
     focal = checking_distance_within_range(
         focal=input_data.focal,
         focal_wide=lens.focal_wide,

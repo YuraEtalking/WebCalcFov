@@ -1,0 +1,130 @@
+<!-- Тип камеры -->
+
+{% macro camera_category_label(value) %}
+    {% set labels = {
+        "photo": _("Photo"),
+        "video": _("Video"),
+        "hybrid": _("Photo and video"),
+        "cinema": _("Cinema"),
+        "other": _("Other")
+    } %}
+    {{ labels.get(value, value) }}
+{% endmacro %}
+
+
+{% macro camera_type_label(value) %}
+    {% set labels = {
+        "mirrorless": _("Mirrorless"),
+        "dslr": _("DSLR"),
+        "rangefinder": _("Rangefinder"),
+        "compact": _("Compact"),
+        "bridge": _("Bridge"),
+        "action": _("Action camera"),
+        "medium_format": _("Medium format"),
+        "large_format": _("Large format"),
+        "cinema": _("Cinema camera"),
+        "other": _("Other")
+    } %}
+    {{ labels.get(value, value) }}
+{% endmacro %}
+
+
+{% macro medium_type_label(value) %}
+    {% set labels = {
+        "digital": _("Digital"),
+        "film": _("Film"),
+        "instant": _("Instant film"),
+        "other": _("Other")
+    } %}
+    {{ labels.get(value, value) }}
+{% endmacro %}
+
+
+<!-- Сенсор -->
+
+{% macro sensor_format_label(value) %}
+    {% set labels = {
+        "full_frame": _("Full frame"),
+        "aps_c": _("APS-C"),
+        "aps_h": _("APS-H"),
+        "four_thirds": _("Four Thirds"),
+        "micro_four_thirds": _("Micro Four Thirds"),
+        "medium_format": _("Medium format"),
+        "large_format": _("Large format"),
+        "one_inch": _("1-inch"),
+        "two_thirds_inch": _("2/3-inch"),
+        "one_half_inch": _("1/2-inch"),
+        "one_three_inch": _("1/3-inch"),
+        "other": _("Other")
+    } %}
+    {{ labels.get(value, value) }}
+{% endmacro %}
+
+
+{% macro sensor_technology_label(value) %}
+    {% set labels = {
+        "cmos": _("CMOS"),
+        "bsi_cmos": _("BSI CMOS"),
+        "stacked_cmos": _("Stacked CMOS"),
+        "ccd": _("CCD"),
+        "live_mos": _("Live MOS"),
+        "foveon": _("Foveon"),
+        "x_trans": _("X-Trans"),
+        "other": _("Other")
+    } %}
+    {{ labels.get(value, value) }}
+{% endmacro %}
+
+
+<!-- Видоискатель -->
+
+{% macro viewfinder_type_label(value) %}
+    {% set labels = {
+        "electronic": _("Electronic"),
+        "optical": _("Optical"),
+        "hybrid": _("Hybrid"),
+        "rangefinder": _("Rangefinder"),
+        "none": _("None"),
+        "other": _("Other")
+    } %}
+    {{ labels.get(value, value) }}
+{% endmacro %}
+
+
+<!-- Экран -->
+
+{% macro screen_type_label(value) %}
+    {% set labels = {
+        "tft_lcd": _("TFT LCD"),
+        "lcd": _("LCD"),
+        "oled": _("OLED"),
+        "amoled": _("AMOLED"),
+        "vari_angle": _("Vari-angle"),
+        "tilting": _("Tilting"),
+        "fixed": _("Fixed"),
+        "other": _("Other")
+    } %}
+    {{ labels.get(value, value) }}
+{% endmacro %}
+
+
+<!-- Карты памяти -->
+
+{% macro card_type_label(value) %}
+    {% set labels = {
+        "sd": _("SD"),
+        "sdhc": _("SDHC"),
+        "sdxc": _("SDXC"),
+        "sd_uc": _("SD UHS-II"),
+        "microsd": _("microSD"),
+        "compact_flash": _("CompactFlash"),
+        "cfexpress_type_a": _("CFexpress Type A"),
+        "cfexpress_type_b": _("CFexpress Type B"),
+        "cfast": _("CFast"),
+        "xqd": _("XQD"),
+        "memory_stick": _("Memory Stick"),
+        "internal": _("Internal storage"),
+        "other": _("Other")
+    } %}
+    {{ labels.get(value, value) }}
+{% endmacro %}

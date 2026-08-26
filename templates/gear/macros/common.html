@@ -1,0 +1,11 @@
+<!-- Общие макросы -->
+
+{% macro yes_no(value) %}
+    {% if value is none %}
+        <b class="bool-unknown">—</b>
+    {% elif value %}
+        <b class="bool-true">{{ _("Yes") }}</b>
+    {% else %}
+        <b class="bool-false">{{ _("No") }}</b>
+    {% endif %}
+{% endmacro %}

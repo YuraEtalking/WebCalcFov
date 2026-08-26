@@ -3,6 +3,8 @@ from starlette_admin import (
     DateTimeField, TextAreaField, HasOne, EnumField, JSONField
 )
 from starlette_admin.contrib.sqla import ModelView
+from starlette_admin.exceptions import FormValidationError
+
 from backend.models import (
     SensorFormat,
     SensorTechnology,
@@ -28,6 +30,8 @@ class SpecCameraAdmin(ModelView):
         IntegerField('id', label='ID'),
         HasOne('camera', label='Камера', identity='camera'),
 
+
+
         # === Тип камеры ===
         EnumField(
             'camera_category',
@@ -45,8 +49,12 @@ class SpecCameraAdmin(ModelView):
             enum=MediumType,
         ),
 
+
+
         # === Процессор ===
         StringField('processor', label='Процессор'),
+
+
 
         # === Сенсор ===
         EnumField(
@@ -100,6 +108,8 @@ class SpecCameraAdmin(ModelView):
             label='Нативное соотношение сторон, строковое значение',
         ),
 
+
+
         # === Стабилизация ===
         BooleanField(
             'has_ibis',
@@ -109,6 +119,8 @@ class SpecCameraAdmin(ModelView):
             'ibis_stops',
             label='Эффективность IBIS, стопов',
         ),
+
+
 
         # === ISO ===
         IntegerField('iso_min', label='Минимальное ISO'),
@@ -129,6 +141,8 @@ class SpecCameraAdmin(ModelView):
             'dual_gain_switch_iso',
             label='ISO переключения Dual Gain',
         ),
+
+
 
         # === Затвор ===
         StringField(
@@ -152,6 +166,8 @@ class SpecCameraAdmin(ModelView):
             label='Выдержка синхронизации вспышки',
         ),
 
+
+
         # === Серийная съёмка ===
         FloatField(
             'burst_fps_mechanical',
@@ -170,6 +186,8 @@ class SpecCameraAdmin(ModelView):
             label='Серийная съёмка RAW, fps',
         ),
 
+
+
         # === Буфер ===
         IntegerField(
             'buffer_high_efficiency_raw_jpg_frames',
@@ -183,6 +201,8 @@ class SpecCameraAdmin(ModelView):
             'buffer_high_efficiency_raw_frames',
             label='Буфер HE RAW, кадров',
         ),
+
+
 
         # === Автофокус ===
         IntegerField(
@@ -206,6 +226,8 @@ class SpecCameraAdmin(ModelView):
             label='Распознаваемые объекты AF',
         ),
 
+
+
         # === Видоискатель ===
         EnumField(
             'viewfinder_type',
@@ -224,6 +246,8 @@ class SpecCameraAdmin(ModelView):
             'viewfinder_coverage_percent',
             label='Покрытие видоискателя, %',
         ),
+
+
 
         # === Экран ===
         FloatField(
@@ -244,6 +268,8 @@ class SpecCameraAdmin(ModelView):
             label='Сенсорный экран',
         ),
 
+
+
         # === RAW-видео ===
         StringField(
             'raw_video_max_resolution',
@@ -257,7 +283,7 @@ class SpecCameraAdmin(ModelView):
             'raw_video_max_fps',
             label='Максимальный fps RAW-видео',
         ),
-        IntegerField(
+        StringField(
             'raw_video_max_resolution_at_max_fps',
             label='Разрешение RAW при максимальном fps',
         ),
@@ -278,6 +304,8 @@ class SpecCameraAdmin(ModelView):
             label='Внешняя запись RAW-видео',
         ),
 
+
+
         # === Видео / кодеки ===
         BooleanField(
             'has_log_profile',
@@ -296,6 +324,8 @@ class SpecCameraAdmin(ModelView):
             label='Максимальный битрейт видео, Мбит/с',
         ),
 
+
+
         # === Карты памяти ===
         IntegerField(
             'card_slots',
@@ -307,6 +337,8 @@ class SpecCameraAdmin(ModelView):
             enum=CardType,
             multiple=True,
         ),
+
+
 
         # === Интерфейсы и связь ===
         BooleanField('has_wifi', label='Wi‑Fi'),
@@ -323,6 +355,16 @@ class SpecCameraAdmin(ModelView):
         ),
         StringField('hdmi_type', label='Тип HDMI'),
 
+
+
+        # === Встроенная вспышка ===
+        BooleanField(
+            'has_built_in_flash',
+            label='Встроенная вспышка',
+        ),
+
+
+
         # === Питание ===
         StringField(
             'battery_model',
@@ -336,25 +378,48 @@ class SpecCameraAdmin(ModelView):
             'has_usb_charging',
             label='Зарядка по USB',
         ),
+        StringField(
+            'battery_grip',
+            label='Модель батарейной ручки.',
+        ),
+        StringField(
+            'ac_adapter',
+            label='Модель зарядного устройства.',
+        ),
+
+
 
         # === Корпус ===
-        IntegerField(
-            'weight_g',
-            label='Вес, г',
-        ),
+        IntegerField('weight_g',label='Вес, г',),
         FloatField('width_mm', label='Ширина, мм'),
         FloatField('height_mm', label='Высота, мм'),
-        FloatField('depth_mm', label='Глубина, мм'),
+        FloatField('length_mm', label='Длинна, мм'),
+        StringField(
+            'tripod_socket',
+            label='Штативное крепление.',
+        ),
+
+
+
+        # === Пыле-/влагозащита ===
         BooleanField(
             'is_weather_sealed',
             label='Пыле- и влагозащита',
         ),
-        BooleanField(
-            'has_built_in_flash',
-            label='Встроенная вспышка',
+        StringField(
+            'operating_environment',
+            label='Рабочие температуры среды.',
         ),
 
-        # Статус и даты создания/редактирования
+
+
+        #  === Комплект поставки ===
+        TextAreaField('supplied_accessories', label='Комплект поставки'),
+
+
+
+
+        # === Статус и даты создания/редактирования ===
         BooleanField(
             'is_active',
             label='Запись активна',
@@ -468,7 +533,47 @@ class SpecCameraAdmin(ModelView):
         'is_weather_sealed',
         'has_built_in_flash',
     ]
-    exclude_fields_from_create = ['created_at', 'updated_at', 'is_active']
+    # exclude_fields_from_create = ['created_at', 'updated_at', 'is_active']
     exclude_fields_from_edit = [
-        'name', 'created_at', 'updated_at', 'is_active', 'camera',
+        'name',
+        'created_at',
+        'updated_at',
+        'is_active',
+        'camera',
+        'pixel_pitch_um',
     ]
+
+    async def validate(self, request, data: dict) -> None:
+        errors: dict[str, str] = {}
+
+        sw = data.get('sensor_width_mm')
+        sh = data.get('sensor_height_mm')
+        pw = data.get('sensor_pixels_width')
+        ph = data.get('sensor_pixels_height')
+
+        if all(v is not None for v in
+               (sw, sh, pw, ph)) and pw > 0 and ph > 0 and sw > 0:
+            pitch_w = sw / pw
+            pitch_h = sh / ph
+            diff = abs(pitch_w - pitch_h) / pitch_w
+            if diff > 0.02:
+                msg = (
+                    f'Пиксель не квадратный: pitch_w={pitch_w * 1000:.3f} µm, '
+                    f'pitch_h={pitch_h * 1000:.3f} µm (расхождение {diff:.1%}). '
+                    'Проверьте размеры сенсора и разрешение.'
+                )
+                errors['sensor_width_mm'] = msg
+                errors['sensor_height_mm'] = msg
+                errors['sensor_pixels_width'] = msg
+                errors['sensor_pixels_height'] = msg
+
+        # можно проверить и частичное заполнение
+        filled = [v is not None for v in (sw, sh, pw, ph)]
+        if any(filled) and not all(filled):
+            errors[
+                'sensor_width_mm'] = 'Заполните все 4 поля сенсора или ни одного'
+
+        if errors:
+            raise FormValidationError(errors)
+
+        await super().validate(request, data)
