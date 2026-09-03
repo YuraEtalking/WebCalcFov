@@ -1,5 +1,5 @@
 from sqlalchemy import select
-from sqlalchemy.orm import joinedload, selectinload
+from sqlalchemy.orm import joinedload, selectinload, with_loader_criteria
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.models import Camera
@@ -31,3 +31,18 @@ async def get_active_camera_with_sensor(camera_id, session: AsyncSession):
     ))
     camera = stmt.scalars().first()
     return camera
+
+
+async def get_cameras_for_compare(ids: list[int], session: AsyncSession):
+    """Получаем камеры и спеки."""
+    stmt = await session.execute(select(
+        Camera
+    ).options(
+        joinedload(Camera.compatible_lenses),
+        joinedload(Camera.spec),
+    ).where(
+        Camera.id.in_(ids),
+        Camera.is_active.is_(True)
+    ))
+    cameras = list(stmt.scalars().unique())
+    return cameras

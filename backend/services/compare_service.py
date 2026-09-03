@@ -28,12 +28,11 @@ def serialize_ids_for_cookie(ids: list[int]):
 def add_to_compare(request: Request, obj_id: int, compare_list: str):
     """Добавляет id объекта в список сравнений."""
     ids = get_ids(request, compare_list)
-    logger.debug('Получил список объективов из куки: ids="{}"', ids)
     if obj_id not in ids:
         ids.append(obj_id)
 
     ids = ids[:4]
-    logger.debug('Обновил куки: ids="{}"', ids)
+    logger.debug('Куки после добавления в compare_list="{}": obj_id="{}", ids="{}"',compare_list, obj_id, ids)
     response = RedirectResponse(
         url=request.headers.get('referer'),
         status_code=HTTPStatus.SEE_OTHER
@@ -45,7 +44,7 @@ def add_to_compare(request: Request, obj_id: int, compare_list: str):
     )
     return response
 
-# todo тут ошибка TypeError: remove_from_comparison_list() got an unexpected keyword argument 'obj_id'
+
 def remove_from_comparison_list(
         request: Request,
         obj_id: int,
@@ -56,7 +55,7 @@ def remove_from_comparison_list(
     if obj_id in ids:
         ids.remove(obj_id)
 
-    logger.debug('Стало: ids="{}"', ids)
+    logger.debug('Куки после удаления объектива: ids="{}"', ids)
     response = RedirectResponse(
         url=request.headers.get('referer'),
         status_code=HTTPStatus.SEE_OTHER
@@ -68,7 +67,7 @@ def remove_from_comparison_list(
     )
     return response
 
-def clear_comparison_list(request: Request, compare_list: str):
+def clear_list_of_comparison(request: Request, compare_list: str):
     """Чистит список сравнений."""
     response = RedirectResponse(
         url=request.headers.get('referer'),
@@ -78,4 +77,6 @@ def clear_comparison_list(request: Request, compare_list: str):
         key=compare_list,
         samesite='lax',
     )
+    ids = get_ids(request, compare_list)
+    logger.debug('Очистили список куки объектива: ids="{}"', ids)
     return response

@@ -12,6 +12,7 @@ from backend.services.compare_service import (
     get_ids,
     add_to_compare,
     remove_from_comparison_list,
+    clear_list_of_comparison,
 )
 from backend.web.constants import COMPARE_LENSES_COOKIE
 
@@ -23,9 +24,8 @@ web_router = APIRouter(
 
 
 @web_router.post('/lenses/add/{lens_id}', name='add_lens_compare')
-async def add_lend_to_compare(request: Request, lens_id: int):
+async def add_lens_to_compare(request: Request, lens_id: int):
     """Добавляет линзу в список сравнений."""
-    logger.debug('Добавил объектив в сравнение: lens_id="{}"', lens_id)
     return add_to_compare(
         request=request,
         obj_id=lens_id,
@@ -55,7 +55,7 @@ async def compare_lenses(
     '/lenses/remove/{lens_id}',
     name='remove_lens_comparison_list',
 )
-async def remove_from_comparison_list(request: Request, lens_id: int):
+async def remove_lens_from_comparison_list(request: Request, lens_id: int):
     """Удаляет объектив из списка сравнений."""
     return remove_from_comparison_list(
         request=request,
@@ -65,6 +65,6 @@ async def remove_from_comparison_list(request: Request, lens_id: int):
 
 
 @web_router.post('/lenses/clear/',name='clear_comparison_list')
-async def clear_comparison_list(request: Request):
+async def clear_list_of_lenses_for_comparison(request: Request):
     """Чистит список сравнений объективов."""
-    return clear_comparison_list(request, COMPARE_LENSES_COOKIE)
+    return clear_list_of_comparison(request, COMPARE_LENSES_COOKIE)

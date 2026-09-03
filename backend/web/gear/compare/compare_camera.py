@@ -7,19 +7,20 @@ from loguru import logger
 
 from backend.core.db import get_async_session
 from backend.web.templates import render
-from backend.crud.lens import get_lenses_for_compare
-from backend.services.compare_service import get_ids
+from backend.crud.camera import get_cameras_for_compare
+from backend.services.compare_service import (
+    get_ids,
+    add_to_compare,
+    remove_from_comparison_list,
+    clear_list_of_comparison,
+)
 from backend.web.templates import set_default_cookie
 from backend.web.constants import COMPARE_CAMERAS_COOKIE
-
 
 
 web_router = APIRouter(
     tags=['Compare'],
 )
-
-def serialize_ids_for_cookie(ids: list[int]):
-    return ','.join(map(str, ids))
 
 
 @web_router.post(
@@ -27,76 +28,46 @@ def serialize_ids_for_cookie(ids: list[int]):
     name='add_camera_to_compare',
 )
 async def add_camera_to_compare(request: Request, camera_id: int):
-    """."""
+    """Добавляет камеру в список сравнений."""
+    return add_to_compare(
+        request=request,
+        obj_id=camera_id,
+        compare_list=COMPARE_CAMERAS_COOKIE,
+    )
+
+
+@web_router.get('/cameras', name='compare_cameras',)
+async def compare_cameras(
+        request: Request,
+        session: AsyncSession = Depends(get_async_session)
+):
+    """Представление сравнений камера."""
     ids = get_ids(request, COMPARE_CAMERAS_COOKIE)
+    logger.debug('Было: ids="{}"', ids)
 
-    if camera_id not in ids:
-        ids.append(camera_id)
+    cameras = await get_cameras_for_compare(ids, session)
+    return render(request, 'gear/compare/camera_comparison.html', {
+        'cameras': cameras,
+    })
 
-    ids = ids[:4]
 
-    response = RedirectResponse(
-        url=request.headers.get('referer'),
-        status_code=HTTPStatus.SEE_OTHER
+@web_router.post(
+    '/camera/remove/{camera_id}',
+    name='remove_camera_from_comparison_list',
+)
+async def remove_camera_from_comparison_list(request: Request, camera_id: int):
+    """Удаляет камеру из списка сравнений."""
+    return remove_from_comparison_list(
+        request=request,
+        obj_id=camera_id,
+        compare_list=COMPARE_CAMERAS_COOKIE,
     )
-    set_default_cookie(
-        response=response,
-        key=COMPARE_CAMERAS_COOKIE,
-        value=serialize_ids_for_cookie(ids)
-    )
-    return response
 
 
-# @web_router.get('/lenses', name='lens_compare',)
-# async def compare_lenses(
-#         request: Request,
-#         session: AsyncSession = Depends(get_async_session)
-# ):
-#     """Представление сравнений объективов."""
-#     ids = get_ids(request, COMPARE_LENSES_COOKIE)
-#     logger.debug('Было: ids="{}"', ids)
-#
-#     lenses = await get_lenses_for_compare(ids, session)
-#     return render(request, 'gear/compare/lens_comparison.html', {
-#         'lenses': lenses,
-#     })
-#
-#
-# @web_router.post(
-#     '/lenses/remove/{lens_id}',
-#     name='remove_lens_comparison_list',
-# )
-# async def remove_from_comparison_list(request: Request, lens_id: int):
-#     """Удаляет объектив из списка сравнений."""
-#     ids = get_ids(request, COMPARE_LENSES_COOKIE)
-#     if lens_id in ids:
-#         ids.remove(lens_id)
-#
-#     logger.debug('Стало: ids="{}"', ids)
-#     response = RedirectResponse(
-#         url=request.headers.get('referer'),
-#         status_code=HTTPStatus.SEE_OTHER
-#     )
-#     set_default_cookie(
-#         response=response,
-#         key=COMPARE_LENSES_COOKIE,
-#         value=serialize_ids_for_cookie(ids)
-#     )
-#     return response
-#
-#
-# @web_router.post(
-#     '/lenses/clear/',
-#     name='clear_comparison_list',
-# )
-# async def clear_comparison_list(request: Request):
-#     """Чистит список сравнений."""
-#     response = RedirectResponse(
-#         url=request.headers.get('referer'),
-#         status_code=HTTPStatus.SEE_OTHER
-#     )
-#     response.delete_cookie(
-#         key=COMPARE_LENSES_COOKIE,
-#         samesite='lax',
-#     )
-#     return response
+@web_router.post(
+    '/camera/clear/',
+    name='clear_list_of_cameras_for_comparison',
+)
+async def clear_list_of_cameras_for_comparison(request: Request):
+    """Чистит список сравнений."""
+    return clear_list_of_comparison(request, COMPARE_CAMERAS_COOKIE)
