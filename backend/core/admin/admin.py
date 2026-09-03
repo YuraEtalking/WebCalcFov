@@ -24,6 +24,7 @@ def setup_admin(app):
         engine=sync_engine,
         title='Админка',
         base_url='/admin',
+        # templates_dir='templates/admin'
     )
     admin.add_view(CameraAdmin(Camera, icon='fa fa-camera'))
     admin.add_view(LensAdmin(Lens, icon='fa fa-less-than'))

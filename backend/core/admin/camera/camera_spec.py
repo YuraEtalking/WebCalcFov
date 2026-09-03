@@ -1,4 +1,5 @@
 from starlette_admin import (
+    CollectionField,
     StringField, IntegerField, FloatField, BooleanField,
     DateTimeField, TextAreaField, HasOne, EnumField, JSONField
 )
@@ -23,6 +24,7 @@ class SpecCameraAdmin(ModelView):
     identity = 'spec_camera'
     label = 'Характеристики камеры'
     name = 'Характеристика камеры'
+    # detail_template = 'user_detail.html'
 
     fields = [
         # === Основное ===
@@ -33,21 +35,21 @@ class SpecCameraAdmin(ModelView):
 
 
         # === Тип камеры ===
-        EnumField(
-            'camera_category',
-            label='Категория камеры',
-            enum=CameraCategory,
-        ),
-        EnumField(
-            'camera_type',
-            label='Тип камеры',
-            enum=CameraType,
-        ),
-        EnumField(
-            'medium_type',
-            label='Тип носителя',
-            enum=MediumType,
-        ),
+            EnumField(
+                'camera_category',
+                label='Категория камеры',
+                enum=CameraCategory,
+            ),
+            EnumField(
+                'camera_type',
+                label='Тип камеры',
+                enum=CameraType,
+            ),
+            EnumField(
+                'medium_type',
+                label='Тип носителя',
+                enum=MediumType,
+            ),
 
 
 

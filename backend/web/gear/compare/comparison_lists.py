@@ -10,7 +10,7 @@ from backend.web.templates import render
 from backend.crud.lens import get_lenses_for_compare
 from backend.services.compare_service import get_ids
 from backend.web.templates import set_default_cookie
-from backend.web.constants import COMPARE_LENSES_COOKIE
+from backend.web.constants import COMPARE_LENSES_COOKIE, COMPARE_CAMERAS_COOKIE
 
 
 
@@ -27,6 +27,7 @@ web_router = APIRouter(
 async def comparison_lists(request: Request, session: AsyncSession = Depends(get_async_session)):
     """."""
     lens_ids = get_ids(request, COMPARE_LENSES_COOKIE)
+    camera_ids = get_ids(request, COMPARE_CAMERAS_COOKIE)
     logger.debug('lens_ids: lens_ids="{}"', lens_ids)
     lenses_list = await get_lenses_for_compare(lens_ids, session)
 

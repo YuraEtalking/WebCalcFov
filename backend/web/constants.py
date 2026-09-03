@@ -1,6 +1,7 @@
 
 # Ключи для куки
 COMPARE_LENSES_COOKIE = 'compare_lenses'
+COMPARE_CAMERAS_COOKIE = 'compare_cameras'
 LANG = 'lang'
 
 # Время жизни куки

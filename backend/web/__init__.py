@@ -5,6 +5,6 @@ from .i18n import i18n_middleware
 from .index import web_router
 from .tools.tools_list import web_router
 from .media import media_router
-from .gear.compare_lens import web_router
-from .gear.comparison_lists import web_router
+from .gear.compare.compare_lens import web_router
+from .gear.compare.comparison_lists import web_router
 from .gear.gear_manufacturers import web_router

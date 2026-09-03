@@ -23,10 +23,17 @@
         {% include "gear/camera_includes/specs_camera.html" %}
     </main>
 
+
     <!-- Правая колонка -->
     <aside class="sidebar">
 
-      {{ camera.name }}
+      <section class="card">
+      <form method="post" action="{{ url_for('add_camera_to_compare', camera_id=camera.id) }}">
+      <button type="submit">
+        {{ _("Add to the comparison") if camera.id not in compare_ids else _("Already on the comparison list") }}
+      </button>
+    </form>
+    </section>
 
 
 
