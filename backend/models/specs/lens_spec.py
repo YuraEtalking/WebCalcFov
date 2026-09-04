@@ -28,7 +28,7 @@ if TYPE_CHECKING:
     from models.lens import Lens
 
 
-
+# todo все булевые в дефолте False, для enum так же выставить дефолты
 class SpecLens(
     IdMixin,
     ActiveMixin,

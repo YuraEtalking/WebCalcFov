@@ -1,11 +1,22 @@
 <!-- Общие макросы -->
 
+<!-- для bool полей true=да, false=нет или none=прочерк. -->
 {% macro yes_no(value) %}
     {% if value is none %}
-        <b class="bool-unknown">—</b>
+        {{ _("No data") }}
     {% elif value %}
         <b class="bool-true">{{ _("Yes") }}</b>
     {% else %}
         <b class="bool-false">{{ _("No") }}</b>
     {% endif %}
+{% endmacro %}
+
+
+<!-- Устанавливаем значение enum, при none устанавливаем прочерк. -->
+{% macro value_or_dash(value) %}
+  {%- if value is defined and value is not none and value|string|trim -%}
+    {{- value -}}
+  {%- else -%}
+    —
+  {%- endif -%}
 {% endmacro %}

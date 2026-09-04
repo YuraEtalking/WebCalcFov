@@ -142,7 +142,7 @@ class SpecCamera(
             diagonal = math.sqrt(
                 self.sensor_width_mm ** 2 + self.sensor_height_mm ** 2
             )
-            return FULL_FRAME_DIAGONAL / diagonal
+            return round(FULL_FRAME_DIAGONAL / diagonal, 1)
         return None
 
 

@@ -1,21 +1,25 @@
 {% extends "base_template.html" %}
-{% import "gear/macros/specs.html" as specs_macros with context %}
+{% import "gear/macros/macros_camera_specs.html" as specs_macros with context %}
+{% import "gear/macros/common.html" as common_macros with context %}
 {% block title %}
-{{ _("Lens Comparison") }}
+  {{ _("Camera Comparison") }}
 {% endblock %}
+
 {% block content %}
 
+
 <span>
-    / <a href="{{ url_for('index_page') }}">{{ _("Home") }}</a>
+  / <a href="{{ url_for('comparison_lists') }}">{{ _("Comparison Lists") }}</a>
 </span>
 
-<h1>{{ _("Lens Comparison") }}</h1>
+<h1>{{ _("Camera Comparison") }}</h1>
 
+{% if not cameras %}
+  {{ _("There are no cameras to compare, add a couple or more!") }}
 
-{% if not lenses %}
-    {{ _("There are no lenses to compare, add a couple or more!") }}
-{% elif (lenses|default([]))|length < 2 %}
-    {{ _("Add one more or more!") }}
+{% elif (cameras|default([]))|length < 2 %}
+  {{ _("Add one more or more!") }}
+
 {% else %}
 
 <form method="post" action="{{ url_for('clear_comparison_list') }}">
@@ -23,6 +27,7 @@
     {{ _("Clear the comparison list") }}
   </button>
 </form>
+
 <br>
 
 <div class="compare-page">
@@ -30,18 +35,19 @@
     <thead>
       <tr>
         <th>{{ _("Parameter") }}</th>
-        {% for lens in lenses %}
+
+        {% for camera in cameras %}
           <th>
-            <a href="{{ url_for('lens_detail', slug=lens.manufacturer, lens_id=lens.id) }}">
-              {{ lens.name }}
+            <a href="{{ url_for('camera_detail', slug=camera.manufacturer, camera_id=camera.id) }}">
+              {{ camera.name }}
             </a>
 
-              <form method="post" action="{{ url_for('remove_lens_comparison_list', lens_id=lens.id) }}">
-               <button class="button_remove_comparison_list" type="submit">
+            <form method="post"
+                  action="{{ url_for('remove_camera_from_comparison_list', camera_id=camera.id) }}">
+              <button class="button_remove_comparison_list" type="submit">
                 X
-               </button>
-              </form>
-
+              </button>
+            </form>
           </th>
         {% endfor %}
       </tr>
@@ -49,464 +55,828 @@
 
     <tbody>
 
-
-    <!-- Общие -->
-    <tr class="compare-section">
-      <th colspan="{{ lenses|length + 1 }}">
-        {{ _("General") }}
-      </th>
-    </tr>
+      <!-- Общая информация -->
+      <tr class="compare-section">
+        <th colspan="{{ cameras|length + 1 }}">
+          {{ _("General") }}
+        </th>
+      </tr>
 
       <tr>
         <td>{{ _("Manufacturer") }}</td>
-        {% for lens in lenses %}
-          <td>{{ lens.manufacturer }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.manufacturer) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Mount") }}</td>
-        {% for lens in lenses %}
-          <td>{{ lens.bayonet.name if lens.bayonet else "—" }}</td>
-        {% endfor %}
-      </tr>
-
-      <tr>
-        <td>{{ _("Focal length") }}, mm</td>
-        {% for lens in lenses %}
-          <td>
-            {% if lens.focal_wide != lens.focal_tele %}
-              {{ lens.focal_wide }}–{{ lens.focal_tele }}
-            {% else %}
-              {{ lens.focal_wide }}
-            {% endif %}
-          </td>
-        {% endfor %}
-      </tr>
-
-      <tr>
-        <td>{{ _("Aperture") }}</td>
-        {% for lens in lenses %}
-          <td>
-            {% if lens.aperture_max_wide != lens.aperture_max_tele %}
-              f/{{ lens.aperture_max_wide }}–{{ lens.aperture_max_tele }}
-            {% else %}
-              f/{{ lens.aperture_max_tele }}
-            {% endif %}
-          </td>
-        {% endfor %}
-      </tr>
-
-      <tr>
-        <td>{{ _("Lens Type") }}</td>
-        {% for lens in lenses %}
-          <td>{{ specs_macros.lens_type_label(lens.spec.lens_type.value) if lens.spec and lens.spec.lens_type else "—" }}</td>
-        {% endfor %}
-      </tr>
-
-      <tr>
-        <td>{{ _("Construction") }}</td>
-        {% for lens in lenses %}
-          <td>{{ specs_macros.construction_type_label(lens.spec.construction_type) if lens.spec.construction_type else "—" }}</td>
-        {% endfor %}
-      </tr>
-
-      <tr>
-        <td>{{ _("Sensor coverage format") }}</td>
-        {% for lens in lenses %}
-          <td>{{ lens.spec.coverage_format.value if lens.spec.coverage_format.value else "—" }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.bayonet.name) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Date of the announcement/start of sales, (y-m-d)") }}</td>
-        {% for lens in lenses %}
-          <td>{{ lens.production_start_date if lens.production_start_date else "—" }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.production_start_date) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Sales end date, (y-m-d)") }}</td>
-        {% for lens in lenses %}
-          <td>{{ lens.production_end_date if lens.production_end_date else "—" }}</td>
-        {% endfor %}
-      </tr>
-
-
-    <!-- Физические характеристики -->
-    <tr class="compare-section">
-      <th colspan="{{ lenses|length + 1 }}">
-        {{ _("Physical characteristics") }}
-      </th>
-    </tr>
-
-      <tr>
-        <td>{{ _("Length") }}, mm</td>
-        {% for lens in lenses %}
-          <td>{{ lens.spec.length_mm if lens.spec.length_mm else "—" }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.production_end_date) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
-        <td>{{ _("Diameter") }}, mm</td>
-        {% for lens in lenses %}
-          <td>{{ lens.spec.diameter_mm if lens.spec.diameter_mm else "—" }}</td>
+        <td>{{ _("Camera category") }}</td>
+        {% for camera in cameras %}
+          <td>
+            {% if camera.spec and camera.spec.camera_category %}
+              {{ specs_macros.camera_category_label(camera.spec.camera_category.value) }}
+            {% else %}
+              —
+            {% endif %}
+          </td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Camera type") }}</td>
+        {% for camera in cameras %}
+          <td>
+            {% if camera.spec and camera.spec.camera_type %}
+              {{ specs_macros.camera_type_label(camera.spec.camera_type.value) }}
+            {% else %}
+              —
+            {% endif %}
+          </td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Medium type") }}</td>
+        {% for camera in cameras %}
+          <td>
+            {% if camera.spec and camera.spec.medium_type %}
+              {{ specs_macros.medium_type_label(camera.spec.medium_type.value) }}
+            {% else %}
+              —
+            {% endif %}
+          </td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Processor") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.processor) }}</td>
+        {% endfor %}
+      </tr>
+
+
+      <!-- Физические характеристики -->
+      <tr class="compare-section">
+        <th colspan="{{ cameras|length + 1 }}">
+          {{ _("Physical characteristics") }}
+        </th>
+      </tr>
+
+      <tr>
+        <td>{{ _("Width") }}, mm</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.width_mm) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Height") }}, mm</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.height_mm) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Depth") }}, mm</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.length_mm) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Weight") }}, g</td>
-        {% for lens in lenses %}
-          <td>{{ lens.spec.weight_g if lens.spec.weight_g else "—" }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.weight_g) }}</td>
         {% endfor %}
       </tr>
 
 
-    <!-- Диафрагма spec -->
-    <tr class="compare-section">
-      <th colspan="{{ lenses|length + 1 }}">
-        {{ _("Aperture") }}
-      </th>
-    </tr>
-
-      <tr>
-        <td>{{ _("Minimum aperture (mix f-number)") }}</td>
-        {% for lens in lenses %}
-          <td>f/{{ lens.spec.min_aperture if lens.spec.min_aperture else "—" }}</td>
-        {% endfor %}
+      <!-- Сенсор -->
+      <tr class="compare-section">
+        <th colspan="{{ cameras|length + 1 }}">
+          {{ _("Sensor") }}
+        </th>
       </tr>
 
       <tr>
-        <td>{{ _("Number of diaphragm blades") }}</td>
-        {% for lens in lenses %}
-          <td>{{ lens.spec.aperture_blades if lens.spec.aperture_blades else "—" }}</td>
+        <td>{{ _("Sensor format") }}</td>
+        {% for camera in cameras %}
+          <td>
+              {{ common_macros.value_or_dash(specs_macros.sensor_format_label(camera.spec.sensor_format.value)) }}
+          </td>
         {% endfor %}
       </tr>
 
       <tr>
-        <td>{{ _("Type of aperture") }}</td>
-        {% for lens in lenses %}
-          <td>{{ specs_macros.type_diaphragm_label(lens.spec.type_diaphragm.value) if lens.spec.type_diaphragm.value else "—" }}</td>
+        <td>{{ _("Sensor technology") }}</td>
+        {% for camera in cameras %}
+          <td>
+            {% if camera.spec and camera.spec.sensor_technology %}
+              {{ specs_macros.sensor_technology_label(camera.spec.sensor_technology.value) }}
+            {% else %}
+              —
+            {% endif %}
+          </td>
         {% endfor %}
       </tr>
 
       <tr>
-        <td>{{ _("Rounding of diaphragm blades") }}</td>
-        {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.aperture_blades_rounded else _("No") }}</td>
-        {% endfor %}
-      </tr>
-
-
-    <!-- Фильтры -->
-    <tr class="compare-section">
-      <th colspan="{{ lenses|length + 1 }}">
-        {{ _("Filters") }}
-      </th>
-    </tr>
-
-      <tr>
-        <td>{{ _("Filter size") }}, mm</td>
-        {% for lens in lenses %}
-          <td>{{ lens.spec.filter_size_mm if lens.spec.filter_size_mm is not none else "—" }}</td>
+        <td>{{ _("Global shutter") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.yes_no(camera.spec.has_global_shutter if camera.spec else none) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
-        <td>{{ _("Supports front filters") }}</td>
-        {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.supports_front_filters else _("No") }}</td>
+        <td>{{ _("Sensor width") }}, mm</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.sensor_width_mm if camera.spec else none) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
-        <td>{{ _("Rear filter holder") }}</td>
-        {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.rear_filter_holder else _("No") }}</td>
+        <td>{{ _("Sensor height") }}, mm</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.sensor_height_mm if camera.spec else none) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
-        <td>{{ _("Filter mount type") }}</td>
-        {% for lens in lenses %}
-          <td>{{ specs_macros.filter_mount_type_label(lens.spec.filter_mount_type.value) if lens.spec.filter_mount_type.value is not none else "—" }}</td>
-        {% endfor %}
-      </tr>
-
-
-
-
-
-    <!-- Фокусировка -->
-    <tr class="compare-section">
-      <th colspan="{{ lenses|length + 1 }}">
-        {{ _("Focusing") }}
-      </th>
-    </tr>
-
-      <tr>
-        <td>{{ _("Focus type") }}</td>
-        {% for lens in lenses %}
-          <td>{{ specs_macros.focus_type_label(lens.spec.focus_type.value) if lens.spec.focus_type.value else "—" }}</td>
+        <td>{{ _("Sensor resolution") }}</td>
+        {% for camera in cameras %}
+          <td>
+            {% if camera.spec and camera.spec.sensor_pixels_width and camera.spec.sensor_pixels_height %}
+              {{ camera.spec.sensor_pixels_width }} × {{ camera.spec.sensor_pixels_height }}
+            {% else %}
+              —
+            {% endif %}
+          </td>
         {% endfor %}
       </tr>
 
       <tr>
-        <td>{{ _("Autofocus") }}</td>
-        {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.autofocus else _("No") }}</td>
+        <td>{{ _("Effective megapixels") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.effective_megapixels if camera.spec else none) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
-        <td>{{ _("Full time manual focus") }}</td>
-        {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.full_time_manual_focus else _("No") }}</td>
+        <td>{{ _("Native aspect ratio") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.native_aspect_ratio if camera.spec else none) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
-        <td>{{ _("Min focus distance") }}, m</td>
-        {% for lens in lenses %}
-          <td>{{ lens.spec.min_focus_distance_m if lens.spec.min_focus_distance_m else "—" }}</td>
+        <td>{{ _("Pixel pitch") }}, µm</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.pixel_pitch_um if camera.spec else none) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
-        <td>{{ _("Autofocus motor type") }}</td>
-        {% for lens in lenses %}
-          <td>{{ specs_macros.focus_motor_type_label(lens.spec.autofocus_motor_type.value) if lens.spec.autofocus_motor_type.value else "—" }}</td>
+        <td>{{ _("Crop factor") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.crop_factor if camera.spec else none) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
-        <td>{{ _("Brand name autofocus") }}</td>
-        {% for lens in lenses %}
-          <td>{{ lens.spec.brand_name_autofocus if lens.spec.brand_name_autofocus else "—" }}</td>
-        {% endfor %}
-      </tr>
-
-
-    <!-- Стабилизация -->
-    <tr class="compare-section">
-      <th colspan="{{ lenses|length + 1 }}">
-        {{ _("Stabilization") }}
-      </th>
-    </tr>
-
-      <tr>
-        <td>{{ _("Image stabilization") }}</td>
-        {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.image_stabilization else _("No") }}</td>
+        <td>{{ _("Maximum RAW bit depth") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.max_raw_bit_depth if camera.spec else none) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
-        <td>{{ _("Stabilization name") }}</td>
-        {% for lens in lenses %}
-          <td>{{ lens.spec.stabilization_name if lens.spec.stabilization_name else "—" }}</td>
+        <td>{{ _("Maximum sensor readout time") }}, ms</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.max_readout_time_ms if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+
+      <!-- Стабилизация -->
+      <tr class="compare-section">
+        <th colspan="{{ cameras|length + 1 }}">
+          {{ _("Stabilization") }}
+        </th>
+      </tr>
+
+      <tr>
+        <td>{{ _("In-body image stabilization") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.yes_no(camera.spec.has_ibis if camera.spec else none) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
-        <td>{{ _("Stabilization stops") }}</td>
-        {% for lens in lenses %}
-          <td>{{ lens.spec.stabilization_stops if lens.spec.stabilization_stops else "—" }}</td>
+        <td>{{ _("IBIS stops") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.ibis_stops if camera.spec else none) }}</td>
         {% endfor %}
       </tr>
 
 
-    <!-- Зум -->
-    <tr class="compare-section">
-      <th colspan="{{ lenses|length + 1 }}">
-        {{ _("Zoom") }}
-      </th>
-    </tr>
-
-      <tr>
-        <td>{{ _("Zoom type") }}</td>
-        {% for lens in lenses %}
-          <td>{{ specs_macros.zoom_type_label(lens.spec.zoom_type.value) if lens.spec.zoom_type.value else "—" }}</td>
-        {% endfor %}
+      <!-- ISO -->
+      <tr class="compare-section">
+        <th colspan="{{ cameras|length + 1 }}">
+          {{ _("ISO") }}
+        </th>
       </tr>
 
       <tr>
-        <td>{{ _("Internal zoom") }}</td>
-        {% for lens in lenses %}
-          <td>{{ lens.spec.internal_zoom if lens.spec.internal_zoom else _("No") }}</td>
-        {% endfor %}
-      </tr>
-
-      <tr>
-        <td>{{ _("Zoom lock") }}</td>
-        {% for lens in lenses %}
-          <td>{{ lens.spec.zoom_lock if lens.spec.zoom_lock else _("No") }}</td>
-        {% endfor %}
-      </tr>
-
-    <!-- Макро-возможности -->
-    <tr class="compare-section">
-      <th colspan="{{ lenses|length + 1 }}">
-        {{ _("Macro opportunities") }}
-      </th>
-    </tr>
-
-      <tr>
-        <td>{{ _("Macro lens") }}</td>
-        {% for lens in lenses %}
-          <td>{{ lens.spec.is_macro if lens.spec.is_macro else _("No") }}</td>
+        <td>{{ _("Native ISO range") }}</td>
+        {% for camera in cameras %}
+          <td>
+            {% if camera.spec and camera.spec.iso_min is not none and camera.spec.iso_max is not none %}
+              {{ camera.spec.iso_min }}–{{ camera.spec.iso_max }}
+            {% else %}
+              —
+            {% endif %}
+          </td>
         {% endfor %}
       </tr>
 
       <tr>
-        <td>{{ _("Working distance") }}, m</td>
-        {% for lens in lenses %}
-          <td>{{ lens.spec.working_distance_m if lens.spec.working_distance_m else "—" }}</td>
+        <td>{{ _("Expanded ISO range") }}</td>
+        {% for camera in cameras %}
+          <td>
+            {% if camera.spec and camera.spec.iso_expanded_min is not none and camera.spec.iso_expanded_max is not none %}
+              {{ camera.spec.iso_expanded_min }}–{{ camera.spec.iso_expanded_max }}
+            {% else %}
+              —
+            {% endif %}
+          </td>
         {% endfor %}
       </tr>
 
       <tr>
-        <td>{{ _("Max magnification") }}</td>
-        {% for lens in lenses %}
-          <td>{{ lens.spec.max_magnification if lens.spec.max_magnification else "—" }}</td>
-        {% endfor %}
-      </tr>
-
-
-    <!-- Углы обзора объектива, вычисляемые поля -->
-    <tr class="compare-section">
-      <th colspan="{{ lenses|length + 1 }}">
-        {{ _("Lens viewing angles") }}
-      </th>
-    </tr>
-
-    {% set ns = namespace(has_zoom_lens=false) %}
-    {% for lens in lenses %}
-      {% if lens.focal_wide != lens.focal_tele %}
-        {% set ns.has_zoom_lens = true %}
-      {% endif %}
-    {% endfor %}
-
-    {% if ns.has_zoom_lens %}
-
-      <tr>
-        <td>{{ _("Angle of view wide") }}</td>
-        {% for lens in lenses %}
-          <td>{{ lens.spec.angle_of_view_wide if lens.spec.angle_of_view_wide else "—" }}</td>
+        <td>{{ _("Dual gain") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.yes_no(camera.spec.has_dual_gain if camera.spec else none) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
-        <td>{{ _("Angle of view tele") }}</td>
-        {% for lens in lenses %}
-          <td>{{ lens.spec.angle_of_view_tele if lens.spec.angle_of_view_tele else "—" }}</td>
+        <td>{{ _("Dual gain switch ISO") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.dual_gain_switch_iso if camera.spec else none) }}</td>
         {% endfor %}
       </tr>
 
-    {% else %}
 
-      <tr>
-        <td>{{ _("Angle of view") }}</td>
-        {% for lens in lenses %}
-          <td>{{ lens.spec.angle_of_view_tele if lens.spec.angle_of_view_tele else "—" }}</td>
-        {% endfor %}
+      <!-- Затвор -->
+      <tr class="compare-section">
+        <th colspan="{{ cameras|length + 1 }}">
+          {{ _("Shutter") }}
+        </th>
       </tr>
 
-    {% endif %}
-
-
-    <!-- Бленда и аксессуары -->
-    <tr class="compare-section">
-      <th colspan="{{ lenses|length + 1 }}">
-        {{ _("Accessories") }}
-      </th>
-    </tr>
-
       <tr>
-        <td>{{ _("Hood model") }}</td>
-        {% for lens in lenses %}
-          <td>{{ lens.spec.hood_model if lens.spec.hood_model else "—" }}</td>
+        <td>{{ _("Minimum shutter speed") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.shutter_speed_min if camera.spec else none) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
-        <td>{{ _("Hood included") }}</td>
-        {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.hood_included else _("No") }}</td>
+        <td>{{ _("Maximum shutter speed") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.shutter_speed_max if camera.spec else none) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
-        <td>{{ _("Tripod collar included") }}</td>
-        {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.tripod_collar_included else _("No") }}</td>
+        <td>{{ _("Electronic shutter minimum speed") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.electronic_shutter_speed_min if camera.spec else none) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
-        <td>{{ _("Tripod collar removable") }}</td>
-        {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.tripod_collar_removable else _("No") }}</td>
+        <td>{{ _("Mechanical shutter") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.yes_no(camera.spec.has_mechanical_shutter if camera.spec else none) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
-        <td>{{ _("Case included") }}</td>
-        {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.case_included else _("No") }}</td>
+        <td>{{ _("Flash sync speed") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.flash_sync_speed if camera.spec else none) }}</td>
         {% endfor %}
       </tr>
 
 
-    <tr>
-      <td>{{ _("Supplied accessories") }}</td>
-      {% for lens in lenses %}
-        <td>
-          {% if lens.spec.supplied_accessories %}
-            <ul class="accessories-list">
-              {% for item in lens.spec.supplied_accessories.split(',') %}
-                <li>{{ item.strip() }}</li>
-              {% endfor %}
-            </ul>
-          {% else %}
-            —
-          {% endif %}
-        </td>
-      {% endfor %}
-    </tr>
+      <!-- Серийная съемка и буфер -->
+      <tr class="compare-section">
+        <th colspan="{{ cameras|length + 1 }}">
+          {{ _("Continuous shooting and buffer") }}
+        </th>
+      </tr>
+
+      <tr>
+        <td>{{ _("Mechanical shutter burst speed") }}, fps</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.burst_fps_mechanical if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Electronic shutter burst speed") }}, fps</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.burst_fps_electronic if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("JPEG burst speed") }}, fps</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.burst_fps_jpg if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("RAW burst speed") }}, fps</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.burst_fps_raw if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Buffer: High Efficiency RAW + JPEG") }}, {{ _("frames") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.buffer_high_efficiency_raw_jpg_frames if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Buffer: Lossless Compressed RAW") }}, {{ _("frames") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.buffer_lossless_compressed_raw_frames if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Buffer: High Efficiency RAW") }}, {{ _("frames") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.buffer_high_efficiency_raw_frames if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
 
 
-    <!-- Дополнительно -->
-    <tr class="compare-section">
-      <th colspan="{{ lenses|length + 1 }}">
-        {{ _("Additionally") }}
-      </th>
-    </tr>
+      <!-- Автофокус -->
+      <tr class="compare-section">
+        <th colspan="{{ cameras|length + 1 }}">
+          {{ _("Autofocus") }}
+        </th>
+      </tr>
+
+      <tr>
+        <td>{{ _("AF points") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.af_points if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("AF detection range") }}, EV</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.af_detection_range_ev_min if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Eye autofocus") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.yes_no(camera.spec.has_eye_af if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Animal autofocus") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.yes_no(camera.spec.has_animal_af if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Detected objects") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.detected_objects_af if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+
+      <!-- Видоискатель -->
+      <tr class="compare-section">
+        <th colspan="{{ cameras|length + 1 }}">
+          {{ _("Viewfinder") }}
+        </th>
+      </tr>
+
+      <tr>
+        <td>{{ _("Viewfinder type") }}</td>
+        {% for camera in cameras %}
+          <td>
+            {% if camera.spec and camera.spec.viewfinder_type %}
+              {{ specs_macros.viewfinder_type_label(camera.spec.viewfinder_type.value) }}
+            {% else %}
+              —
+            {% endif %}
+          </td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Viewfinder resolution") }}, {{ _("dots") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.viewfinder_resolution_dots if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Viewfinder magnification") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.viewfinder_magnification if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Viewfinder coverage") }}, %</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.viewfinder_coverage_percent if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+
+      <!-- Экран -->
+      <tr class="compare-section">
+        <th colspan="{{ cameras|length + 1 }}">
+          {{ _("Screen") }}
+        </th>
+      </tr>
+
+      <tr>
+        <td>{{ _("Screen size") }}, {{ _("inches") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.screen_size_inches if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Screen resolution") }}, {{ _("dots") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.screen_resolution_dots if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Screen type") }}</td>
+        {% for camera in cameras %}
+          <td>
+            {% if camera.spec and camera.spec.screen_type %}
+              {{ specs_macros.screen_type_label(camera.spec.screen_type.value) }}
+            {% else %}
+              —
+            {% endif %}
+          </td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Touchscreen") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.yes_no(camera.spec.is_touchscreen if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+
+      <!-- RAW видео -->
+      <tr class="compare-section">
+        <th colspan="{{ cameras|length + 1 }}">
+          {{ _("RAW video") }}
+        </th>
+      </tr>
+
+      <tr>
+        <td>{{ _("Maximum RAW video resolution") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.raw_video_max_resolution if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("RAW video fps at maximum resolution") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.raw_video_max_fps_at_max_resolution if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Maximum RAW video fps") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.raw_video_max_fps if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("RAW video resolution at maximum fps") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.raw_video_max_resolution_at_max_fps if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Maximum RAW video bitrate") }}, Mbps</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.raw_video_max_bitrate_mbps if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Maximum RAW video data rate") }}, MB/s</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.raw_video_max_rate_mb_s if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Maximum RAW video bit depth") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.raw_video_max_bit_depth if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Internal RAW video recording") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.yes_no(camera.spec.has_internal_raw_video if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("External RAW video recording") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.yes_no(camera.spec.has_external_raw_video if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+
+      <!-- Видео -->
+      <tr class="compare-section">
+        <th colspan="{{ cameras|length + 1 }}">
+          {{ _("Video") }}
+        </th>
+      </tr>
+
+      <tr>
+        <td>{{ _("Log profile") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.yes_no(camera.spec.has_log_profile if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Video codecs") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.video_codecs if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Maximum video bit depth") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.video_max_bit_depth if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Maximum video bitrate") }}, Mbps</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.video_max_bitrate_mbps if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Maximum video data rate") }}, MB/s</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.video_max_rate_mb_s if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+
+      <!-- Хранение данных -->
+      <tr class="compare-section">
+        <th colspan="{{ cameras|length + 1 }}">
+          {{ _("Storage") }}
+        </th>
+      </tr>
+
+      <tr>
+        <td>{{ _("Card slots") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.card_slots if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Supported card types") }}</td>
+        {% for camera in cameras %}
+          <td>
+            {% if camera.spec and camera.spec.card_types %}
+              <ul class="accessories-list">
+                {% for card_type in camera.spec.card_types %}
+                  <li>{{ specs_macros.card_type_label(card_type.value) }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              —
+            {% endif %}
+          </td>
+        {% endfor %}
+      </tr>
+
+
+      <!-- Интерфейсы -->
+      <tr class="compare-section">
+        <th colspan="{{ cameras|length + 1 }}">
+          {{ _("Connectivity") }}
+        </th>
+      </tr>
+
+      <tr>
+        <td>{{ _("Wi-Fi") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.yes_no(camera.spec.has_wifi if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Bluetooth") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.yes_no(camera.spec.has_bluetooth if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("GPS") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.yes_no(camera.spec.has_gps if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("USB type") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.usb_type if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("HDMI type") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.hdmi_type if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Headphone jack") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.yes_no(camera.spec.has_headphone_jack if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Microphone jack") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.yes_no(camera.spec.has_microphone_jack if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+
+      <!-- Питание -->
+      <tr class="compare-section">
+        <th colspan="{{ cameras|length + 1 }}">
+          {{ _("Power") }}
+        </th>
+      </tr>
+
+      <tr>
+        <td>{{ _("Built-in flash") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.yes_no(camera.spec.has_built_in_flash if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Battery model") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.battery_model if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Battery life") }}, {{ _("shots") }} (CIPA)</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.battery_life_shots_cipa if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("USB charging") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.yes_no(camera.spec.has_usb_charging if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("Battery grip") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.battery_grip if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+      <tr>
+        <td>{{ _("AC adapter") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.ac_adapter if camera.spec else none) }}</td>
+        {% endfor %}
+      </tr>
+
+
+      <!-- Дополнительно -->
+      <tr class="compare-section">
+        <th colspan="{{ cameras|length + 1 }}">
+          {{ _("Additionally") }}
+        </th>
+      </tr>
 
       <tr>
         <td>{{ _("Weather sealing") }}</td>
-        {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.weather_sealing else _("No") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.yes_no(camera.spec.is_weather_sealed if camera.spec else none) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
-        <td>{{ _("Dust moisture resistant") }}</td>
-        {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.dust_moisture_resistant else _("No") }}</td>
+        <td>{{ _("Operating environment") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.operating_environment if camera.spec else none) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
-        <td>{{ _("Fluorine_coating") }}</td>
-        {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.fluorine_coating else _("No") }}</td>
+        <td>{{ _("Tripod socket") }}</td>
+        {% for camera in cameras %}
+          <td>{{ common_macros.value_or_dash(camera.spec.tripod_socket if camera.spec else none) }}</td>
         {% endfor %}
       </tr>
 
+      <tr>
+        <td>{{ _("Supplied accessories") }}</td>
+        {% for camera in cameras %}
+          <td>
+            {% if camera.spec and camera.spec.supplied_accessories %}
+              <ul class="accessories-list">
+                {% for item in camera.spec.supplied_accessories.split(',') %}
+                  <li>{{ item.strip() }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              —
+            {% endif %}
+          </td>
+        {% endfor %}
+      </tr>
 
     </tbody>
   </table>
 </div>
+
 {% endif %}
 {% endblock %}
