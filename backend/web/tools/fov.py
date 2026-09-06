@@ -54,7 +54,7 @@ async def render_form(
 
 
 
-@web_router.get('/', name='fov', response_class=HTMLResponse)
+@web_router.get('/fov', name='fov', response_class=HTMLResponse)
 async def show_form(
         request: Request,
         session: AsyncSession = Depends(get_async_session)
@@ -62,7 +62,7 @@ async def show_form(
     return await render_form(request=request, session=session)
 
 
-@web_router.post('/', name='fov_submit', response_class=HTMLResponse)
+@web_router.post('/fov', name='fov_submit', response_class=HTMLResponse)
 async def fov_submit(
         request: Request,
         camera_id: int = Form(...),

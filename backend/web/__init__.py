@@ -1,4 +1,5 @@
 from .tools.fov import web_router
+from .tools.exposure_equivalence import web_router
 from .tools.partials import web_router
 from .gear.cameras import web_router
 from .i18n import i18n_middleware

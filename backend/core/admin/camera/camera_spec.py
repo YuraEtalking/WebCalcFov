@@ -573,7 +573,7 @@ class SpecCameraAdmin(ModelView):
         filled = [v is not None for v in (sw, sh, pw, ph)]
         if any(filled) and not all(filled):
             errors[
-                'sensor_width_mm'] = 'Заполните все 4 поля сенсора или ни одного'
+                'sensor_width_mm'] = 'Заполните все 4 поля сенсора(размеры в мм и пикселях) или ни одного.'
 
         if errors:
             raise FormValidationError(errors)

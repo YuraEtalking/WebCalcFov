@@ -1,7 +1,4 @@
-from http import HTTPStatus
-
 from fastapi import APIRouter, Request, Depends
-from fastapi.responses import Response, RedirectResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from loguru import logger
 
@@ -14,7 +11,6 @@ from backend.services.compare_service import (
     remove_from_comparison_list,
     clear_list_of_comparison,
 )
-from backend.web.templates import set_default_cookie
 from backend.web.constants import COMPARE_CAMERAS_COOKIE
 
 

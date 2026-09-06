@@ -121,11 +121,14 @@ async def prepare_fov_response_data(
         selected_tc=selected_tc
     )
     teleconverters = get_list_teleconverters(lens.teleconverters)
+    logger.debug(
+        'sensor: camera.spec.sensor_format="{}"',
+        camera.spec.sensor_format)
     return {
         'data': {
             'camera': camera,
             'lens': lens,
-            'sensor': camera.sensor,
+            'sensor': camera.spec,
             'distance': input_data.distance,
             'lens_list': camera.compatible_lenses,
         },
