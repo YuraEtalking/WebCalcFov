@@ -100,9 +100,8 @@ async def exposure_page(
     request: Request,
     session: AsyncSession = Depends(get_async_session),
 ):
-    from backend.models.enums import BayonetType
     cameras = await _load_cameras(session)
-    return _render(request, cameras, data={'shutter_speed': BayonetType}, result=None)
+    return _render(request, cameras, data=None, result=None)
 
 
 
@@ -121,9 +120,10 @@ async def exposure_submit(
 
     # Сырые значения всегда возвращаем в шаблон, чтобы форма не очищалась.
     data = {SLOT_REFERENCE: _raw_slot(form, SLOT_REFERENCE)}
+    logger.debug('data: data="{}"', data)
     for slot in SLOT_TARGETS:
         data[slot] = _raw_slot(form, slot)
-
+    logger.debug('data: data="{}"', data)
     try:
         reference = _build_camera_input(
             data[SLOT_REFERENCE], cameras_by_id, 'Reference camera',

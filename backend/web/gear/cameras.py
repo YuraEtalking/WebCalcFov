@@ -19,7 +19,7 @@ async def camera_list(
         slug: str,
         session: AsyncSession = Depends(get_async_session)
 ):
-    cameras = await get_active_cameras(session, slug)
+    cameras = await get_active_cameras(session=session, manufacturer=slug)
     return render(
         request,
         'gear/camera_list.html',
