@@ -1,0 +1,222 @@
+{% extends "base_template.html" %}
+{% block title %}
+{{ _("Equivalent exposure calculator") }}
+{% endblock %}
+{% block content %}
+
+<span>
+    / <a href="{{ url_for('index_page') }}">{{ _("Home") }}</a>
+    / <a href="{{ url_for('tools') }}">{{ _("Tools") }}</a>
+    / {{ _("Equivalent exposure") }}
+</span>
+
+<h1>{{ _("Equivalent exposure calculator") }}</h1>
+
+<p>
+  {{ _("Compare shooting settings of 2–3 cameras. The tool shows two independent results: the actual EV difference between the entered settings (sensor size does not matter) and equivalent settings for a different sensor size (same field of view, depth of field, motion blur and total light).") }}
+</p>
+
+{% if message %}
+  <div class="message {{ message_type or 'info' }}">
+    {{ message }}
+  </div>
+{% endif %}
+
+{% macro camera_block(prefix, title, required) %}
+  {% set d = data[prefix] if data and prefix in data else {} %}
+  <fieldset class="camera-block">
+    <legend>{{ title }}{% if not required %} ({{ _("optional") }}){% endif %}</legend>
+
+    <div class="form-row">
+        <div class="field">
+            <label for="{{ prefix }}_camera_id">{{ _("Camera") }}</label>
+            <select
+               id="{{ prefix }}_camera_id"
+               name="{{ prefix }}_camera_id"
+               {% if required %}required{% endif %}
+            >
+                <option value="">-- {{ _("Select a camera") }} --</option>
+                {% for camera in cameras %}
+                  <option value="{{ camera.id }}" {% if d.camera_id == camera.id|string %}selected{% endif %}>
+                      {{ camera.name }}
+                      {%- if not camera.spec or camera.spec.crop_factor is none %} — {{ _("no sensor size") }}{% endif %}
+                  </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="field">
+            <label for="{{ prefix }}_focal_length_mm">{{ _("Focal length, mm") }}</label>
+            <input
+               type="number"
+               step="any"
+               min="0"
+               id="{{ prefix }}_focal_length_mm"
+               name="{{ prefix }}_focal_length_mm"
+               placeholder="50"
+               value="{{ d.focal_length_mm or '' }}"
+               {% if required %}required{% endif %}
+            >
+        </div>
+
+        <div class="field">
+            <label for="{{ prefix }}_aperture">{{ _("Aperture, f/") }}</label>
+            <input
+               type="number"
+               step="any"
+               min="0"
+               id="{{ prefix }}_aperture"
+               name="{{ prefix }}_aperture"
+               placeholder="2.8"
+               value="{{ d.aperture or '' }}"
+               {% if required %}required{% endif %}
+            >
+        </div>
+
+        <!--<div class="field">
+            <label for="{{ prefix }}_shutter">{{ _("Shutter speed") }}</label>
+            <input
+               type="text"
+               id="{{ prefix }}_shutter"
+               name="{{ prefix }}_shutter"
+               placeholder="1/125"
+               value="{{ d.shutter or '' }}"
+               {% if required %}required{% endif %}
+            >
+        </div>-->
+
+
+			<div class="field">
+            <label for="{{ prefix }}_shutter">{{ _("Shutter speed") }}</label>
+            <select
+               id="{{ prefix }}_shutter"
+               name="{{ prefix }}_shutter"
+               placeholder="1/125"
+               value="{{ d.shutter or '' }}"
+               {% if required %}required{% endif %}
+            >
+							<option value="">-- {{ _("Select a shutter speed") }} --</option>
+							{% for shutter in data.shutter_speed %}
+                  <option value="{{ shutter.value }}">
+                      {{ shutter.value }}
+
+                  </option>
+                {% endfor %}
+							</select>
+        </div>
+
+
+
+        <div class="field">
+            <label for="{{ prefix }}_iso">ISO</label>
+            <input
+               type="number"
+               step="any"
+               min="0"
+               id="{{ prefix }}_iso"
+               name="{{ prefix }}_iso"
+               placeholder="400"
+               value="{{ d.iso or '' }}"
+               {% if required %}required{% endif %}
+            >
+        </div>
+    </div>
+  </fieldset>
+{% endmacro %}
+
+<form action="{{ url_for('exposure_submit') }}" method="post">
+
+    {{ camera_block('reference', _("Reference camera"), true) }}
+    {{ camera_block('target_1', _("Camera 1"), true) }}
+    {{ camera_block('target_2', _("Camera 2"), false) }}
+
+    <!-- submit -->
+    <div class="field inline">
+        <button type="submit">{{ _("Calculate") }}</button>
+    </div>
+
+</form>
+
+
+<div class="container">
+  {% if result %}
+
+    <h2>{{ _("Result") }}</h2>
+      <aside class="sidebar">
+
+        <section class="card">
+            <h3>{{ _("Reference camera") }}: {{ result.reference.camera_name }}</h3>
+            <ul>
+              <li>{{ _("Focal length") }}: <span class="value">{{ result.reference.settings.focal_length_mm|round(1) }} mm</span></li>
+              <li>{{ _("Aperture") }}: <span class="value">f/{{ result.reference.settings.aperture|round(2) }}</span></li>
+              <li>{{ _("Shutter speed") }}: <span class="value">{{ result.reference.settings.shutter_display }} s</span></li>
+              <li>ISO: <span class="value">{{ result.reference.settings.iso|round(0)|int }}</span></li>
+              <li>EV: <span class="value">{{ result.reference_ev|round(2) }}</span></li>
+              <li>{{ _("Crop factor") }}:
+                <span class="value">
+                  {% if result.reference.crop_factor is not none %}{{ result.reference.crop_factor|round(2) }}×{% else %}—{% endif %}
+                </span>
+              </li>
+            </ul>
+        </section>
+
+        <section class="card">
+            {% for t in result.targets %}
+              <h3>{{ t.camera.camera_name }}</h3>
+
+              {# --- 1. Фактическая разница EV (сенсор не участвует) --- #}
+              <h4>{{ _("Actual exposure difference") }}</h4>
+              <ul>
+                <li>{{ _("Entered settings") }}:
+                  <span class="value">
+                    {{ t.camera.settings.focal_length_mm|round(1) }} mm,
+                    f/{{ t.camera.settings.aperture|round(2) }},
+                    {{ t.camera.settings.shutter_display }} s,
+                    ISO {{ t.camera.settings.iso|round(0)|int }}
+                  </span>
+                </li>
+                <li>EV: <span class="value">{{ t.exposure.target_ev|round(2) }}</span></li>
+                <li>ΔEV: <span class="value">{{ '%+.2f'|format(t.exposure.delta_ev) }}</span></li>
+                <li>
+                  <span class="value">
+                    {% if t.exposure.direction == 'equal' %}
+                      {{ _("Exposure matches") }}
+                    {% elif t.exposure.direction == 'darker' %}
+                      {{ _("Exposure is darker by") }} {{ t.exposure.stops|round(1) }} {{ _("stops") }}
+                    {% else %}
+                      {{ _("Exposure is lighter by") }} {{ t.exposure.stops|round(1) }} {{ _("stops") }}
+                    {% endif %}
+                  </span>
+                </li>
+              </ul>
+              <p><small>{{ _("Compares only aperture, shutter speed and ISO. Sensor size is not taken into account.") }}</small></p>
+
+							{# --- 2. Эквивалентные настройки с учётом размера сенсора --- #}
+							<h4>{{ _("Equivalent settings for this sensor") }}</h4>
+							{% if t.equivalent %}
+								{% set eq = t.equivalent %}
+								<ul>
+									<li>{{ _("Reference crop factor") }}: <span class="value">{{ eq.reference_crop_factor|round(2) }}×</span></li>
+									<li>{{ _("Target crop factor") }}: <span class="value">{{ eq.target_crop_factor|round(2) }}×</span></li>
+									<li>{{ _("Sensor ratio") }}: <span class="value">{{ eq.ratio|round(3) }}</span></li>
+									<li>{{ _("Equivalent focal length") }}: <span class="value">{{ eq.focal_length_mm|round(1) }} mm</span></li>
+									<li>{{ _("Equivalent aperture") }}: <span class="value">f/{{ eq.aperture|round(2) }}</span></li>
+									<li>{{ _("Shutter speed (unchanged)") }}: <span class="value">{{ eq.shutter_display }} s</span></li>
+									<li>{{ _("Equivalent ISO") }}: <span class="value">{{ eq.iso|round(1) }}</span></li>
+								</ul>
+								<p><small>{{ _("These settings keep the same field of view, depth of field, motion blur and total amount of light (≈ same noise) as the reference camera. This is a different concept from equal EV.") }}</small></p>
+							{% else %}
+								<div class="message warning">
+									{% if t.equivalence_unavailable_reason == 'reference_no_sensor' %}
+										{{ _("The reference camera has no sensor dimensions in the database, so equivalent settings cannot be calculated.") }}
+									{% else %}
+										{{ _("This camera has no sensor dimensions in the database, so equivalent settings cannot be calculated.") }}
+									{% endif %}
+								</div>
+							{% endif %}
+				   {% endfor %}
+				</section>
+	{% endif %}
+  </aside>
+</div>
+{% endblock %}

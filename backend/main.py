@@ -7,14 +7,18 @@ from backend.core.config import settings
 from backend.core.admin import setup_admin
 from backend.core.storage import configure_storage
 from backend.web import i18n_middleware, index, media_router
-from backend.web.tools import tools_list, fov, partials
+from backend.web.tools import exposure_equivalence, tools_list, fov, partials
 from backend.web.gear import (
     gear_manufacturers,
-    compare_lens,
     cameras,
     lenses,
+)
+from backend.web.gear.compare import (
+    compare_lens,
+    compare_camera,
     comparison_lists,
 )
+
 
 logger = setup_logger()
 
@@ -40,8 +44,10 @@ app.middleware('http')(i18n_middleware)
 app.include_router(index.web_router)
 app.include_router(comparison_lists.web_router, prefix='/compare')
 app.include_router(compare_lens.web_router, prefix='/compare')
+app.include_router(compare_camera.web_router, prefix='/compare')
 app.include_router(tools_list.web_router, prefix='/tools')
-app.include_router(fov.web_router, prefix='/fov')
+app.include_router(fov.web_router, prefix='/tools')
+app.include_router(exposure_equivalence.web_router, prefix='/tools')
 app.include_router(partials.web_router, prefix='/partials')
 app.include_router(gear_manufacturers.web_router, prefix='/gear')
 app.include_router(cameras.web_router, prefix='/gear/{slug}')

@@ -10,7 +10,10 @@
 </span>
 
 <h1>{{ _("Tools") }}</h1>
-<a href="{{ url_for('fov') }}">{{ _("Calculator") }} FoV</a>
+<ul>
+  <li><a href="{{ url_for('fov') }}"><b>{{ _("Calculator") }} FoV</b></a></li>
+  <li><a href="{{ url_for('exposure_equivalence') }}"><b>{{ _("Equivalent exposure calculator") }}</b></a></li>
+</ul>
 
 
 {% endblock %}

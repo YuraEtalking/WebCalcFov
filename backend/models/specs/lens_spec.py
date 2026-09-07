@@ -28,7 +28,7 @@ if TYPE_CHECKING:
     from models.lens import Lens
 
 
-
+# todo все булевые в дефолте False, для enum так же выставить дефолты
 class SpecLens(
     IdMixin,
     ActiveMixin,
@@ -128,7 +128,7 @@ class SpecLens(
     zoom_type: Mapped[ZoomType] = mapped_column(
         Enum(ZoomType, name='zoom_type_enum'),
         nullable=False,
-        default=ZoomType.NON_ZOOM,
+        default=ZoomType.NONE_ZOOM,
     )
     internal_zoom: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
     zoom_lock: Mapped[bool | None] = mapped_column(Boolean, nullable=True)

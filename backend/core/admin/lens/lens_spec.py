@@ -1,11 +1,7 @@
-from typing import Any
-
 from starlette_admin import (
     StringField, IntegerField, FloatField, BooleanField,
     DateTimeField, TextAreaField, HasOne, EnumField
 )
-from starlette.requests import Request
-from starlette_admin.exceptions import FormValidationError
 from starlette_admin.contrib.sqla import ModelView
 from backend.models import (
     FilterMountType,
@@ -27,9 +23,10 @@ class SpecLensAdmin(ModelView):
     fields = [
         StringField('name', label='Название'),
         IntegerField('id', label='ID'),
+        HasOne('lens', label='Объектив', identity='lens'),
 
 
-        # Конструкция и тип объектива
+        # === Конструкция и тип объектива ===
         EnumField(
             'lens_type',
             label='Тип объектива',
@@ -39,13 +36,13 @@ class SpecLensAdmin(ModelView):
         StringField('construction_type', label='Конструкция'),
 
 
-        # Физические данные
+        # === Физические данные ===
         IntegerField('weight_g', label='Вес, грамм'),
         IntegerField('length_mm', label='Длинна объектива, мм'),
         IntegerField('diameter_mm', label='Диаметр объектива, мм'),
 
 
-        # Формат покрытия матрицы
+        # === Формат покрытия матрицы ===
         EnumField(
             'coverage_format',
             label='Формат объектива',
@@ -54,7 +51,7 @@ class SpecLensAdmin(ModelView):
         ),
 
 
-        # Диафрагма
+        # === Диафрагма ===
         CommaToDotFloatField('min_aperture', label='Минимальная диафрагма'),
         IntegerField('aperture_blades', label='Кол-во лепестков диафрагмы'),
         EnumField(
@@ -68,7 +65,7 @@ class SpecLensAdmin(ModelView):
         ),
 
 
-        # Фильтры
+        # === Фильтры ===
         IntegerField('filter_size_mm', label='Размер фильтра, мм'),
         BooleanField(
             'supports_front_filters',
@@ -85,7 +82,7 @@ class SpecLensAdmin(ModelView):
         ),
 
 
-        # Фокусировка
+        #  === Фокусировка ===
         EnumField(
             'focus_type',
             label='Тип/конструкция фокусировки объектива',
@@ -111,7 +108,7 @@ class SpecLensAdmin(ModelView):
         ),
 
 
-        # Стабилизация
+        #  === Стабилизация ===
         BooleanField('image_stabilization', label='Наличие стабилизатора'),
         StringField(
             'stabilization_name',
@@ -123,7 +120,7 @@ class SpecLensAdmin(ModelView):
         ),
 
 
-        # Зум
+        #  === Зум ===
         EnumField(
             'zoom_type',
             label='Тип изменения фокусного расстояния',
@@ -133,7 +130,7 @@ class SpecLensAdmin(ModelView):
         BooleanField('zoom_lock', label='Фиксатор зума'),
 
 
-        # Макро-возможности
+        #  === Макро-возможности ===
         BooleanField('is_macro', label='Макро объектив'),
         FloatField(
             'max_magnification',
@@ -145,7 +142,7 @@ class SpecLensAdmin(ModelView):
         ),
 
 
-        # Углы обзора объектива, вычисляемые поля.
+        #  === Углы обзора объектива, вычисляемые поля ===
         StringField(
             'angle_of_view_wide',
             label='Угол обзора для широкоугольного положения',
@@ -156,10 +153,9 @@ class SpecLensAdmin(ModelView):
             label='Угол обзора для теле положения',
             read_only=True,
         ),
-        HasOne('lens', label='Объектив', identity='lens'),
 
 
-        # Бленда и аксессуары
+        #  === Бленда и аксессуары ===
         StringField('hood_model', label='Модель бленды'),
         BooleanField('hood_included', label='Бленда в комплекте'),
         BooleanField(
@@ -173,18 +169,18 @@ class SpecLensAdmin(ModelView):
         BooleanField('case_included', label='Чехол в комплекте'),
 
 
-        # Комплект поставки
+        #  === Комплект поставки ===
         TextAreaField('supplied_accessories', label='Комплект поставки'),
 
 
-        # Дополнительно
+        #  === Дополнительно ===
         BooleanField('weather_sealing', label='Погодозащита'),
         BooleanField('dust_moisture_resistant',
                      label='Защита от пыли и влаги'),
         BooleanField('fluorine_coating', label='Фтористое покрытие'),
 
 
-        # Статус и даты создания/редактирования
+        #  === Статус и даты создания/редактирования ===
         BooleanField(
             'is_active',
             label='Запись активна',

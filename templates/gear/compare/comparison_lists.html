@@ -3,27 +3,38 @@
 {{ _("Comparison Lists") }}
 {% endblock %}
 {% block content %}
+
+<span>
+    / <a href="{{ url_for('index_page') }}">{{ _("Home") }}</a>
+</span>
+
+
 <h1>{{ _("Comparison Lists") }}</h1>
 
+<div class="gear_detail-page">
+  <aside class="sidebar">
+    <section class="card">
+      {% if lenses_list %}
+        {% include "gear/compare/compare_includes/lenses_list.html" %}
+      {% else %}
+        <h2>{{ _("Lens Comparison") }}</h2>
+        <ul>
+          <li>{{ _("There are no lenses to compare, add a couple or more!") }}</li>
+        </ul>
+      {% endif %}
+    </section>
 
-{% if lenses_list %}
-    {% include "gear/compare/compare_includes/lenses_list.html" %}
-{% else %}
-    <h2>{{ _("Lens Comparison") }}</h2>
-    <ul>
-        <li>{{ _("There are no lenses to compare, add a couple or more!") }}</li>
-    </ul>
-{% endif %}
-<br>
-
-
-{% if cameras_list_list %}
-    {% include "gear/compare/compare_includes/cameras_list.html" %}
-{% else %}
-    <h2>{{ _("Camera Comparison") }}</h2>
-    <ul>
-        <li>{{ _("There are no cameras to compare, add a couple or more!") }}</li>
-    </ul>
-{% endif %}
+    <section class="card">
+      {% if cameras_list %}
+        {% include "gear/compare/compare_includes/cameras_list.html" %}
+      {% else %}
+        <h2>{{ _("Camera Comparison") }}</h2>
+        <ul>
+          <li>{{ _("There are no cameras to compare, add a couple or more!") }}</li>
+        </ul>
+      {% endif %}
+    </section>
+  </aside>
+</div>
 
 {% endblock %}

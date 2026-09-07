@@ -85,7 +85,7 @@
         <ul>
           <li>{{ _("Camera") }}: <span class="value">{{ data.camera }}</span></li>
           <li>{{ _("Lens") }}: <span class="value">{{ data.lens }}</span></li>
-          <li>{{ _("Sensor") }}: <span class="value">{{ data.sensor }}</span></li>
+          <li>{{ _("Sensor") }}: <span class="value">{{ data.sensor.sensor_format.value }} {{ data.sensor.sensor_width_mm }} × {{ data.sensor.sensor_height_mm }} mm</span></li>
         </ul>
       </div>
 

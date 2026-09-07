@@ -18,7 +18,6 @@ from backend.models.mixins import (
 if TYPE_CHECKING:
     from .lens import Lens
     from .associative_model import CameraLens
-    # from .sensor import Sensor
     from .link import Link
     from .specs.camera_spec import SpecCamera
     from .image import CameraImageLink
@@ -42,8 +41,6 @@ class Camera(
         secondary='camera_lens',
         viewonly=True,
     )
-    # sensor_id: Mapped[int] = mapped_column(ForeignKey('sensor.id'))
-    # sensor: Mapped['Sensor'] = relationship(back_populates='cameras')
 
     links: Mapped[list['Link']] = relationship(
         secondary='link_camera',
@@ -60,6 +57,8 @@ class Camera(
         back_populates='camera',
         cascade='all, delete-orphan',
     )
+
+    # Даты производства и байонет в миксинах.
 
     def __str__(self):
         return self.name

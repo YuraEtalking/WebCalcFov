@@ -78,6 +78,7 @@ async def prepare_fov_response_data(
     if not lens:
         raise EntityNotFoundError('Объектив не выбран')
 
+    # Подгружаем Камеру с SpecCamera, там данные сенсора.
     camera = await get_active_camera_with_sensor(input_data.camera_id, session)
     if not camera:
         raise EntityNotFoundError('Камера не выбрана')
@@ -106,7 +107,7 @@ async def prepare_fov_response_data(
                 'Выбранный телеконвертер не принадлежит объективу'
             )
         selected_tc = selected_tc_obj.multiplier
-
+    logger.debug('input_data.focal="{}", lens.focal_wide="{}", lens.focal_tele="{}"', input_data.focal, lens.focal_wide, lens.focal_tele)
     focal = checking_distance_within_range(
         focal=input_data.focal,
         focal_wide=lens.focal_wide,
@@ -114,17 +115,20 @@ async def prepare_fov_response_data(
     )
 
     result = calculate_fov(
-        sensor=camera.sensor,
+        sensor=camera.spec,  # SpecCamera содержит данные сенсора.
         focal=focal,
         distance=input_data.distance,
         selected_tc=selected_tc
     )
     teleconverters = get_list_teleconverters(lens.teleconverters)
+    logger.debug(
+        'sensor: camera.spec.sensor_format="{}"',
+        camera.spec.sensor_format)
     return {
         'data': {
             'camera': camera,
             'lens': lens,
-            'sensor': camera.sensor,
+            'sensor': camera.spec,
             'distance': input_data.distance,
             'lens_list': camera.compatible_lenses,
         },

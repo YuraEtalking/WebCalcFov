@@ -1,12 +1,13 @@
 {% extends "base_template.html" %}
-{% import "gear/macros/specs.html" as specs_macros with context %}
+{% import "gear/macros/macros_lens_specs.html" as specs_macros with context %}
+{% import "gear/macros/common.html" as common_macros with context %}
 {% block title %}
 {{ _("Lens Comparison") }}
 {% endblock %}
 {% block content %}
 
 <span>
-    / <a href="{{ url_for('index_page') }}">{{ _("Home") }}</a>
+    / <a href="{{ url_for('comparison_lists') }}">{{ _("Comparison Lists") }}</a>
 </span>
 
 <h1>{{ _("Lens Comparison") }}</h1>
@@ -67,7 +68,7 @@
       <tr>
         <td>{{ _("Mount") }}</td>
         {% for lens in lenses %}
-          <td>{{ lens.bayonet.name if lens.bayonet else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(lens.bayonet.name) }}</td>
         {% endfor %}
       </tr>
 
@@ -100,35 +101,35 @@
       <tr>
         <td>{{ _("Lens Type") }}</td>
         {% for lens in lenses %}
-          <td>{{ specs_macros.lens_type_label(lens.spec.lens_type.value) if lens.spec and lens.spec.lens_type else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(specs_macros.lens_type_label(lens.spec.lens_type.value)) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Construction") }}</td>
         {% for lens in lenses %}
-          <td>{{ specs_macros.construction_type_label(lens.spec.construction_type) if lens.spec.construction_type else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(specs_macros.construction_type_label(lens.spec.construction_type)) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Sensor coverage format") }}</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.coverage_format.value if lens.spec.coverage_format.value else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(lens.spec.coverage_format.value) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Date of the announcement/start of sales, (y-m-d)") }}</td>
         {% for lens in lenses %}
-          <td>{{ lens.production_start_date if lens.production_start_date else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(lens.production_start_date) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Sales end date, (y-m-d)") }}</td>
         {% for lens in lenses %}
-          <td>{{ lens.production_end_date if lens.production_end_date else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(lens.production_end_date) }}</td>
         {% endfor %}
       </tr>
 
@@ -143,21 +144,21 @@
       <tr>
         <td>{{ _("Length") }}, mm</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.length_mm if lens.spec.length_mm else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(lens.spec.length_mm) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Diameter") }}, mm</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.diameter_mm if lens.spec.diameter_mm else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(lens.spec.diameter_mm) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Weight") }}, g</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.weight_g if lens.spec.weight_g else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(lens.spec.weight_g) }}</td>
         {% endfor %}
       </tr>
 
@@ -172,28 +173,28 @@
       <tr>
         <td>{{ _("Minimum aperture (mix f-number)") }}</td>
         {% for lens in lenses %}
-          <td>f/{{ lens.spec.min_aperture if lens.spec.min_aperture else "—" }}</td>
+          <td>f/{{ common_macros.value_or_dash(lens.spec.min_aperture) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Number of diaphragm blades") }}</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.aperture_blades if lens.spec.aperture_blades else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(lens.spec.aperture_blades) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Type of aperture") }}</td>
         {% for lens in lenses %}
-          <td>{{ specs_macros.type_diaphragm_label(lens.spec.type_diaphragm.value) if lens.spec.type_diaphragm.value else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(specs_macros.type_diaphragm_label(lens.spec.type_diaphragm.value)) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Rounding of diaphragm blades") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.aperture_blades_rounded else _("No") }}</td>
+          <td>{{ common_macros.yes_no(lens.spec.aperture_blades_rounded) }}</td>
         {% endfor %}
       </tr>
 
@@ -208,28 +209,28 @@
       <tr>
         <td>{{ _("Filter size") }}, mm</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.filter_size_mm if lens.spec.filter_size_mm is not none else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(lens.spec.filter_size_mm) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Supports front filters") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.supports_front_filters else _("No") }}</td>
+          <td>{{ common_macros.yes_no(lens.spec.supports_front_filters) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Rear filter holder") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.rear_filter_holder else _("No") }}</td>
+          <td>{{ common_macros.yes_no(lens.spec.rear_filter_holder) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Filter mount type") }}</td>
         {% for lens in lenses %}
-          <td>{{ specs_macros.filter_mount_type_label(lens.spec.filter_mount_type.value) if lens.spec.filter_mount_type.value is not none else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(specs_macros.filter_mount_type_label(lens.spec.filter_mount_type.value)) }}</td>
         {% endfor %}
       </tr>
 
@@ -247,42 +248,42 @@
       <tr>
         <td>{{ _("Focus type") }}</td>
         {% for lens in lenses %}
-          <td>{{ specs_macros.focus_type_label(lens.spec.focus_type.value) if lens.spec.focus_type.value else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(specs_macros.focus_type_label(lens.spec.focus_type.value)) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Autofocus") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.autofocus else _("No") }}</td>
+          <td>{{ common_macros.yes_no(lens.spec.autofocus) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Full time manual focus") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.full_time_manual_focus else _("No") }}</td>
+          <td>{{ common_macros.yes_no(lens.spec.full_time_manual_focus) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Min focus distance") }}, m</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.min_focus_distance_m if lens.spec.min_focus_distance_m else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(lens.spec.min_focus_distance_m) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Autofocus motor type") }}</td>
         {% for lens in lenses %}
-          <td>{{ specs_macros.focus_motor_type_label(lens.spec.autofocus_motor_type.value) if lens.spec.autofocus_motor_type.value else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(specs_macros.focus_motor_type_label(lens.spec.autofocus_motor_type.value)) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Brand name autofocus") }}</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.brand_name_autofocus if lens.spec.brand_name_autofocus else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(lens.spec.brand_name_autofocus) }}</td>
         {% endfor %}
       </tr>
 
@@ -297,21 +298,21 @@
       <tr>
         <td>{{ _("Image stabilization") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.image_stabilization else _("No") }}</td>
+          <td>{{ common_macros.yes_no(lens.spec.image_stabilization) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Stabilization name") }}</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.stabilization_name if lens.spec.stabilization_name else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(lens.spec.stabilization_name) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Stabilization stops") }}</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.stabilization_stops if lens.spec.stabilization_stops else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(lens.spec.stabilization_stops) }}</td>
         {% endfor %}
       </tr>
 
@@ -326,21 +327,29 @@
       <tr>
         <td>{{ _("Zoom type") }}</td>
         {% for lens in lenses %}
-          <td>{{ specs_macros.zoom_type_label(lens.spec.zoom_type.value) if lens.spec.zoom_type.value else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(specs_macros.zoom_type_label(lens.spec.zoom_type.value)) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Internal zoom") }}</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.internal_zoom if lens.spec.internal_zoom else _("No") }}</td>
+          {% if lens.spec.zoom_type != "none_zoom" %}
+          <td>{{ common_macros.yes_no(lens.spec.internal_zoom) }}</td>
+          {% else %}
+          <td> — </td>
+          {% endif %}
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Zoom lock") }}</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.zoom_lock if lens.spec.zoom_lock else _("No") }}</td>
+          {% if lens.spec.zoom_type != "none_zoom" %}
+          <td>{{ common_macros.yes_no(lens.spec.zoom_lock) }}</td>
+          {% else %}
+          <td> — </td>
+          {% endif %}
         {% endfor %}
       </tr>
 
@@ -354,21 +363,14 @@
       <tr>
         <td>{{ _("Macro lens") }}</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.is_macro if lens.spec.is_macro else _("No") }}</td>
-        {% endfor %}
-      </tr>
-
-      <tr>
-        <td>{{ _("Working distance") }}, m</td>
-        {% for lens in lenses %}
-          <td>{{ lens.spec.working_distance_m if lens.spec.working_distance_m else "—" }}</td>
+          <td>{{ common_macros.yes_no(lens.spec.is_macro) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Max magnification") }}</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.max_magnification if lens.spec.max_magnification else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(lens.spec.max_magnification) }}</td>
         {% endfor %}
       </tr>
 
@@ -392,14 +394,14 @@
       <tr>
         <td>{{ _("Angle of view wide") }}</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.angle_of_view_wide if lens.spec.angle_of_view_wide else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(lens.spec.angle_of_view_wide) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Angle of view tele") }}</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.angle_of_view_tele if lens.spec.angle_of_view_tele else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(lens.spec.angle_of_view_tele) }}</td>
         {% endfor %}
       </tr>
 
@@ -408,7 +410,7 @@
       <tr>
         <td>{{ _("Angle of view") }}</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.angle_of_view_tele if lens.spec.angle_of_view_tele else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(lens.spec.angle_of_view_tele) }}</td>
         {% endfor %}
       </tr>
 
@@ -425,35 +427,35 @@
       <tr>
         <td>{{ _("Hood model") }}</td>
         {% for lens in lenses %}
-          <td>{{ lens.spec.hood_model if lens.spec.hood_model else "—" }}</td>
+          <td>{{ common_macros.value_or_dash(lens.spec.hood_model) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Hood included") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.hood_included else _("No") }}</td>
+          <td>{{ common_macros.yes_no(lens.spec.hood_included) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Tripod collar included") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.tripod_collar_included else _("No") }}</td>
+          <td>{{ common_macros.yes_no(lens.spec.tripod_collar_included) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Tripod collar removable") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.tripod_collar_removable else _("No") }}</td>
+          <td>{{ common_macros.yes_no(lens.spec.tripod_collar_removable) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Case included") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.case_included else _("No") }}</td>
+          <td>{{ common_macros.yes_no(lens.spec.case_included) }}</td>
         {% endfor %}
       </tr>
 
@@ -486,21 +488,21 @@
       <tr>
         <td>{{ _("Weather sealing") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.weather_sealing else _("No") }}</td>
+          <td>{{ common_macros.yes_no(lens.spec.weather_sealing) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Dust moisture resistant") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.dust_moisture_resistant else _("No") }}</td>
+          <td>{{ common_macros.yes_no(lens.spec.dust_moisture_resistant) }}</td>
         {% endfor %}
       </tr>
 
       <tr>
         <td>{{ _("Fluorine_coating") }}</td>
         {% for lens in lenses %}
-          <td>{{ _("Yes") if lens.spec.fluorine_coating else _("No") }}</td>
+          <td>{{ common_macros.yes_no(lens.spec.fluorine_coating) }}</td>
         {% endfor %}
       </tr>
 

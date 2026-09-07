@@ -10,6 +10,7 @@ from sqlalchemy import (
     SmallInteger,
     String,
     Text,
+    event,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.dialects.postgresql import ARRAY
@@ -67,43 +68,41 @@ class SpecCamera(
     camera: Mapped['Camera'] = relationship(back_populates='spec',)
 
 
-    # Тип камеры
-    camera_category: Mapped[CameraCategory] = mapped_column(
+
+    # === Тип камеры ===
+    camera_category: Mapped[CameraCategory | None] = mapped_column(
         Enum(CameraCategory, name='camera_category_enum'),
-        nullable=False,
-        default=CameraCategory.PHOTO,
+        nullable=True,
     )
 
-    camera_type: Mapped[CameraType] = mapped_column(
+    camera_type: Mapped[CameraType | None] = mapped_column(
         Enum(CameraType, name='camera_type_enum'),
-        nullable=False,
-        default=CameraType.MIRRORLESS,
+        nullable=True,
     )
 
-    medium_type: Mapped[MediumType] = mapped_column(
+    medium_type: Mapped[MediumType | None] = mapped_column(
         Enum(MediumType, name='medium_type_enum'),
-        nullable=False,
-        default=MediumType.DIGITAL,
+        nullable=True,
     )
 
 
-    # Процессор
+
+    # === Процессор ===
     processor: Mapped[str | None] = mapped_column(
         String(100), nullable=True
     )
 
 
-    # Сенсор
-    sensor_format: Mapped[SensorFormat] = mapped_column(
+
+    # === Сенсор ===
+    sensor_format: Mapped[SensorFormat | None] = mapped_column(
         Enum(SensorFormat, name='sensor_format_enum'),
-        nullable=False,
-        default=SensorFormat.FULL_FRAME,
+        nullable=True,
     )
 
-    sensor_technology: Mapped[SensorTechnology] = mapped_column(
+    sensor_technology: Mapped[SensorTechnology | None] = mapped_column(
         Enum(SensorTechnology, name='sensor_technology_enum'),
-        nullable=False,
-        default=SensorTechnology.CMOS,
+        nullable=True,
     )
 
     has_global_shutter: Mapped[bool | None] = mapped_column(
@@ -118,39 +117,44 @@ class SpecCamera(
         Float, nullable=True
     )
 
-    sensor_width_mm: Mapped[float] = mapped_column(Float)
-    sensor_height_mm: Mapped[float] = mapped_column(Float)
+    sensor_width_mm: Mapped[float | None] = mapped_column(Float, nullable=True)
+    sensor_height_mm: Mapped[float | None] = mapped_column(Float, nullable=True)
 
-    sensor_pixels_width: Mapped[int] = mapped_column(Integer)
-    sensor_pixels_height: Mapped[int] = mapped_column(Integer)
+    sensor_pixels_width: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    sensor_pixels_height: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
     effective_megapixels: Mapped[float | None] = mapped_column(
         Float,
         nullable=True
     )
 
-    pixel_pitch_um: Mapped[float | None] = mapped_column(Float, nullable=True)
-
     native_aspect_ratio: Mapped[str | None] = mapped_column(
         String(10),
         nullable=True,
     )
 
+    pixel_pitch_um: Mapped[float | None] = mapped_column(Float, nullable=True)
+
+
     @property
-    def crop_factor(self) -> float:
-        diagonal = math.sqrt(
-            self.sensor_width_mm ** 2 + self.sensor_height_mm ** 2
-        )
-        return FULL_FRAME_DIAGONAL / diagonal
+    def crop_factor(self) -> float | None:
+        if self.sensor_width_mm and self.sensor_height_mm:
+            diagonal = math.sqrt(
+                self.sensor_width_mm ** 2 + self.sensor_height_mm ** 2
+            )
+            return FULL_FRAME_DIAGONAL / diagonal
+        return None
 
 
-    # Стабилизация
+
+    # === Стабилизация ===
     has_ibis: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
 
     ibis_stops: Mapped[float | None] = mapped_column(Float, nullable=True)
 
 
-    # ISO
+
+    # === ISO ===
     iso_min: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
     iso_max: Mapped[int | None] = mapped_column(Integer, nullable=True)
@@ -169,7 +173,8 @@ class SpecCamera(
     )
 
 
-    # Затвор
+
+    # === Затвор ===
     shutter_speed_min: Mapped[str | None] = mapped_column(
         String(20), nullable=True
     )  # Минимальная выдержка
@@ -191,7 +196,8 @@ class SpecCamera(
     )
 
 
-    # Серийная съёмка
+
+    # === Серийная съёмка ===
     burst_fps_mechanical: Mapped[float | None] = mapped_column(
         Float, nullable=True
     )
@@ -209,7 +215,8 @@ class SpecCamera(
     )
 
 
-    # Буфер
+
+    # === Буфер ===
     buffer_high_efficiency_raw_jpg_frames: Mapped[int | None] = mapped_column(
         Integer, nullable=True
     )  # Высокоэффективное сжатие RAW + JPG
@@ -223,7 +230,8 @@ class SpecCamera(
     )  # Высокоэффективное сжатие RAW
 
 
-    # Автофокус
+
+    # === Автофокус ===
     af_points: Mapped[int | None] = mapped_column(
         Integer, nullable=True
     )  # Количество точек автофокуса
@@ -245,7 +253,8 @@ class SpecCamera(
     ) # Объекты которые камера умеет распознавать
 
 
-    # Видоискатель
+
+    # === Видоискатель ===
     viewfinder_type: Mapped[ViewfinderType | None] = mapped_column(
         Enum(ViewfinderType, name='viewfinder_type_enum'), nullable=True
     )
@@ -263,7 +272,8 @@ class SpecCamera(
     )  # Покрытие кадра, %
 
 
-    # Экран
+
+    # === Экран ===
     screen_size_inches: Mapped[float | None] = mapped_column(
         Float, nullable=True
     )  # Диагональ экрана в дюймах
@@ -281,9 +291,10 @@ class SpecCamera(
     )  # Сенсорный экран
 
 
-    # Видео RAW
+
+    # === Видео RAW ===
     raw_video_max_resolution: Mapped[str | None] = mapped_column(
-        String(20), nullable=True
+        String(50), nullable=True
     )  # Макс. разрешение RAW видео
 
     raw_video_max_fps_at_max_resolution: Mapped[int | None] = mapped_column(
@@ -294,8 +305,8 @@ class SpecCamera(
         Integer, nullable=True
     )  # RAW видео макс. fps
 
-    raw_video_max_resolution_at_max_fps: Mapped[int | None] = mapped_column(
-        Integer, nullable=True
+    raw_video_max_resolution_at_max_fps: Mapped[str | None] = mapped_column(
+        String(50), nullable=True
     )  # Макс. разрешение RAW при макс. fps
 
     raw_video_max_bitrate_mbps: Mapped[int | None] = mapped_column(
@@ -323,7 +334,8 @@ class SpecCamera(
     )  # RAW через HDMI / SDI на внешний рекордер
 
 
-    # Видео кодеки
+
+    # === Видео кодеки ===
     has_log_profile: Mapped[bool | None] = mapped_column(
         Boolean, nullable=True
     )  # Поддержка Log-профилей (S-Log, C-Log, N-Log)
@@ -369,6 +381,7 @@ class SpecCamera(
     )
 
 
+
     # === Интерфейсы и связь ===
     has_wifi: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
     has_bluetooth: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
@@ -391,10 +404,18 @@ class SpecCamera(
     )  # Тип HDMI ("Type A", "Micro Type D")
 
 
+
+    # === Встроенная вспышка ===
+    has_built_in_flash: Mapped[bool | None] = mapped_column(
+        Boolean, nullable=True
+    )
+
+
+
     # === Питание ===
     battery_model: Mapped[str | None] = mapped_column(
         String(50), nullable=True
-    )  # Модель аккумулятора (EN-EL15c, LP-E6NH)
+    )
 
     battery_life_shots_cipa: Mapped[int | None] = mapped_column(
         Integer, nullable=True
@@ -402,23 +423,52 @@ class SpecCamera(
 
     has_usb_charging: Mapped[bool | None] = mapped_column(
         Boolean, nullable=True
-    )  # Зарядка по USB
+    )
+
+    battery_grip: Mapped[str | None] = mapped_column(
+        String(100), nullable=True
+    )
+    ac_adapter: Mapped[str | None] = mapped_column(
+        String(100), nullable=True
+    )  # Зарядное устройство.
 
 
-    # === Корпус ===
-    weight_g: Mapped[int | None] = mapped_column(
-        Integer, nullable=True
-    )  # Вес с батареей и картой, грамм
 
-    width_mm: Mapped[float | None] = mapped_column(Float, nullable=True)
-    height_mm: Mapped[float | None] = mapped_column(Float, nullable=True)
-    depth_mm: Mapped[float | None] = mapped_column(Float, nullable=True)
-    # Габариты Ш×В×Г — если их нет в CameraPhysicalSpecMixin
-
+    # === Пыле-/влагозащита ===
     is_weather_sealed: Mapped[bool | None] = mapped_column(
         Boolean, nullable=True
-    )  # Пыле-/влагозащита
+    )
+    operating_environment: Mapped[str | None] = mapped_column(
+        String(100), nullable=True
+    )  # температуры среды
 
-    has_built_in_flash: Mapped[bool | None] = mapped_column(
-        Boolean, nullable=True
-    )  # Встроенная вспышка
+
+
+    # === Штативное крепление ===
+    tripod_socket: Mapped[str | None] = mapped_column(
+        String(50), nullable=True
+    )
+
+
+
+    # === Комплект поставки ===
+    supplied_accessories: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+    )
+
+@event.listens_for(SpecCamera, 'before_insert')
+@event.listens_for(SpecCamera, 'before_update')
+def compute_pixel_pitch(mapper, connection, target):
+    """Высчитывает размер пикселя для поля pixel_pitch_um."""
+    if (
+            target.sensor_width_mm is not None
+            and target.sensor_pixels_width is not None
+            and target.sensor_width_mm > 0
+            and target.sensor_pixels_width > 0
+    ):
+        target.pixel_pitch_um = round(
+            target.sensor_width_mm / target.sensor_pixels_width * 1000, 2
+        )
+    else:
+        target.pixel_pitch_um = None
