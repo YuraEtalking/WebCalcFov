@@ -42,9 +42,11 @@ async def compare_cameras(
     logger.debug('Было: ids="{}"', ids)
 
     cameras = await get_cameras_for_compare(ids, session)
-    return render(request, 'gear/compare/camera_comparison.html', {
-        'cameras': cameras,
-    })
+    return render(
+        request,
+        'gear/compare/camera_comparison.html',
+        cameras=cameras,
+    )
 
 
 @web_router.post(

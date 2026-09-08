@@ -2,19 +2,28 @@ from sqlalchemy import select
 from sqlalchemy.orm import joinedload, selectinload, with_loader_criteria
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from collections.abc import Sequence
+
 from backend.models import Camera
 
 
-async def get_active_cameras(session: AsyncSession, manufacturer=None):
+async def get_active_cameras(
+        session: AsyncSession,
+        manufacturer: str | None = None,
+        with_spec: bool = False,
+) -> Sequence[Camera]:
     """Получаем список активных камер, всех или по производителю."""
     stmt = select(Camera).where(Camera.is_active.is_(True))
 
     if manufacturer is not None:
         stmt = stmt.where(Camera.manufacturer == manufacturer)
 
-    result = await session.execute(stmt)
-    active_cameras = result.scalars().all()
-    return active_cameras
+    if with_spec:
+        stmt = stmt.options(joinedload(Camera.spec))
+
+    # result = await session.execute(stmt)
+    # active_cameras = result.scalars().all()
+    return (await session.scalars(stmt)).all()
 
 
 async def get_active_camera_with_sensor(camera_id, session: AsyncSession):

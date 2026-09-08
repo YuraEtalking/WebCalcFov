@@ -45,9 +45,7 @@ async def compare_lenses(
     return render(
         request,
         'gear/compare/lens_comparison.html',
-        {
-            'lenses': lenses,
-        }
+        lenses=lenses,
     )
 
 
@@ -64,7 +62,7 @@ async def remove_lens_from_comparison_list(request: Request, lens_id: int):
     )
 
 
-@web_router.post('/lenses/clear/',name='clear_comparison_list')
+@web_router.post('/lenses/clear/',name='clear_list_of_lenses_for_comparison')
 async def clear_list_of_lenses_for_comparison(request: Request):
     """Чистит список сравнений объективов."""
     return clear_list_of_comparison(request, COMPARE_LENSES_COOKIE)

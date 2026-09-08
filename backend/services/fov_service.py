@@ -1,4 +1,5 @@
 from typing import Any
+from dataclasses import dataclass
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from loguru import logger
@@ -8,10 +9,10 @@ from backend.core.constants.message_constants import (
 from backend.crud.camera import get_active_camera_with_sensor
 from backend.crud.lens import get_active_lens_with_teleconverters
 from backend.schemas.fov import FovCalcInput
-from backend.services.fov_calculator import calculate_fov
+from backend.services.fov_calculator import calculate_fov, FovResult
 
-from backend.models.teleconverter import Teleconverter
 from backend.models.associative_model import CameraLens
+from backend.models import Camera, Lens, SpecCamera, Teleconverter
 
 
 class FovServiceError(Exception):
@@ -64,12 +65,42 @@ def checking_distance_within_range(
 
     return focal
 
+def resolve_teleconverter(lens, teleconverter_id) -> float | None:
+    if teleconverter_id is not None:
+        selected_tc_obj = next(
+            (
+                tc for tc in lens.teleconverters
+                if tc.id == teleconverter_id
+            ),
+            None
+        )
+        if selected_tc_obj is None:
+            raise FovServiceError(
+                'Выбранный телеконвертер не принадлежит объективу'
+            )
+        return selected_tc_obj.multiplier
+    return None
+
+@dataclass
+class FovPageData:
+    camera: Camera
+    lens: Lens
+    sensor: SpecCamera
+    distance: int
+    lens_list: list[Lens]
+    result: FovResult
+    focal: float
+    teleconverter_id: int | None
+    teleconverters: list[dict]
+    message: str
+    message_type: str
+
 
 
 async def prepare_fov_response_data(
         input_data: FovCalcInput,
         session: AsyncSession
-) -> dict[str, Any]:
+) -> FovPageData:
     """Подготавливает данные для ответа."""
     lens = await get_active_lens_with_teleconverters(
         input_data.lens_id,
@@ -93,21 +124,8 @@ async def prepare_fov_response_data(
         message = WARNING_CAMERA_AND_LENS_INCOMPATIBILITY
         message_type = 'warning'
 
-    selected_tc = None
-    if input_data.teleconverter_id is not None:
-        selected_tc_obj = next(
-            (
-                tc for tc in lens.teleconverters
-                if tc.id == input_data.teleconverter_id
-            ),
-            None
-        )
-        if selected_tc_obj is None:
-            raise FovServiceError(
-                'Выбранный телеконвертер не принадлежит объективу'
-            )
-        selected_tc = selected_tc_obj.multiplier
-    logger.debug('input_data.focal="{}", lens.focal_wide="{}", lens.focal_tele="{}"', input_data.focal, lens.focal_wide, lens.focal_tele)
+    selected_tc = resolve_teleconverter(lens, input_data.teleconverter_id)
+
     focal = checking_distance_within_range(
         focal=input_data.focal,
         focal_wide=lens.focal_wide,
@@ -124,21 +142,34 @@ async def prepare_fov_response_data(
     logger.debug(
         'sensor: camera.spec.sensor_format="{}"',
         camera.spec.sensor_format)
-    return {
-        'data': {
-            'camera': camera,
-            'lens': lens,
-            'sensor': camera.spec,
-            'distance': input_data.distance,
-            'lens_list': camera.compatible_lenses,
-        },
-        'result': result,
-        'focal': focal,
-        'teleconverter_id': input_data.teleconverter_id,
-        'teleconverters': teleconverters,
-        'message': message,
-        'message_type': message_type,
-    }
+    return FovPageData(
+        camera=camera,
+        lens=lens,
+        sensor=camera.spec,
+        distance=input_data.distance,
+        lens_list=camera.compatible_lenses,
+        result=result,
+        focal=focal,
+        teleconverter_id=input_data.teleconverter_id,
+        teleconverters=teleconverters,
+        message=message,
+        message_type=message_type,
+    )
+    # return {
+    #     'data': {
+    #         'camera': camera,
+    #         'lens': lens,
+    #         'sensor': camera.spec,
+    #         'distance': input_data.distance,
+    #         'lens_list': camera.compatible_lenses,
+    #     },
+    #     'result': result,
+    #     'focal': focal,
+    #     'teleconverter_id': input_data.teleconverter_id,
+    #     'teleconverters': teleconverters,
+    #     'message': message,
+    #     'message_type': message_type,
+    # }
 
 
 async def get_lens_data(lens_id: int, session: AsyncSession) -> dict[str, Any]:

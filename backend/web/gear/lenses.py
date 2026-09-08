@@ -4,9 +4,14 @@ from loguru import logger
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.core.db import get_async_session
-from backend.crud.lens import get_active_lenses, get_active_lens_with_teleconverters
+from backend.crud.lens import (
+    get_active_lenses,
+    get_active_lens_with_teleconverters
+)
+from backend.services.detail_pages_service import images_by_role
+from backend.services.compare_service import get_ids
 from backend.web.templates import render
-
+from backend.web.constants import COMPARE_LENSES_COOKIE
 
 web_router = APIRouter(
     prefix='/lenses',
@@ -23,7 +28,8 @@ async def lens_list(
     return render(
         request,
         'gear/lens_list.html',
-        {'lenses': lenses, 'slug': slug,}
+        lenses=lenses,
+        slug=slug,
     )
 
 
@@ -40,27 +46,23 @@ async def lens_detail(
         session: AsyncSession = Depends(get_async_session)
 ):
     lens = await get_active_lens_with_teleconverters(lens_id, session)
-    images = [
-        link.image for link in lens.image_links if link.role == 'photo' and link.image is not None
-    ]
-    mtfs = [link.image for link in lens.image_links if link.role == 'mtf' and link.image is not None]
-    sample_photos = [link.image for link in lens.image_links if link.role == 'sample' and link.image is not None]
-    raw = request.cookies.get('compare_lenses', '')
-    compare_ids = [int(x) for x in raw.split(',') if x.isdigit()]
+    images = images_by_role(entity=lens, role='photo')
+    mtfs = images_by_role(entity=lens, role='mtf')
+    sample_photos = images_by_role(entity=lens, role='sample')
+
+    # raw = request.cookies.get('compare_lenses', '')
+    # compare_ids = [int(x) for x in raw.split(',') if x.isdigit()]
+
+    compare_ids = get_ids(request, COMPARE_LENSES_COOKIE)
+    logger.debug('compare_ids: compare_ids="{}"', compare_ids)
+
     return render(
             request,
             'gear/lens_detail.html',
-            {
-                'lens':  lens,
-                'slug':slug,
-                'links': lens.links,
-                'teleconverters': lens.teleconverters,
-                'compatible_cameras': lens.compatible_cameras,
-                'camera_lenses': lens.camera_lenses,
-                'spec': lens.spec,
-                'images': images,
-                'mtfs': mtfs,
-                'sample_photos': sample_photos,
-                'compare_ids': compare_ids,
-            }
+            lens=lens,
+            slug=slug,
+            images=images,
+            mtfs=mtfs,
+            sample_photos=sample_photos,
+            compare_ids=compare_ids,
         )

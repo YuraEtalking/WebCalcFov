@@ -9,6 +9,7 @@ from backend.services.fov_service import get_lens_data, EntityNotFoundError
 from backend.crud.camera import get_active_camera_with_sensor
 from backend.web.templates import render
 
+
 web_router = APIRouter(tags=['Partials'],)
 
 
@@ -28,9 +29,9 @@ async def get_focal_field(
         return HTMLResponse('', status_code=500)
 
     return render(
-        request,
-        'partials/focal_field.html',
-        data
+        request=request,
+        template_name='partials/focal_field.html',
+        data=data
     )
 
 
@@ -50,7 +51,7 @@ async def get_choice_lens_field(
         return HTMLResponse('', status_code=500)
 
     return render(
-        request,
-        'partials/choice_lens_field.html',
-        {'lens_list': camera.compatible_lenses}
+        request=request,
+        template_name='partials/choice_lens_field.html',
+        lens_list=camera.compatible_lenses
     )

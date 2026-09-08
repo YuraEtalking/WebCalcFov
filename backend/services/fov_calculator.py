@@ -1,9 +1,8 @@
 import math
-from typing import TYPE_CHECKING
+from dataclasses import dataclass
 
 from loguru import logger
 
-# from backend.models.specs.camera_spec import SpecCamera
 
 
 def get_focal(focal: float, tc: float | None) -> float:
@@ -32,13 +31,22 @@ def get_size_of_frame_on_plane(d: int, fov: float) -> float:
     """Рассчитывает размер кадра на плоскости на заданном расстоянии."""
     return 2 * d * math.tan(fov / 2)
 
+@dataclass
+class FovResult:
+    focal: float
+    tc: float | None
+    fov_width_deg: float
+    fov_height_deg: float
+    frame_width_m: float
+    frame_height_m: float
+
 
 def calculate_fov(
         sensor,  #: SpecCamera
         focal: float,
         distance: int,
         selected_tc: float | None,
-) -> dict[str, float]:
+) -> FovResult:
     """Высчитывает высоту и ширину кадра на заданном расстоянии."""
     # logger.debug('selected_tc="{}"', selected_tc)
 
@@ -48,17 +56,25 @@ def calculate_fov(
         height=sensor.sensor_height_mm,
         focal=focal
     )
-
-    return {
-        'focal': focal, 'tc': selected_tc,
-        'fov_width_deg': fov_w,
-        'fov_height_deg': fov_h,
-        'frame_width_m': get_size_of_frame_on_plane(
-            distance,
-            math.radians(fov_w)
-        ),
-        'frame_height_m': get_size_of_frame_on_plane(
-            distance,
-            math.radians(fov_h)
-        ),
-    }
+    return FovResult(
+        focal=focal,
+        tc=selected_tc,
+        fov_width_deg=fov_w,
+        fov_height_deg=fov_h,
+        frame_width_m=get_size_of_frame_on_plane(distance,math.radians(fov_w)),
+        frame_height_m=get_size_of_frame_on_plane(distance,math.radians(fov_h)),
+    )
+    # return {
+    #     'focal': focal,
+    #     'tc': selected_tc,
+    #     'fov_width_deg': fov_w,
+    #     'fov_height_deg': fov_h,
+    #     'frame_width_m': get_size_of_frame_on_plane(
+    #         distance,
+    #         math.radians(fov_w)
+    #     ),
+    #     'frame_height_m': get_size_of_frame_on_plane(
+    #         distance,
+    #         math.radians(fov_h)
+    #     ),
+    # }
