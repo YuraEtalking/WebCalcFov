@@ -81,7 +81,7 @@ def resolve_teleconverter(lens, teleconverter_id) -> float | None:
         return selected_tc_obj.multiplier
     return None
 
-@dataclass
+@dataclass(frozen=True)
 class FovPageData:
     camera: Camera
     lens: Lens
@@ -155,21 +155,6 @@ async def prepare_fov_response_data(
         message=message,
         message_type=message_type,
     )
-    # return {
-    #     'data': {
-    #         'camera': camera,
-    #         'lens': lens,
-    #         'sensor': camera.spec,
-    #         'distance': input_data.distance,
-    #         'lens_list': camera.compatible_lenses,
-    #     },
-    #     'result': result,
-    #     'focal': focal,
-    #     'teleconverter_id': input_data.teleconverter_id,
-    #     'teleconverters': teleconverters,
-    #     'message': message,
-    #     'message_type': message_type,
-    # }
 
 
 async def get_lens_data(lens_id: int, session: AsyncSession) -> dict[str, Any]:

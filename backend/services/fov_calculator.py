@@ -31,7 +31,7 @@ def get_size_of_frame_on_plane(d: int, fov: float) -> float:
     """Рассчитывает размер кадра на плоскости на заданном расстоянии."""
     return 2 * d * math.tan(fov / 2)
 
-@dataclass
+@dataclass(frozen=True)
 class FovResult:
     focal: float
     tc: float | None
@@ -64,17 +64,3 @@ def calculate_fov(
         frame_width_m=get_size_of_frame_on_plane(distance,math.radians(fov_w)),
         frame_height_m=get_size_of_frame_on_plane(distance,math.radians(fov_h)),
     )
-    # return {
-    #     'focal': focal,
-    #     'tc': selected_tc,
-    #     'fov_width_deg': fov_w,
-    #     'fov_height_deg': fov_h,
-    #     'frame_width_m': get_size_of_frame_on_plane(
-    #         distance,
-    #         math.radians(fov_w)
-    #     ),
-    #     'frame_height_m': get_size_of_frame_on_plane(
-    #         distance,
-    #         math.radians(fov_h)
-    #     ),
-    # }
