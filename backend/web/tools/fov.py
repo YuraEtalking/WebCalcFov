@@ -4,6 +4,7 @@ from fastapi import APIRouter, Form, Request, Depends
 from fastapi.responses import HTMLResponse
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
+from loguru import logger
 
 from backend.core.db import get_async_session
 from backend.core.constants.message_constants import ERROR_LOAD_IN_DB
@@ -20,14 +21,10 @@ from backend.services.fov_service import (
 
 web_router = APIRouter(tags=['FOV'])
 
+TEMPLATE = 'tools/calculator_fov.html'
 
-async def render_form(
-        request: Request,
-        session: AsyncSession,
-        context: dict | None = None,
-        message: str | None = None,
-        message_type: str | None = None,
-):
+# todo
+async def render_form(request: Request, session: AsyncSession, **context):
     """Рендер формы с данными."""
     try:
         cameras = await get_active_cameras(session)
@@ -36,22 +33,7 @@ async def render_form(
         message = ERROR_LOAD_IN_DB
         message_type = 'error'
 
-    template_context = {
-        'request': request,
-        'cameras': cameras,
-        'data': None,
-        'result': None,
-        'focal': None,
-        'teleconverters': None,
-        'teleconverter_id': None,
-        'message': message,
-        'message_type': message_type,
-    }
-    if context:
-        template_context.update(context)
-
-    return render(request, 'tools/calculator_fov.html', template_context)
-
+    return render(request=request, template_name=TEMPLATE, cameras=cameras, **context)
 
 
 @web_router.get('/fov', name='fov', response_class=HTMLResponse)
@@ -59,7 +41,7 @@ async def show_form(
         request: Request,
         session: AsyncSession = Depends(get_async_session)
 ):
-    return await render_form(request=request, session=session)
+    return await render_form(request=request, session=session, data=None, result=None)
 
 
 @web_router.post('/fov', name='fov_submit', response_class=HTMLResponse)
@@ -91,8 +73,8 @@ async def fov_submit(
         )
 
     try:
-        payload = await prepare_fov_response_data(input_data, session)
-
+        data = await prepare_fov_response_data(input_data, session)
+        logger.debug('data: data="{}"', data)
     except (
             InvalidFovInputError,
             EntityNotFoundError,
@@ -105,4 +87,4 @@ async def fov_submit(
             message_type='error',
             message=str(e),
         )
-    return await render_form(request=request, session=session, context=payload)
+    return await render_form(request=request, session=session, data=data, result=data.result)

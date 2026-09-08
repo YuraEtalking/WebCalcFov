@@ -5,7 +5,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from loguru import logger
 from backend.core.db import get_async_session
 from backend.crud.camera import get_active_cameras, get_active_camera_with_sensor
+from backend.services.compare_service import get_ids
 from backend.web.templates import render
+from backend.web.constants import COMPARE_CAMERAS_COOKIE
 
 web_router = APIRouter(
     prefix='/cameras',
@@ -19,11 +21,12 @@ async def camera_list(
         slug: str,
         session: AsyncSession = Depends(get_async_session)
 ):
-    cameras = await get_active_cameras(session, slug)
+    cameras = await get_active_cameras(session=session, manufacturer=slug)
     return render(
         request,
         'gear/camera_list.html',
-        {'cameras': cameras, 'slug': slug}
+        cameras=cameras,
+         slug=slug,
     )
 
 
@@ -40,13 +43,13 @@ async def camera_detail(
 ):
     logger.debug('camera_id="{}"', camera_id)
     camera = await get_active_camera_with_sensor(camera_id, session)
-
+    compare_ids = get_ids(request, COMPARE_CAMERAS_COOKIE)
+    logger.debug('compare_ids="{}"', compare_ids)
     return render(
         request,
         'gear/camera_detail.html',
-        {
-            'camera': camera,
-            'slug': slug,
-            'spec': camera.spec,
-        }
+        camera=camera,
+        slug=slug,
+        spec=camera.spec,
+        compare_ids=compare_ids,
     )

@@ -1,13 +1,12 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends, Request
 from fastapi.responses import HTMLResponse
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
 from loguru import logger
 
 from backend.core.db import get_async_session
+from backend.crud.camera import get_active_cameras
 from backend.web.templates import render
 from backend.models import Camera
 from backend.services.exposure_equivalence import (
@@ -27,15 +26,6 @@ SLOT_REFERENCE = 'reference'
 SLOT_TARGETS = ('target_1', 'target_2')
 FORM_FIELDS = ('camera_id', 'focal_length_mm', 'aperture', 'shutter', 'iso')
 
-
-async def _load_cameras(session: AsyncSession) -> list[Camera]:
-    stmt = (
-        select(Camera)
-        .options(selectinload(Camera.spec))
-        .where(Camera.is_active.is_(True))
-        .order_by(Camera.name)
-    )
-    return list((await session.scalars(stmt)).all())
 
 
 def _crop_factor(camera: Camera) -> float | None:
@@ -87,10 +77,6 @@ def _build_camera_input(
     )
 
 
-def _render(request: Request, cameras: list[Camera], **context):
-    return render(request, TEMPLATE, {'cameras': cameras, **context})
-
-
 @web_router.get(
     '/exposure_equivalence',
     name='exposure_equivalence',
@@ -100,9 +86,15 @@ async def exposure_page(
     request: Request,
     session: AsyncSession = Depends(get_async_session),
 ):
-    from backend.models.enums import BayonetType
-    cameras = await _load_cameras(session)
-    return _render(request, cameras, data={'shutter_speed': BayonetType}, result=None)
+    cameras = await get_active_cameras(session, with_spec=True)
+
+    return render(
+        request=request,
+        template_name=TEMPLATE,
+        cameras=cameras,
+        data=None,
+        result=None,
+    )
 
 
 
@@ -116,14 +108,14 @@ async def exposure_submit(
     session: AsyncSession = Depends(get_async_session),
 ):
     form = await request.form()
-    cameras = await _load_cameras(session)
+    from backend.crud.camera import get_active_cameras
+    cameras = await get_active_cameras(session, with_spec=True)
     cameras_by_id = {camera.id: camera for camera in cameras}
 
     # Сырые значения всегда возвращаем в шаблон, чтобы форма не очищалась.
     data = {SLOT_REFERENCE: _raw_slot(form, SLOT_REFERENCE)}
     for slot in SLOT_TARGETS:
         data[slot] = _raw_slot(form, slot)
-
     try:
         reference = _build_camera_input(
             data[SLOT_REFERENCE], cameras_by_id, 'Reference camera',
@@ -137,11 +129,22 @@ async def exposure_submit(
             targets.append(_build_camera_input(raw, cameras_by_id, f'Camera {index}'))
 
         result = calculate(reference, targets)
+        # logger.debug('result: result="{}"', result)
     except ExposureInputError as exc:
-        return _render(
-            request, cameras,
-            data=data, result=None,
-            message=str(exc), message_type='error',
+        return render(
+            request=request,
+            template_name=TEMPLATE,
+            cameras=cameras,
+            data=data,
+            result=None,
+            message=str(exc),
+            message_type='error',
         )
 
-    return _render(request, cameras, data=data, result=result)
+    return render(
+        request=request,
+        template_name=TEMPLATE,
+        cameras=cameras,
+        data=data,
+        result=result,
+    )

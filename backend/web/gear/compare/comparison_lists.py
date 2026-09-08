@@ -32,7 +32,9 @@ async def comparison_lists(request: Request, session: AsyncSession = Depends(get
     logger.debug('lens_ids: lens_ids="{}"', lens_ids)
     lenses_list = await get_lenses_for_compare(lens_ids, session)
     cameras_list = await get_cameras_for_compare(camera_ids, session)
-    return render(request, 'gear/compare/comparison_lists.html', {
-        'lenses_list': lenses_list,
-        'cameras_list': cameras_list,
-    })
+    return render(
+        request,
+        'gear/compare/comparison_lists.html',
+        lenses_list=lenses_list,
+        cameras_list=cameras_list,
+    )

@@ -11,7 +11,7 @@ def parse_ids(raw: str | None) -> list[int]:
     """Переводим строку id из куки в список."""
     if not raw:
         return []
-
+    logger.debug('raw: raw="{}"', raw)
     return [int(x) for x in raw.split(',') if x.isdigit()]
 
 

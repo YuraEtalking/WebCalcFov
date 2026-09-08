@@ -73,7 +73,7 @@
             >
         </div>
 
-        <!--<div class="field">
+        <div class="field">
             <label for="{{ prefix }}_shutter">{{ _("Shutter speed") }}</label>
             <input
                type="text"
@@ -83,28 +83,7 @@
                value="{{ d.shutter or '' }}"
                {% if required %}required{% endif %}
             >
-        </div>-->
-
-
-			<div class="field">
-            <label for="{{ prefix }}_shutter">{{ _("Shutter speed") }}</label>
-            <select
-               id="{{ prefix }}_shutter"
-               name="{{ prefix }}_shutter"
-               placeholder="1/125"
-               value="{{ d.shutter or '' }}"
-               {% if required %}required{% endif %}
-            >
-							<option value="">-- {{ _("Select a shutter speed") }} --</option>
-							{% for shutter in data.shutter_speed %}
-                  <option value="{{ shutter.value }}">
-                      {{ shutter.value }}
-
-                  </option>
-                {% endfor %}
-							</select>
         </div>
-
 
 
         <div class="field">

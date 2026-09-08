@@ -27,7 +27,8 @@ def set_default_cookie(
     )
 
 
-def render(request: Request, template_name: str, context: dict | None = None):
+def render(request: Request, template_name: str, **context: Any):
+    """Рендерит шаблон с сохранением выбранного языка."""
     base_context = {
         'request': request,
         '_': request.state._,

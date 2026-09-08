@@ -22,7 +22,7 @@ async def gear_manufacturers(
     return render(
         request,
         'gear/manufacturer_list.html',
-        {'manufacturers': manufacturers}
+        manufacturers=manufacturers
     )
 
 
@@ -36,5 +36,5 @@ async def manufacturer(request: Request, slug: str):
     return render(
         request,
         'gear/manufacturer.html',
-        {'slug': slug}
+        slug=slug,
     )
