@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
+from loguru import logger
 
 # Меньше этой разницы (в стопах) считаем экспозицию совпадающей.
 EV_EQUAL_TOLERANCE = 0.05
@@ -21,8 +22,10 @@ def parse_shutter(raw: str | int | float) -> float:
 
     Принимает: "1/125", "1/125 s", "1/125 с", "0.5", "0,5", "2", "2\"", 0.008.
     """
+    # logger.debug('raw данные: raw="{}", type(raw)="{}"', raw, type(raw))
     if isinstance(raw, (int, float)) and not isinstance(raw, bool):
         value = float(raw)
+        # logger.debug('отдаем value: value="{}"', value)
     else:
         text = str(raw).strip().lower().replace(',', '.')
         for junk in ('sec', 'сек', 's', 'с', '"', '″', ' '):
@@ -32,6 +35,7 @@ def parse_shutter(raw: str | int | float) -> float:
         try:
             if '/' in text:
                 numerator, denominator = text.split('/', 1)
+                # logger.debug('numerator, denominator: numerator="{}", denominator="{}"', numerator, denominator)
                 value = float(numerator) / float(denominator)
             else:
                 value = float(text)
@@ -42,6 +46,7 @@ def parse_shutter(raw: str | int | float) -> float:
 
     if not math.isfinite(value) or value <= 0:
         raise ExposureInputError('Shutter speed must be a positive number.')
+    # logger.debug('return value: value="{}" , type(value)="{}"', value, type(value))
     return value
 
 

@@ -3,7 +3,7 @@ from typing import Any
 
 from fastapi import Request, Response
 from fastapi.templating import Jinja2Templates
-
+from loguru import logger
 
 from backend.web.i18n import SUPPORTED_LANGUAGES
 from backend.web.constants import MAX_AGE_30_DAYS, LANG

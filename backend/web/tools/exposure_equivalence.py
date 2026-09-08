@@ -16,6 +16,7 @@ from backend.services.exposure_equivalence import (
     calculate,
     parse_shutter,
 )
+from backend.web.tools.hard_core import SHUTTERS, ISOS, APERTURES
 
 web_router = APIRouter(tags=['tools'])
 
@@ -42,6 +43,9 @@ def _to_float(raw: str, label: str) -> float:
 
 def _raw_slot(form, prefix: str) -> dict[str, str]:
     """Сырые строки из формы для повторного заполнения полей."""
+    a = {name: (form.get(f'{prefix}_{name}') or '').strip() for name in
+     FORM_FIELDS}
+    logger.debug('a: a="{}"', a)
     return {name: (form.get(f'{prefix}_{name}') or '').strip() for name in FORM_FIELDS}
 
 
@@ -87,12 +91,11 @@ async def exposure_page(
     session: AsyncSession = Depends(get_async_session),
 ):
     cameras = await get_active_cameras(session, with_spec=True)
-
     return render(
         request=request,
         template_name=TEMPLATE,
         cameras=cameras,
-        data=None,
+        data={'shutters': SHUTTERS, 'isos': ISOS, 'apertures': APERTURES},
         result=None,
     )
 
@@ -116,6 +119,7 @@ async def exposure_submit(
     data = {SLOT_REFERENCE: _raw_slot(form, SLOT_REFERENCE)}
     for slot in SLOT_TARGETS:
         data[slot] = _raw_slot(form, slot)
+    data.update({'shutters': SHUTTERS, 'isos': ISOS, 'apertures': APERTURES})
     try:
         reference = _build_camera_input(
             data[SLOT_REFERENCE], cameras_by_id, 'Reference camera',
@@ -130,6 +134,7 @@ async def exposure_submit(
 
         result = calculate(reference, targets)
         # logger.debug('result: result="{}"', result)
+
     except ExposureInputError as exc:
         return render(
             request=request,

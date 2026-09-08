@@ -59,46 +59,43 @@
             >
         </div>
 
-        <div class="field">
-            <label for="{{ prefix }}_aperture">{{ _("Aperture, f/") }}</label>
-            <input
-               type="number"
-               step="any"
-               min="0"
-               id="{{ prefix }}_aperture"
-               name="{{ prefix }}_aperture"
-               placeholder="2.8"
-               value="{{ d.aperture or '' }}"
-               {% if required %}required{% endif %}
-            >
+
+			  <div class="field">
+					<label for="{{ prefix }}_aperture">{{ _("Aperture, f/") }}</label>
+			  <select id="{{ prefix }}_aperture" name="{{ prefix }}_aperture" {% if required %}required{% endif %}>
+                <option value="">-- {{ _("Select a aperture") }} --</option>
+                {% for aperture in data.apertures %}
+                  <option value="{{ aperture }}" {% if d.aperture == aperture %}selected{% endif %}>
+                      {{ aperture }}
+                  </option>
+                {% endfor %}
+            </select>
         </div>
 
         <div class="field">
-            <label for="{{ prefix }}_shutter">{{ _("Shutter speed") }}</label>
-            <input
-               type="text"
-               id="{{ prefix }}_shutter"
-               name="{{ prefix }}_shutter"
-               placeholder="1/125"
-               value="{{ d.shutter or '' }}"
-               {% if required %}required{% endif %}
-            >
+				<label for="{{ prefix }}_shutter">{{ _("Shutter speed") }}</label>
+			  <select id="{{ prefix }}_shutter" name="{{ prefix }}_shutter" {% if required %}required{% endif %}>
+                <option value="">-- {{ _("Select a shutter") }} --</option>
+                {% for shutter in data.shutters %}
+                  <option value="{{ shutter }}" {% if d.shutter == shutter %}selected{% endif %}>
+                      {{ shutter }}
+                  </option>
+                {% endfor %}
+            </select>
         </div>
 
-
-        <div class="field">
-            <label for="{{ prefix }}_iso">ISO</label>
-            <input
-               type="number"
-               step="any"
-               min="0"
-               id="{{ prefix }}_iso"
-               name="{{ prefix }}_iso"
-               placeholder="400"
-               value="{{ d.iso or '' }}"
-               {% if required %}required{% endif %}
-            >
+			  <div class="field">
+				<label for="{{ prefix }}_iso">ISO</label>
+			  <select id="{{ prefix }}_iso" name="{{ prefix }}_iso" {% if required %}required{% endif %}>
+                <option value="">-- {{ _("Select a iso") }} --</option>
+                {% for iso in data.isos %}
+                  <option value="{{ iso }}" {% if d.iso == iso %}selected{% endif %}>
+                      {{ iso }}
+                  </option>
+                {% endfor %}
+            </select>
         </div>
+
     </div>
   </fieldset>
 {% endmacro %}
