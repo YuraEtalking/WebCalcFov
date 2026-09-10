@@ -106,7 +106,7 @@
     {{ camera_block('reference', _("Reference camera"), true) }}
     {{ camera_block('target_1', _("Camera 1"), true) }}
     {{ camera_block('target_2', _("Camera 2"), false) }}
-
+    <br>
     <!-- submit -->
     <div class="field inline">
         <button type="submit">{{ _("Calculate") }}</button>
@@ -115,44 +115,6 @@
 </form>
 
 
-<div class="container">
-  {% if result %}
-
-    <h2>{{ _("Result") }}</h2>
-      <aside class="sidebar">
-
-        <section class="card">
-            {% for t in result.targets %}
-
-
-							{# --- 2. Эквивалентные настройки с учётом размера сенсора --- #}
-							<h4>{{ _("Equivalent settings for this sensor") }}</h4>
-							{% if t.equivalent %}
-								{% set eq = t.equivalent %}
-								<ul>
-									<li>{{ _("Reference crop factor") }}: <span class="value">{{ eq.reference_crop_factor|round(2) }}×</span></li>
-									<li>{{ _("Target crop factor") }}: <span class="value">{{ eq.target_crop_factor|round(2) }}×</span></li>
-									<li>{{ _("Sensor ratio") }}: <span class="value">{{ eq.ratio|round(3) }}</span></li>
-									<li>{{ _("Equivalent focal length") }}: <span class="value">{{ eq.focal_length_mm|round(1) }} mm</span></li>
-									<li>{{ _("Equivalent aperture") }}: <span class="value">f/{{ eq.aperture|round(2) }}</span></li>
-									<li>{{ _("Shutter speed (unchanged)") }}: <span class="value">{{ eq.shutter_display }} s</span></li>
-									<li>{{ _("Equivalent ISO") }}: <span class="value">{{ eq.iso|round(1) }}</span></li>
-								</ul>
-								<p><small>{{ _("These settings keep the same field of view, depth of field, motion blur and total amount of light (≈ same noise) as the reference camera. This is a different concept from equal EV.") }}</small></p>
-							{% else %}
-								<div class="message warning">
-									{% if t.equivalence_unavailable_reason == 'reference_no_sensor' %}
-										{{ _("The reference camera has no sensor dimensions in the database, so equivalent settings cannot be calculated.") }}
-									{% else %}
-										{{ _("This camera has no sensor dimensions in the database, so equivalent settings cannot be calculated.") }}
-									{% endif %}
-								</div>
-							{% endif %}
-				   {% endfor %}
-				</section>
-	{% endif %}
-  </aside>
-</div>
 <br>
 {% if result %}
 	<div class="compare-page">
@@ -232,13 +194,59 @@
         </th>
       </tr>
 
-
+        {% set t = result.targets[0] %}
+			  {% if t.equivalent %}
 			  <tr>
 					<td>{{ _("Crop factor") }}</td>
-					<td>{{ result.targets.reference_crop_factor|round(2) }}×</td>
+					<td>{{ t.equivalent.reference_crop_factor|round(2) }}×</td>
 					{% for t in result.targets %}
 					{% set eq = t.equivalent %}
 						  <td>{{ eq.target_crop_factor|round(2) }}×</td>
+					{% endfor %}
+				</tr>
+
+			  <tr>
+					<td>{{ _("Sensor ratio") }}</td>
+					<td>&nbsp;</td>
+					{% for t in result.targets %}
+					{% set eq = t.equivalent %}
+						  <td>{{ eq.ratio|round(3) }}</td>
+					{% endfor %}
+				</tr>
+
+			  <tr>
+					<td>{{ _("Equivalent focal length") }}</td>
+					<td>&nbsp;</td>
+					{% for t in result.targets %}
+					{% set eq = t.equivalent %}
+						  <td>{{ eq.focal_length_mm|round(1) }} mm</td>
+					{% endfor %}
+				</tr>
+
+			  <tr>
+					<td>{{ _("Equivalent aperture") }}</td>
+					<td>&nbsp;</td>
+					{% for t in result.targets %}
+					{% set eq = t.equivalent %}
+						  <td>f/{{ eq.aperture|round(2) }}</td>
+					{% endfor %}
+				</tr>
+
+			  <tr>
+					<td>{{ _("Shutter speed (unchanged)") }}</td>
+					<td>&nbsp;</td>
+					{% for t in result.targets %}
+					{% set eq = t.equivalent %}
+						  <td>{{ eq.shutter_display }} s</td>
+					{% endfor %}
+				</tr>
+
+			  <tr>
+					<td>{{ _("Equivalent ISO") }}</td>
+					<td>&nbsp;</td>
+					{% for t in result.targets %}
+					{% set eq = t.equivalent %}
+						  <td>{{ eq.iso|round(1) }}</td>
 					{% endfor %}
 				</tr>
 
@@ -248,6 +256,7 @@
           {{ _("These settings keep the same field of view, depth of field, motion blur and total amount of light (≈ same noise) as the reference camera. This is a different concept from equal EV.") }}
         </th>
       </tr>
+			{% endif %}
 
 			</tbody>
 
