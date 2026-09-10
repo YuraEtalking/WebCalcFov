@@ -1,0 +1,15 @@
+{% macro colored_delta(delta_ev) -%}
+  <span class="{% if delta_ev > 0 %}delta-negative{% elif delta_ev < 0 %}delta-positive{% else %}delta-neutral{% endif %}">
+    {{ '%+.2f'|format(delta_ev) }}ΔEV
+  </span>
+{%- endmacro %}
+
+{% macro exposure(direction, exposure_stops) -%}
+	{% if direction == 'equal' %}
+		{{ _("Exposure matches") }}
+	{% elif direction == 'darker' %}
+		{{ _("Exposure is darker by") }} {{ exposure_stops|round(1) }} {{ _("stops") }}
+	{% else %}
+		{{ _("Exposure is lighter by") }} {{ exposure_stops|round(1) }} {{ _("stops") }}
+	{% endif %}
+{%- endmacro %}

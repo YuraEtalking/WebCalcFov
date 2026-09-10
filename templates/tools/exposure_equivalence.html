@@ -1,4 +1,5 @@
 {% extends "base_template.html" %}
+{% import "tools/macros/tool_macros.html" as tool_macros with context %}
 {% block title %}
 {{ _("Equivalent exposure calculator") }}
 {% endblock %}
@@ -121,51 +122,8 @@
       <aside class="sidebar">
 
         <section class="card">
-            <h3>{{ _("Reference camera") }}: {{ result.reference.camera_name }}</h3>
-            <ul>
-              <li>{{ _("Focal length") }}: <span class="value">{{ result.reference.settings.focal_length_mm|round(1) }} mm</span></li>
-              <li>{{ _("Aperture") }}: <span class="value">f/{{ result.reference.settings.aperture|round(2) }}</span></li>
-              <li>{{ _("Shutter speed") }}: <span class="value">{{ result.reference.settings.shutter_display }} s</span></li>
-              <li>ISO: <span class="value">{{ result.reference.settings.iso|round(0)|int }}</span></li>
-              <li>EV: <span class="value">{{ result.reference_ev|round(2) }}</span></li>
-              <li>{{ _("Crop factor") }}:
-                <span class="value">
-                  {% if result.reference.crop_factor is not none %}{{ result.reference.crop_factor|round(2) }}×{% else %}—{% endif %}
-                </span>
-              </li>
-            </ul>
-        </section>
-
-        <section class="card">
             {% for t in result.targets %}
-              <h3>{{ t.camera.camera_name }}</h3>
 
-              {# --- 1. Фактическая разница EV (сенсор не участвует) --- #}
-              <h4>{{ _("Actual exposure difference") }}</h4>
-              <ul>
-                <li>{{ _("Entered settings") }}:
-                  <span class="value">
-                    {{ t.camera.settings.focal_length_mm|round(1) }} mm,
-                    f/{{ t.camera.settings.aperture|round(2) }},
-                    {{ t.camera.settings.shutter_display }} s,
-                    ISO {{ t.camera.settings.iso|round(0)|int }}
-                  </span>
-                </li>
-                <li>EV: <span class="value">{{ t.exposure.target_ev|round(2) }}</span></li>
-                <li>ΔEV: <span class="value">{{ '%+.2f'|format(t.exposure.delta_ev) }}</span></li>
-                <li>
-                  <span class="value">
-                    {% if t.exposure.direction == 'equal' %}
-                      {{ _("Exposure matches") }}
-                    {% elif t.exposure.direction == 'darker' %}
-                      {{ _("Exposure is darker by") }} {{ t.exposure.stops|round(1) }} {{ _("stops") }}
-                    {% else %}
-                      {{ _("Exposure is lighter by") }} {{ t.exposure.stops|round(1) }} {{ _("stops") }}
-                    {% endif %}
-                  </span>
-                </li>
-              </ul>
-              <p><small>{{ _("Compares only aperture, shutter speed and ISO. Sensor size is not taken into account.") }}</small></p>
 
 							{# --- 2. Эквивалентные настройки с учётом размера сенсора --- #}
 							<h4>{{ _("Equivalent settings for this sensor") }}</h4>
@@ -195,4 +153,105 @@
 	{% endif %}
   </aside>
 </div>
+<br>
+{% if result %}
+	<div class="compare-page">
+		<table class="compare-table">
+
+			<thead>
+				<tr>
+					<th>{{ _("Parameter") }}</th>
+						<th>
+							<h3>{{ _("Reference camera") }}: {{ result.reference.camera_name }}</h3>
+						</th>
+					{% for t in result.targets %}
+						<th>
+							<h3>{{ _("Target camera") }}: {{ t.camera.camera_name }}</h3>
+						</th>
+					{% endfor %}
+				</tr>
+			</thead>
+
+			<tbody>
+
+			<tr class="test">
+        <th colspan="{{ 4 }}">
+          {{ _("Compares only aperture, shutter speed and ISO. Sensor size is not taken into account.") }}
+        </th>
+      </tr>
+
+				<tr>
+					<td>{{ _("Focal length") }}</td>
+					<td>{{ result.reference.settings.focal_length_mm|round(1) }} mm</td>
+					{% for t in result.targets %}
+						<td>{{ t.camera.settings.focal_length_mm|round(1) }} mm</td>
+					{% endfor %}
+				</tr>
+				<tr>
+					<td>{{ _("Aperture") }}</td>
+					<td>f/{{ result.reference.settings.aperture|round(2) }}</td>
+					{% for t in result.targets %}
+						<td>f/{{ t.camera.settings.aperture|round(2) }}</td>
+					{% endfor %}
+				</tr>
+				<tr>
+					<td>{{ _("Shutter speed") }}</td>
+					<td>{{ result.reference.settings.shutter_display }} s</td>
+					{% for t in result.targets %}
+						<td>{{ t.camera.settings.shutter_display }} s</td>
+					{% endfor %}
+				</tr>
+				<tr>
+					<td>ISO</td>
+					<td>{{ result.reference.settings.iso|round(0)|int }}</td>
+					{% for t in result.targets %}
+						<td>{{ t.camera.settings.iso|round(0)|int }}</td>
+					{% endfor %}
+				</tr>
+				<tr>
+					<td>EV</td>
+					<td>{{ result.reference_ev|round(2) }}</td>
+					{% for t in result.targets %}
+						<td>
+							{{ t.exposure.target_ev|round(2) }}
+							{{ tool_macros.colored_delta(t.exposure.delta_ev) }}
+					{% endfor %}
+				</tr>
+				<tr>
+					<td>{{ _("Exposure difference") }}</td>
+					<td>{{ _("Initial value") }}</td>
+					{% for t in result.targets %}
+						<td>
+							{{ tool_macros.exposure(t.exposure.direction, t.exposure.stops) }}
+					{% endfor %}
+				</tr>
+
+			<tr class="compare-section">
+        <th colspan="{{ 4 }}">
+          {{ _("Equivalent settings for this sensor") }}
+        </th>
+      </tr>
+
+
+			  <tr>
+					<td>{{ _("Crop factor") }}</td>
+					<td>{{ result.targets.reference_crop_factor|round(2) }}×</td>
+					{% for t in result.targets %}
+					{% set eq = t.equivalent %}
+						  <td>{{ eq.target_crop_factor|round(2) }}×</td>
+					{% endfor %}
+				</tr>
+
+
+			<tr class="test">
+        <th colspan="{{ 4 }}">
+          {{ _("These settings keep the same field of view, depth of field, motion blur and total amount of light (≈ same noise) as the reference camera. This is a different concept from equal EV.") }}
+        </th>
+      </tr>
+
+			</tbody>
+
+			</table>
+	</div>
+{% endif %}
 {% endblock %}
